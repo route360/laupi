@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-2" style="height: 800px; overflow: scroll;">
             <div ng-if="pubs[0].travelTime" ng-repeat="pub in pubs | orderBy : 'travelTime'">
-                <div ng-if="pub.travelTime > 0">
+                <div ng-if="pub.travelTime > 0" ng-click="showRoute(pub)">
                     <h4>{{ pub.name }}</h4>
                     <p>Reisezeit: {{ pub.travelTime | secondsToHoursMin }}</p>
                 </div>

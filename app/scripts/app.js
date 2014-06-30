@@ -16,6 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
+    'cfg',
+    'ui.checkbox',
     'pascalprecht.translate'
     // 'PubService'
   ])
@@ -36,6 +38,10 @@ angular
         .when('/beer', {
           templateUrl: 'views/beer.html',
           controller: 'BeerCtrl'
+        })
+        .when('/apartment', {
+          templateUrl: 'views/apartment.html',
+          controller: 'ApartmentCtrl'
         })
         .otherwise({
             redirectTo: '/'
@@ -58,8 +64,16 @@ angular
     BARS: 'Bars & Pubs',
     PUBLIC_TOILETS: 'Öffentliche Toiletten',
     WHERE_ARE_YOU : 'Wo bist du?',
-    FIND_BEER : 'Wo geht\'s zum nächsten Pub'
+    FIND_BEER : 'Wo geht\'s zum nächsten Pub',
+    FILTER_COURTAGE : 'Courtage',
+    FILTER_BALCONY: 'Balkon',
+    FILTER_GARDEN: 'Garten',
+    FILTER_KITCHEN: 'Einbauküche',
+    SELECT_ROOMS: 'Zimmer',
+    SELECT_AREA: 'Wohnfläche',
+    SELECT_PRICE: 'Preis',
+    FIND_APARTMENT : 'Finde deine Traumwohnung!'
   });
 
-  $translateProvider.preferredLanguage('en');
+  $translateProvider.preferredLanguage('de');
 });
