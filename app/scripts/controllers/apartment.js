@@ -22,6 +22,9 @@ angular.module('route360DemoApp')
             courtage : false,
             balcony : true
         };
+
+        // leaflet complains if project is build/minimized if this is not present
+        L.Icon.Default.imagePath = 'images/marker/';
         
         // add the map and set the initial center to berlin
         var map = L.map('map-apartment', {zoomControl : false}).setView([52.516389, 13.377778], 13);
