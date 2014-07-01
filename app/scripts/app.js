@@ -17,8 +17,10 @@ angular
     'ngSanitize',
     'ngTouch',
     'cfg',
+    'vr.directives.slider',
     'ui.checkbox',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ngTable'
     // 'PubService'
   ])
   .config(function ($routeProvider) {

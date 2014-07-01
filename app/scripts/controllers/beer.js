@@ -10,6 +10,8 @@
 angular.module('route360DemoApp')
     .controller('BeerCtrl', function ($scope, PubService, $translate, $config) {
 
+        L.Icon.Default.imagePath = 'images/marker/';
+
         // add the map and set the initial center to berlin
         var map = L.map('map-beer', {zoomControl : false}).setView([52.516389, 13.377778], 13);
         // attribution to give credit to OSM map data and VBB for public transportation 
@@ -143,10 +145,11 @@ angular.module('route360DemoApp')
                         <p>" + r360.config.i18n.get('travelTime') + ": " + 
                         r360.Util.secondsToHoursAndMinutes(pub.travelTime) + "</p>");
                     poiSymbol.addTo(map);
-                    poiSymbol.id = pub.id;
+                    poiSymbol.pub = pub;
                     $scope.targetMarkers.push(poiSymbol);
 
-                    poiSymbol.on('click', $scope.showRoute(pub));
+                    // add callback on marker click event
+                    poiSymbol.on('click', function(event, pub){ $scope.showRoute(event.target.pub); }); 
                 });
 
                 map.setView($scope.sourceMarker.getLatLng(), 15);
@@ -156,7 +159,7 @@ angular.module('route360DemoApp')
 
         $scope.showRoute = function(pub) {
 
-            var target = _.find($scope.targetMarkers, function(target){ return target.id == pub.id ; });
+            var target = _.find($scope.targetMarkers, function(target){ return target.pub.id == pub.id ; });
             target.openPopup();
 
             $scope.routeLayer.clearLayers();

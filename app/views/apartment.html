@@ -1,56 +1,95 @@
-<div class="container">
+<div class="container-fluid">
     <h1>{{ 'FIND_APARTMENT' | translate }}</h1>
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-4">
                 <div>
                     <h4>{{ 'SELECT_PRICE' | translate }}</h4>
-                    <b>€ 300</b> 
-                    <input id="select-price" type="text" class="span2" value="" data-slider-min="300" data-slider-max="2500" data-slider-step="5" data-slider-value="[300,2500]"/>
-                    <b>€ 2500</b>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p>Min.</p>
+                            <input type="text" ng-model="search.minPrice"/>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Max.</p>    
+                            <input type="text" ng-model="search.maxPrice"/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div>
                     <h4>{{ 'SELECT_AREA' | translate }}</h4>
-                    <b>10m2</b> 
-                    <input id="select-area" type="text" class="span2" value="" data-slider-min="10" data-slider-max="240" data-slider-step="5" data-slider-value="[10,240]"/>
-                    <b>240m2</b>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p>Min.</p>
+                            <input type="text" ng-model="search.minArea"/>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Max.</p>    
+                            <input type="text" ng-model="search.maxArea"/>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div>
                     <h4>{{ 'SELECT_ROOMS' | translate }}</h4>
-                    <b>1</b> 
-                    <input id="select-rooms" type="text" class="span2" value="" data-slider-min="1" data-slider-max="7" data-slider-step="0.5" data-slider-value="[1,7]"/>
-                    <b>7</b>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                            <p>Min.</p>
+                            <input type="text" ng-model="search.minRooms"/>
+                        </div>
+                        <div class="col-md-6">
+                            <p>Max.</p>    
+                            <input type="text" ng-model="search.maxRooms"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-12">
             <div class="col-md-2">
                 <h4>{{ 'FILTER_COURTAGE' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="courtage"></checkbox>
+                <checkbox large name="custom-name" ng-model="search.courtage"></checkbox>
             </div>
             <div class="col-md-2">
                 <h4>{{ 'FILTER_BALCONY' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="balcony"></checkbox>
+                <checkbox large name="custom-name" ng-model="search.balcony"></checkbox>
             </div>
             <div class="col-md-2">
                 <h4>{{ 'FILTER_GARDEN' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="garden"></checkbox>
+                <checkbox large name="custom-name" ng-model="search.garden"></checkbox>
             </div>
             <div class="col-md-2">
                 <h4>{{ 'FILTER_KITCHEN' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="kitchen"></checkbox>
+                <checkbox large name="custom-name" ng-model="search.kitchen"></checkbox>
             </div>
         </div>
         <div class="col-md-12 apartment-result">
-            <div class="col-md-10">
+            <div class="col-md-9">
                 <div id="map-apartment" class="map"></div>
             </div>
-            <div class="col-md-2" style="height: 800px; overflow: scroll;">
-                
+            <div class="col-md-3" style="height: 800px; overflow: scroll;">
+                <table ng-table="tableParams" class="table">
+                    <tr ng-repeat="apartment in $data">
+                        <td data-title="'Bild'" >
+                            <img src="{{apartment.img}}" style="max-height: 50px;">
+                        </td>
+                        <td data-title="'Preis (€)'" sortable="'price'">
+                            {{apartment.price}}
+                        </td>
+                        <td data-title="'Fläche'" sortable="'area'">
+                            {{apartment.area}}
+                        </td>
+                        <td data-title="'Räume'" sortable="'rooms'">
+                            {{apartment.rooms}}
+                        </td>
+                        <td data-title="'Reisezeit'" sortable="'rooms'">
+                            {{apartment.rooms}}
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>
