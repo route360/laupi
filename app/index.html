@@ -6,18 +6,18 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
     <!-- build:css(app/..) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="bower_components/route360/dist/jquery-ui-1.10.0.custom.css" />
     <link rel="stylesheet" href="bower_components/route360/dist/r360.css" />
-    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
     <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
   <body ng-app="route360DemoApp">
@@ -45,18 +45,20 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="left-nav-bar" class="nav navbar-nav">
-                <!-- <li ng-class="navClass('xxx')" ng-click="loadXXX()"><a href="">XXX</a></li> -->
+                <li id='apartment-search-edit' ng-class='navClass("apartment-search-edit")'><a href=''><i class='fa fa-search'></i> Suche ändern</a></li>
+                <li id='apartment-results' ng-class='navClass("apartment-results")'><a href=''><i class='fa fa-list-ol'></i> Ergebnissliste</a></li>
             </ul>
-          
+
             <ul class="nav navbar-nav navbar-right">
                 <!-- <li ng-class="navClass('test')" ng-click="loadTest()"><a href=""><i class="fa fa-cogs"></i> Test</a></li> -->
+                <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> Dokumentation</a></li>
                 <li ng-class="navClass('contact')" ng-click="loadContact()"><a href=""><i class="fa fa-envelope"></i> Kontakt</a></li>
                 <li ng-class="navClass('about')" ng-click="loadAbout()"><a href=""><i class="fa fa-info"></i> Impressum</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
       </div>
     </div>
-    <div ng-view=""></div>
+    <div ng-view="" class="view"></div>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -77,7 +79,6 @@
 
     <!-- build:js(app/..) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/modernizr/modernizr.js"></script>
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/affix.js"></script>
@@ -106,11 +107,8 @@
     <script src="bower_components/raphael/raphael.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/route360/dist/r360.js"></script>
-    <script src="bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
-    <script src="bower_components/angular-ui-slider/src/slider.js"></script>
-    <script src="bower_components/venturocket-angular-slider/build/angular-slider.js"></script>
     <script src="bower_components/ng-table/ng-table.js"></script>
     <!-- endbower -->
     <!-- endbuild -->

@@ -17,7 +17,6 @@ angular
     'ngSanitize',
     'ngTouch',
     'cfg',
-    'vr.directives.slider',
     'ui.checkbox',
     'pascalprecht.translate',
     'ngTable'

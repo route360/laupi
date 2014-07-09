@@ -15,8 +15,6 @@ angular.module('route360DemoApp')
 
         dataFactory.getApartments = function (searchParams) {
 
-            console.log(searchParams);
-
             return $http({
                 url     : urlBase + 'all', 
                 method  : "GET",

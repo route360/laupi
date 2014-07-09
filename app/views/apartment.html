@@ -1,7 +1,99 @@
-<div class="container-fluid">
-    <h1>{{ 'FIND_APARTMENT' | translate }}</h1>
-    <div class="row">
-        <div class="col-md-12">
+<div class="modal" id="apartment-search-edit-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Suche anpassen</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-5"><h3>Wohnungen <small>({{apartments.length}})</small></h3></div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">von</div>
+                    <div class="col-md-4">bis</div>
+                </div>
+                <div class="row top-buffer">
+                    <div class="col-md-4">Preis</div>
+                    <div class="col-md-4"><input type="text" ng-model="search.minPrice"/></div>
+                    <div class="col-md-4"><input type="text" ng-model="search.maxPrice"/></div>
+                </div>
+                <div class="row top-buffer">
+                    <div class="col-md-4">Fläche</div>
+                    <div class="col-md-4"><input type="text" ng-model="search.minArea"/></div>
+                    <div class="col-md-4"><input type="text" ng-model="search.maxArea"/></div>
+                </div>
+                <div class="row top-buffer">
+                    <div class="col-md-4">Zimmer</div>
+                    <div class="col-md-4"><input type="text" ng-model="search.minRooms"/></div>
+                    <div class="col-md-4"><input type="text" ng-model="search.maxRooms"/></div>
+                </div>
+                <div class="row top-buffer2x">
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.courtage"></checkbox>    {{ 'FILTER_COURTAGE' | translate }}</div>
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.balcony"></checkbox>    {{ 'FILTER_BALCONY' | translate }}</div>
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.garden"></checkbox>    {{ 'FILTER_GARDEN' | translate }}</div>
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.kitchen"></checkbox>    {{ 'FILTER_KITCHEN' | translate }}</div>
+                </div>
+                <h3 class="top-buffer2x">Reise</h3>
+                <div class="row top-buffer2x">
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.courtage"></checkbox>    Auto</div>
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.balcony"></checkbox>    Fahrrad</div>
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.garden"></checkbox>    zu Fuß</div>
+                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.kitchen"></checkbox>    ÖPNV</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
+                <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="showResultView()">Ergebnisansicht</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal" id="apartment-results-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ergebnisansicht</h4>
+            </div>
+            <div class="modal-body">
+                <table ng-table="tableParams" class="table">
+                    <tr ng-repeat="apartment in $data">
+                        <td data-title="'Bild'" >
+                            <img src="{{apartment.img}}" style="max-height: 70px;">
+                        </td>
+                        <td data-title="'Preis (€)'" sortable="'price'">
+                            {{apartment.price}}
+                        </td>
+                        <td data-title="'Fläche'" sortable="'area'">
+                            {{apartment.area}}
+                        </td>
+                        <td data-title="'Räume'" sortable="'rooms'">
+                            {{apartment.rooms}}
+                        </td>
+                        <td data-title="'Reisezeit'" sortable="'rooms'">
+                            {{apartment.rooms}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="showEditSearchView()">Suche editieren</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="map" id="map-apartment">
+</div>
+
+
+<!-- <div class="col-md-12">
             <div class="col-md-4">
                 <div>
                     <h4>{{ 'SELECT_PRICE' | translate }}</h4>
@@ -65,32 +157,4 @@
                 <h4>{{ 'FILTER_KITCHEN' | translate }}</h4>
                 <checkbox large name="custom-name" ng-model="search.kitchen"></checkbox>
             </div>
-        </div>
-        <div class="col-md-12 apartment-result">
-            <div class="col-md-9">
-                <div id="map-apartment" class="map"></div>
-            </div>
-            <div class="col-md-3" style="height: 800px; overflow: scroll;">
-                <table ng-table="tableParams" class="table">
-                    <tr ng-repeat="apartment in $data">
-                        <td data-title="'Bild'" >
-                            <img src="{{apartment.img}}" style="max-height: 50px;">
-                        </td>
-                        <td data-title="'Preis (€)'" sortable="'price'">
-                            {{apartment.price}}
-                        </td>
-                        <td data-title="'Fläche'" sortable="'area'">
-                            {{apartment.area}}
-                        </td>
-                        <td data-title="'Räume'" sortable="'rooms'">
-                            {{apartment.rooms}}
-                        </td>
-                        <td data-title="'Reisezeit'" sortable="'rooms'">
-                            {{apartment.rooms}}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+        </div> -->
