@@ -27,6 +27,13 @@ module.exports = function (grunt) {
     // Project settings
     yeoman: appConfig,
 
+    uglify: {
+        options: {
+            beautify: false,
+            report: 'gzip'
+        }
+    },
+
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       bower: {
@@ -66,10 +73,10 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9000,
+        port: 9001,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
-        livereload: 35729
+        livereload: 35730
       },
       livereload: {
         options: {

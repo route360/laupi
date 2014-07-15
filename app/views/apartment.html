@@ -64,7 +64,7 @@
                 <table ng-table="tableParams" class="table">
                     <tr ng-repeat="apartment in $data">
                         <td data-title="'Bild'" >
-                            <img src="{{apartment.img}}" style="max-height: 70px;">
+                            <img ng-src="{{apartment.img}}" style="max-height: 70px;">
                         </td>
                         <td data-title="'Preis (€)'" sortable="'price'">
                             {{apartment.price}}
@@ -75,8 +75,8 @@
                         <td data-title="'Räume'" sortable="'rooms'">
                             {{apartment.rooms}}
                         </td>
-                        <td data-title="'Reisezeit'" sortable="'rooms'">
-                            {{apartment.rooms}}
+                        <td data-title="'Reisezeit'" sortable="'travelTime'">
+                            {{ apartment.travelTime > 0 ? apartment.travelTime : "nicht erreichbar" }}
                         </td>
                     </tr>
                 </table>
@@ -91,70 +91,3 @@
 
 <div class="map" id="map-apartment">
 </div>
-
-
-<!-- <div class="col-md-12">
-            <div class="col-md-4">
-                <div>
-                    <h4>{{ 'SELECT_PRICE' | translate }}</h4>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <p>Min.</p>
-                            <input type="text" ng-model="search.minPrice"/>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Max.</p>    
-                            <input type="text" ng-model="search.maxPrice"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <h4>{{ 'SELECT_AREA' | translate }}</h4>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <p>Min.</p>
-                            <input type="text" ng-model="search.minArea"/>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Max.</p>    
-                            <input type="text" ng-model="search.maxArea"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div>
-                    <h4>{{ 'SELECT_ROOMS' | translate }}</h4>
-                    <div class="form-group">
-                        <div class="col-md-6">
-                            <p>Min.</p>
-                            <input type="text" ng-model="search.minRooms"/>
-                        </div>
-                        <div class="col-md-6">
-                            <p>Max.</p>    
-                            <input type="text" ng-model="search.maxRooms"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="col-md-2">
-                <h4>{{ 'FILTER_COURTAGE' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="search.courtage"></checkbox>
-            </div>
-            <div class="col-md-2">
-                <h4>{{ 'FILTER_BALCONY' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="search.balcony"></checkbox>
-            </div>
-            <div class="col-md-2">
-                <h4>{{ 'FILTER_GARDEN' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="search.garden"></checkbox>
-            </div>
-            <div class="col-md-2">
-                <h4>{{ 'FILTER_KITCHEN' | translate }}</h4>
-                <checkbox large name="custom-name" ng-model="search.kitchen"></checkbox>
-            </div>
-        </div> -->
