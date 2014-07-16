@@ -19,7 +19,8 @@ angular
     'cfg',
     'ui.checkbox',
     'pascalprecht.translate',
-    'ngTable'
+    'ngTable',
+    'ui.bootstrap',
     // 'PubService'
   ])
   .config(function ($routeProvider) {

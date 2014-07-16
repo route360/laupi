@@ -10,6 +10,8 @@
 angular.module('route360DemoApp')
     .controller('ApartmentCtrl', function ($scope, $config, ApartmentFactory, $filter, ngTableParams, $timeout, TableParamFactory) {
 
+        r360.config.serviceUrl = 'http://localhost:8080/api/'
+
         // TODO
         // 1. Filter by routing time ... DONE
         // 2. Routen anzeigen
@@ -22,6 +24,10 @@ angular.module('route360DemoApp')
         // 9. hover
         // 10. 
 
+        $scope.markerColors = [ 'green', 'orange', 'purple', 'blue', 'red' ];
+        $scope.apartment = {};
+        $scope.test= { key : 'value'};
+
         $("#apartment-search-edit").show();
         $("#apartment-search-edit").on('click', function(){ $("#apartment-search-edit-modal").modal('show'); });
         $("#apartment-results").show();
@@ -29,7 +35,7 @@ angular.module('route360DemoApp')
 
         // default search parameters
         $scope.search = { 
-            minPrice : 600, maxPrice : 800, 
+            minPrice : 700, maxPrice : 800, 
             minArea : 70, maxArea : 80, 
             minRooms : 3, maxRooms : 3, 
             kitchen : false, garden : false, courtage : false, balcony : true
@@ -42,6 +48,8 @@ angular.module('route360DemoApp')
         var map = L.map('map-apartment', {zoomControl : false}).setView([52.516389, 13.377778], 13);
         // attribution to give credit to OSM map data and VBB for public transportation 
         var attribution ="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | ÖPNV Daten © <a href='http://www.vbb.de/de/index.html' target='_blank'>VBB</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
+        // initialising the base map. To change the base map just change following lines as described by cloudmade, mapbox etc..
+        L.tileLayer('http://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', { maxZoom: 18, attribution: attribution }).addTo(map);
 
         r360.config.defaultTravelTimeControlOptions.travelTimes = [
             { time : 600   , color : "#006837"},
@@ -56,7 +64,7 @@ angular.module('route360DemoApp')
             travelTimes : r360.config.defaultTravelTimeControlOptions.travelTimes,
             position    : 'topright', // this is the position in the map
             label       : 'Reisezeit: ', // the label, customize for i18n
-            initValue   : 40 // the inital value has to match a time from travelTimes, e.g.: 40m == 2400s
+            initValue   : 20 // the inital value has to match a time from travelTimes, e.g.: 40m == 2400s
         });
 
         // create a new readio button control with the given options
@@ -82,25 +90,31 @@ angular.module('route360DemoApp')
         $scope.getPlaces = function(){
 
             var places = [];
-            _.each($scope.autoCompletes, function(autoComplete) { 
+            _.each($scope.autoCompletes, function(autoComplete, index) { 
 
                 if (typeof autoComplete.getValue() != 'undefined') {
 
-                    var item = autoComplete.getValue();
-                    item.getLatLng = function(){ return this.latlng; }
-                    item.id = item.latlng.lat + "" + item.latlng.lng;
+                    var item        = autoComplete.getValue();
+                    item.getLatLng  = function(){ return this.latlng; }
+                    item.id         = item.latlng.lat + "" + item.latlng.lng;
                     places.push(item);
-                    var marker = L.marker(item.getLatLng(), { draggable : true }).addTo($scope.placesLayer);
-                    marker.autoComplete = autoComplete;
+
+
+                    var marker = r360.Util.getMarker(item.latlng, 
+                        { color : $scope.markerColors[index], iconPath: L.Icon.Default.imagePath, draggable : true }).addTo($scope.placesLayer);
                     marker.bindPopup("<h2>"+ item.firstRow +"</h2>");
 
                     marker.on("dragend", function(event){
 
-                        // console.log(autoComplete.getValue());
-                        // console.log(marker.autoComplete.getValue());
-                        autoComplete.setFieldValue("Wurstsuppe!");
-                        autoComplete.getValue().latlng = L.latLng(marker.getLatLng());
+                        autoComplete.getValue().latlng = marker.getLatLng();
                         $scope.showApartments();
+
+                        r360.Util.getAddressByCoordinates(marker.getLatLng(), 'de', function(json){
+                    
+                            var displayName = r360.Util.formatReverseGeocoding(json);
+                            autoComplete.setFieldValue(displayName);
+                            marker.bindPopup('<h2>' + displayName + '</h2>');
+                        });
                     });
                 }
             });
@@ -116,6 +130,8 @@ angular.module('route360DemoApp')
             $scope.reachableApartmentLayer.clearLayers();   
             $scope.notReachableApartmentLayer.clearLayers();
             $scope.placesLayer.clearLayers();
+            $scope.routesLayer.clearLayers();
+            $scope.polygonLayer.clearLayers();
 
             var places        = $scope.getPlaces();
             var travelOptions = r360.travelOptions();
@@ -138,7 +154,6 @@ angular.module('route360DemoApp')
                 // call the service
                 r360.PolygonService.getTravelTimePolygons(travelOptions, function(polygons){
 
-                    $scope.polygonLayer.clearLayers();
                     $scope.polygonLayer.addLayer(polygons);
                     map.fitBounds($scope.polygonLayer.getBoundingBox());
                 });
@@ -162,20 +177,20 @@ angular.module('route360DemoApp')
                         // each source has the same number of targets and in the same order
                         _.each(_.range(0, sources[0].targets.length), function(targetIndex){
 
+                            var apartment = _.find($scope.apartments, function(apartment){ return apartment.id == sources[0].targets[targetIndex].id ; });
+
+                            // 1. get average routing time
                             var travelTime = 0;
                             var travelTimes = [];
-                            // get the travel time for this target for every source
                             _.each(sources, function(source) { 
-
+                                // get the travel time for this target for every source
                                 var tt = source.targets[targetIndex].travelTime;
                                 travelTime += tt == -1 ? -10000000 : tt;
                                 travelTimes.push({id: targetIndex, travelTime : tt});
                             });
+                            apartment.travelTime = travelTime / travelTimes.length;
 
-                            var apartment = _.find($scope.apartments, function(apartment){ return apartment.id == sources[0].targets[targetIndex].id ; });
-                            // average routing time
-                            apartment.travelTime = travelTime / sources.length;
-
+                            // 2. create a marker depending on 1.
                             // the default marker is a plain circle marker
                             var poiSymbol = L.circleMarker([apartment.lat, apartment.lon], 
                                 { color: "white", fillColor: 'red', fillOpacity: 1.0, stroke : true, radius : 5 });
@@ -221,15 +236,20 @@ angular.module('route360DemoApp')
                             else poiSymbol.addTo($scope.notReachableApartmentLayer);
 
                             var debug = ''; _.each(travelTimes, function(tt){ debug += '<pre>'+ tt.id + ': '+ tt.travelTime +' seconds</pre>'; }); debug += '<pre>average: '+ apartment.travelTime +' seconds</pre>';
-                            poiSymbol.bindPopup(debug);
+                            // poiSymbol.bindPopup(debug);
 
+                            // show the routes on mouseover
                             poiSymbol.on('click mouseover', function(){
 
+                                $scope.apartment = apartment;
                                 $scope.routesLayer.clearLayers();
 
                                 travelOptions.setSources(places);
                                 travelOptions.setTargets([poiSymbol]);
                                 r360.RouteService.getRoutes(travelOptions, function(routes){
+
+                                    $scope.apartment.routes = routes;
+                                    $scope.$apply(); // update view because of out of angular call
 
                                     // one route for each source and target combination
                                     _.each(routes, function(route){
@@ -287,13 +307,6 @@ angular.module('route360DemoApp')
         $scope.travelTimeControl.onSlideStop(function() { $scope.showApartments(); });
 
         
-        // initialising the base map. To change the base map just change following lines as described by cloudmade, mapbox etc..
-        L.tileLayer('http://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: attribution
-        }).addTo(map);
-
-
         // $scope.$watch('filter.$', function () {
         //     if (  typeof $scope.tableParams !== 'undefined' && $scope.tableParams.data.length > 0) {
         //         $scope.tableParams.reload();
@@ -301,18 +314,41 @@ angular.module('route360DemoApp')
         // });
 
         $scope.autoCompletes = [];
-        _.each(_.range(0,3), function(index){
-
-            $scope.autoCompletes.push(r360.placeAutoCompleteControl({country : "Deutschland", placeholder : 'Select start!', reset : true}));
-            $scope.autoCompletes[index].onSelect($scope.showApartments);
-            // this hack can be delete in upcoming versions of route360°
-            $scope.autoCompletes[index].setValue = function(item){ 
-                this.options.value = item;
-                var mapId = $(this.options.map._container).attr("id");
-                $("#autocomplete-"+mapId).val(item.firstRow);
-            }
-            map.addControl($scope.autoCompletes[index]);
+        // create a autocomplete
+        var autoComplete = r360.placeAutoCompleteControl({ 
+            country     : "Deutschland", 
+            placeholder : 'Select start!', 
+            reset       : true,
+            image       : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[0] + '.png'
         });
+        // define what is happing on select
+        autoComplete.onSelect(function() {
+
+            // add a new autocomplete
+            if ( $scope.autoCompletes.length < 3 ) {
+
+                var newAutoComplete = r360.placeAutoCompleteControl({ 
+                    country : "Deutschland", 
+                    placeholder : 'Select start!', 
+                    reset : true, 
+                    image :  L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[$scope.autoCompletes.length + 1] + '.png'
+                });
+                map.addControl(newAutoComplete);
+                $scope.autoCompletes.push(newAutoComplete);
+
+                // recalculate the position of this hack
+                $('#apartment-details').css('top',  ((53 * $scope.autoCompletes.length) + 10) + 'px');
+            }
+
+            // redraw view
+            $scope.showApartments();
+        });
+        $scope.autoCompletes.push(autoComplete);
+        map.addControl(autoComplete);
+
+        $('#apartment-details').css('top',  ((53 * $scope.autoCompletes.length) + 10) + 'px');
+        $('#apartment-details').on('mouseover', function(){ map.scrollWheelZoom.disable(); });
+        $('#apartment-details').on('mouseout' , function(){ map.scrollWheelZoom.enable(); });      
 
         // toggle the modals 
         $scope.showResultView       = function(){ $('#apartment-results-modal').modal('show'); };
@@ -337,15 +373,15 @@ angular.module('route360DemoApp')
             term        : "Berlin",
             value       : "Berlin, Berlin"
         });
-        $scope.autoCompletes[1].setFieldValue("Invalidenstraße, Berlin");
-        $scope.autoCompletes[1].setValue({
-            firstRow    : "Invalidenstraße, Berlin",
-            getLatLng   : function (){ return this.latlng; },
-            id          : "52.52795313.374074",
-            label       : "Invalidenstraße, Berlin",
-            latlng      : L.latLng(52.527953, 13.374074),
-            secondRow   : "Invalidenstraße 10557 Berlin",
-            term        : "Invalidenstraße",
-            value       : "Invalidenstraße, Berlin"
-        });
+        // $scope.autoCompletes[1].setFieldValue("Invalidenstraße, Berlin");
+        // $scope.autoCompletes[1].setValue({
+        //     firstRow    : "Invalidenstraße, Berlin",
+        //     getLatLng   : function (){ return this.latlng; },
+        //     id          : "52.52795313.374074",
+        //     label       : "Invalidenstraße, Berlin",
+        //     latlng      : L.latLng(52.527953, 13.374074),
+        //     secondRow   : "Invalidenstraße 10557 Berlin",
+        //     term        : "Invalidenstraße",
+        //     value       : "Invalidenstraße, Berlin"
+        // });
     });
