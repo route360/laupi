@@ -1,0 +1,49 @@
+<!-- <!doctype html>
+<html ng-app="todoApp">
+  <head>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="todo.js"></script>
+  </head>
+  <body>
+    <h2>Apartments</h2>
+    <div ng-controller="TodoController">
+      <pre>{{$scope.apartments | json }}</pre>
+    </div>
+  </body>
+</html> -->
+
+<!doctype html>
+<html ng-app="myApp">
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script type="text/javascript">
+    var myApp = angular.module('myApp', []);
+
+    myApp.controller('myController', function ($scope, $http) {
+
+        $scope.search = { 
+            minPrice : 700, maxPrice : 800, 
+            minArea : 70, maxArea : 80, 
+            minRooms : 3, maxRooms : 3, 
+            kitchen : false, garden : false, courtage : false, balcony : true,
+            intersection : 'intersection', callback : 'JSON_CALLBACK'
+        };
+      
+        $http.jsonp('http://144.76.246.52/r360-backend/apartments/all?' + $.param($scope.search))
+            .success(function(apartments){
+
+                console.log('success');
+                $scope.apartments = apartments;
+            })
+            .error(function(result){
+
+                console.log('error');
+                console.log(result);
+            });
+    });
+  </script>
+
+  <div ng-controller="myController">
+    <pre>{{apartments | json}}</pre>
+  </div>
+</html>

@@ -13,34 +13,19 @@ angular.module('route360DemoApp')
         var urlBase = $config.serviceUrl + "apartments/";
         var dataFactory = {};
 
-        dataFactory.getApartments = function (searchParams) {
+        dataFactory.getApartment = function (id, callback) {
 
-            return $http({
-                url     : urlBase + 'all', 
-                method  : "GET",
-                params  : searchParams
-             });
+            $http.jsonp(urlBase + id + '?callback=JSON_CALLBACK')
+                .success(function(result){ callback(result) })
+                .error(function(result){ console.log('error'); console.log(result)});
         };
 
-        // dataFactory.getCustomer = function (id) {
-        //     return $http.get(urlBase + '/' + id);
-        // };
+        dataFactory.getApartmentsByIds = function (ids, callback) {
 
-        // dataFactory.insertCustomer = function (cust) {
-        //     return $http.post(urlBase, cust);
-        // };
-
-        // dataFactory.updateCustomer = function (cust) {
-        //     return $http.put(urlBase + '/' + cust.ID, cust)
-        // };
-
-        // dataFactory.deleteCustomer = function (id) {
-        //     return $http.delete(urlBase + '/' + id);
-        // };
-
-        // dataFactory.getOrders = function (id) {
-        //     return $http.get(urlBase + '/' + id + '/orders');
-        // };
+            $http.jsonp(urlBase + 'list?' + $.param({id : ids, callback : 'JSON_CALLBACK'}, true))
+                .success(function(result){ callback(result) })
+                .error(function(result){ console.log('error'); console.log(result)});
+        };
 
         return dataFactory;
     });

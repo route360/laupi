@@ -37,17 +37,38 @@
                     <div class="col-md-3"><checkbox name="custom-name" ng-model="search.garden"></checkbox>    {{ 'FILTER_GARDEN' | translate }}</div>
                     <div class="col-md-3"><checkbox name="custom-name" ng-model="search.kitchen"></checkbox>    {{ 'FILTER_KITCHEN' | translate }}</div>
                 </div>
-                <h3 class="top-buffer2x">Reise</h3>
+                <h3 class="top-buffer2x">Erreichbarkeiten</h3>
                 <div class="row top-buffer2x">
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.courtage"></checkbox>    Auto</div>
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.balcony"></checkbox>    Fahrrad</div>
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.garden"></checkbox>    zu Fuß</div>
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.kitchen"></checkbox>    ÖPNV</div>
+                    <div class="col-md-12">
+                        <div class="btn-group">
+                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'union'" uncheckable>Keine Verschneidung</label>
+                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'intersection'" uncheckable>Schnittmenge</label>
+                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'average'" uncheckable>Durchschnitt</label>
+                        </div>
+                        <button class="btn btn-default pull-right" ng-click="hideHelp = !hideHelp">Hilfe anzeigen!</button>
+                        <div collapse="hideHelp" class='top-buffer2x'>
+                            <hr>
+                            <accordion close-others="status.oneAtATime">
+                                <accordion-group heading="Keine Verschneidung" class='help-heading'>
+                                    <img src="/images/help/union.png" class="img-responsive padding-bottom-5px">
+                                    <p>Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.</p>
+                                </accordion-group>
+                                <accordion-group heading="Schnittmenge" is-open="status.isFirstOpen" class='help-heading'>
+                                    <img src="/images/help/intersection.png" class="img-responsive padding-bottom-5px">
+                                    <p>Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.</p>
+                                </accordion-group>
+                                <accordion-group heading="Durchschnitt" class='help-heading'>
+                                    <img src="/images/help/average.png" class="img-responsive padding-bottom-5px">
+                                    <p>Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.</p>
+                                </accordion-group>
+                            </accordion>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
-                <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="showResultView()">Ergebnisansicht</button>
+                <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="showResultView()">Ergebnisliste</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -58,25 +79,28 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Ergebnisansicht</h4>
+                <h4 class="modal-title">Ergebnisliste</h4>
             </div>
             <div class="modal-body">
-                <table ng-table="tableParams" class="table">
+                <table ng-table="apartmentsTableParams" class="table">
                     <tr ng-repeat="apartment in $data">
-                        <td data-title="'Bild'" >
-                            <img ng-src="{{apartment.img}}" style="max-height: 70px;">
+                        <td data-title="'Expose'" class='text-center'>
+                            <a href="http://immobilienscout24.de/expose/{{apartment.id}}">
+                                <img class='img-responsive img-thumbnail' ng-src="{{apartment.img}}" style="max-height: 70px;">
+                            </a>        
                         </td>
-                        <td data-title="'Preis (€)'" sortable="'price'">
+                        <td data-title="'Preis (€)'" sortable="'price'" class='text-center'>
                             {{apartment.price}}
                         </td>
-                        <td data-title="'Fläche'" sortable="'area'">
+                        <td data-title="'Fläche'" sortable="'area'" class='text-center'>
                             {{apartment.area}}
                         </td>
-                        <td data-title="'Räume'" sortable="'rooms'">
+                        <td data-title="'Räume'" sortable="'rooms'" class='text-center'>
                             {{apartment.rooms}}
                         </td>
-                        <td data-title="'Reisezeit'" sortable="'travelTime'">
-                            {{ apartment.travelTime > 0 ? apartment.travelTime : "nicht erreichbar" }}
+                        <td data-title="'Reisezeit'" sortable="'averageTravelTime'" class='text-center'>
+                            <div ng-if='apartment.averageTravelTime < 10000000'>{{ apartment.averageTravelTime | secondsToHoursMin }}</div>
+                            <div ng-if='apartment.averageTravelTime == 10000000'>nicht erreichbar</div>
                         </td>
                     </tr>
                 </table>
@@ -89,10 +113,152 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal" id="apartment-liked-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Favouriten</h4>
+            </div>
+            <div class="modal-body">
+                <table ng-table="likedTableParams" class="table">
+                    <tr ng-repeat="apartment in $data">
+                        <td data-title="'Expose'" class='text-center'>
+                            <a href="http://immobilienscout24.de/expose/{{apartment.id}}">
+                                <img class='img-responsive img-thumbnail' ng-src="{{apartment.imageUrlLarge}}" style="max-height: 70px;">
+                            </a>        
+                        </td>
+                        <td data-title="'Preis (€)'" sortable="'price'" class='text-center'>
+                            {{apartment.price}}
+                        </td>
+                        <td data-title="'Fläche'" sortable="'area'" class='text-center'>
+                            {{apartment.area}}
+                        </td>
+                        <td data-title="'Räume'" sortable="'rooms'" class='text-center'>
+                            {{apartment.rooms}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div class="map" id="map-apartment">
-    <div id='apartment-details'>
-        <div class="container-fluid">
-            <pre>{{apartment | json}}</pre>
+    <div id='apartment-details' ng-show='apartment' class='container-fluid'>
+        <div class="row" style="width: 319px; margin-left: 0px; margin-right: 0px;">
+            <h4>{{apartment.title}}</h4>
+            <div class="col-md-12 text-center" style="padding-left: 0px;">
+                <ul class="pager" style='margin: 2px 0px 4px 0px;'>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.price}}€ kalt</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.rooms}} Zimmer</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.area}}m²</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{apartment.averageTravelTime | secondsToHoursMin}} Ø Reisezeit</a></li>
+                </ul>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-3">{{ 'FILTER_COURTAGE' | translate }}
+                    <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.courtage" style='color: black; width: 25px;'></checkbox>
+                </div>
+                <div class="col-md-3">{{ 'FILTER_BALCONY' | translate }}
+                    <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.balcony" style='color: black; width: 25px;'></checkbox>
+                </div>
+                <div class="col-md-3">{{ 'FILTER_GARDEN' | translate }}
+                    <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.garden" style='color: black; width: 25px;'></checkbox>
+                </div>
+                <div class="col-md-3">EBK   
+                    <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.kitchen" style='color: black; width: 25px;'></checkbox>
+                </div>
+            </div>
+            <div class="col-md-12 text-center top-buffer">
+                <img  class="img-responsive img-thumbnail" ng-src='{{apartment.imageUrlLarge}}'>
+            </div>  
+            <div class="col-md-12 top-buffer text-center">
+                <!-- <pre>{{apartment|json}}</pre> -->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" ng-click='openExpose(apartment.id)'>Expose</button>
+                    <button ng-if='!apartment.liked' type="button" class="btn btn-default" ng-click='likeApartment(apartment.id)'><i class="fa fa-heart-o"> Merken</i></button>
+                    <button ng-if='apartment.liked' type="button" class="btn btn-default" ng-click='likeApartment(apartment.id)'><i class="fa fa-heart"> Gemerkt</i></button>
+                    <button type="button" class="btn btn-default" ng-click='hideApartment(apartment.id)'>Ausblenden</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row top-buffer" style="width: 319px; margin-left: 0px; margin-right: 0px;">
+            <h4>Wege von dieser Wohnung:</h4>
+            <tabset>
+                <tab ng-repeat="route in apartment.routes" class='route-tab'>
+                    <tab-heading>
+                        <img ng-src="{{route.icon}}"> {{route.travelTime | secondsToHoursMin}}
+                    </tab-heading>
+                    <table class="table table-striped" id="details-travel-table">
+                        <tr ng-repeat="segment in route.getSegments()" ts-repeat>
+                            <!-- WALK -->
+                            <td ng-if="segment.getType() == 'WALK'" class=""><div class="center"><img src="images/marker/walk.png"></div></td>
+                            <td ng-if="segment.getType() == 'WALK' && route.getSegments().length > 1 && $index < route.getSegments().length - 2">
+                                <span class='destination-name'>{{route.getSegments()[1].startname | cleanName }}</span>
+                            </td>
+                            <td ng-if="segment.getType() == 'WALK' && $index == route.getSegments().length - 1 && route.getSegments().length > 1">
+                                <big class='destination-name'>{{route.end}}</big>
+                            </td>
+                            <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1">{{route.end}}</td>
+                            <td ng-if="segment.getType() == 'WALK'">
+                                <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
+                                <div style="text-align: center"><small>{{segment.length | formatKilometer }}</small></div>
+                            </td>
+                            <!-- TRANSFER -->
+                            <td ng-if="segment.getType() == 'TRANSFER'"><i class="fa fa-arrows-h center"></i></td>
+                            <td ng-if="segment.getType() == 'TRANSFER'"><big>Umsteigen</big></td>
+                            <td ng-if="segment.getType() == 'TRANSFER'"><div style="text-align: center;">{{segment.getTravelTime() | secondsToHoursMin }}</div></td>
+                             <!-- CAR -->
+                            <td ng-if="segment.getType() == 'CAR'"><i class="fa fa-automobile center"></i></td>
+                            <td ng-if="segment.getType() == 'CAR'"><big>Umsteigen</big></td>
+                            <td ng-if="segment.getType() == 'CAR'"><div style="text-align: center;">{{segment.getTravelTime() | secondsToHoursMin }}</div></td>
+                             <!-- BIKE -->
+                            <td ng-if="segment.getType() == 'BIKE'"><div class="center"><img src="images/marker/bike.png"></div></td>
+                            <td ng-if="segment.getType() == 'BIKE'"><big>Fahrrad</big></td>
+                            <td ng-if="segment.getType() == 'BIKE'"><div style="text-align: center;">{{segment.getTravelTime() | secondsToHoursMin }}</div></td>
+                            <!-- TRANSIT -->
+                            <td ng-if="segment.getType() == 'TRANSIT'">
+                                <div class="circle center"><div class="circle-name">{{segment.getRouteShortName()}}</div></div>
+                            </td>
+                            <td ng-if="segment.getType() == 'TRANSIT'">
+                                <table class="table table-condensed" style='margin-bottom: 0px;'>
+                                  <tbody>
+                                    <tr style="border-style:none;">
+                                      <td>Abfahrt:</td>
+                                      <td>{{segment.getDepartureTime() | secToTime }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Richtung:</td>
+                                      <td>{{ segment.getTripHeadSign() | cleanName }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td>Ankunft:</td>
+                                      <td>{{segment.getArrivalTime() | secToTime }}</td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="2" class='destination-name'>{{segment.endname | cleanName }}</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                                <td ng-if="segment.getType() == 'TRANSIT'">
+                                    <div style="text-align: center;">{{segment.getTravelTime() | secToMin }}min</div>
+                                    <div style='text-align: center;'><img style="width:40px;margin-top:5px;" ng-src="{{'images/marker/' + segment.routeType + '.png'}}"></div>
+                                </td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-clock-o fa-2x center"></i></td>
+                            <td class='destination-name'>Gesamtreisedauer</td>
+                            <td><div class='center destination-name'>{{route.travelTime | secondsToHoursMin }}</div></td>
+                        </tr>
+                    </table>
+                </tab>
+            </tabset>
         </div>
     </div>
 </div>

@@ -21,13 +21,15 @@ angular
     'pascalprecht.translate',
     'ngTable',
     'ui.bootstrap',
+    'ngAnimate',
+    'ngCookies'
     // 'PubService'
   ])
   .config(function ($routeProvider) {
     $routeProvider
         .when('/', {
-            templateUrl: 'views/home.html',
-            controller: 'HomeCtrl'
+            templateUrl: 'views/apartment.html',
+            controller: 'ApartmentCtrl'
         })
         .when('/contact', {
             templateUrl: 'views/contact.html',
