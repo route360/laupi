@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="bower_components/route360/dist/jquery-ui-1.10.0.custom.css" />
     <link rel="stylesheet" href="bower_components/route360/dist/r360.css" />
     <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
+    <link rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -40,41 +41,46 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="" ng-click="loadHome()">
-            Route360° Demo
-            <!-- <img src="images/logo/naturtrip_header_color.png" class="img-responsive" style="width:120px;margin-top: -5px;" alt="Dein Freizeit-Tipp für ohne Auto"/> -->
+            <img src="images/home/logo.png" class="img-responsive" style='width: 30px;float: left;margin-top: -5px;' alt="Route360° - Wohnungssuche 2.0"/><span style='margin-left: 8px; font-size: 22px;'>Route360°</span>
           </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="left-nav-bar" class="nav navbar-nav">
-                <li id='apartment-search-edit' ng-class='navClass("apartment-search-edit")'><a href=''><i class='fa fa-search'></i> Suche ändern</a></li>
-                <li id='apartment-results' ng-class='navClass("apartment-results")'><a href=''><i class='fa fa-list-ol'></i> Ergebnissliste</a></li>
-                <li id='apartment-liked' ng-class='navClass("apartment-liked")'><a href=''><i class='fa fa-heart'></i> Favouriten</a></li>
+                <li id='apartment-search-edit' ng-class='navClass("apartment-search-edit")'><a href=''><i class='fa fa-search'></i> {{ 'EDIT_SEARCH' | translate }}</a></li>
+                <li id='apartment-results' ng-class='navClass("apartment-results")'><a href=''><i class='fa fa-list-ol'></i> {{ 'RESULT_VIEW' | translate }}</a></li>
+                <li id='apartment-liked' ng-class='navClass("apartment-liked")'><a href=''><i class='fa fa-heart'></i> {{ 'FAVOURITES' | translate }}</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <!-- <li ng-class="navClass('test')" ng-click="loadTest()"><a href=""><i class="fa fa-cogs"></i> Test</a></li> -->
-                <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> Dokumentation</a></li>
-                <li ng-class="navClass('contact')" ng-click="loadContact()"><a href=""><i class="fa fa-envelope"></i> Kontakt</a></li>
-                <li ng-class="navClass('about')" ng-click="loadAbout()"><a href=""><i class="fa fa-info"></i> Impressum</a></li>
+                <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> {{ 'DOCUMENTATION' | translate }}</a></li>
+                <li ng-class="navClass('contact')" ng-click="loadContact()"><a target='_blank' href="https://www.route360.net/#section-contact"><i class="fa fa-envelope"></i> {{ 'CONTACT' | translate }}</a></li>
+                <li ng-class="navClass('about')" ng-click="loadAbout()"><a target='_blank' href="https://www.route360.net/impressum/"><i class="fa fa-info"></i> {{ 'ABOUT' | translate }}</a></li>
+                <li ng-if='language == "de"' ng-click="changeLanguage('en')"><a href=""><span class="flag-icon flag-icon-us"></span> EN</a></li>
+                <li ng-if='language == "en"' ng-click="changeLanguage('de')"><a href=""><span class="flag-icon flag-icon-de"></span> DE</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
       </div>
     </div>
     <div ng-view="" class="view"></div>
 
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u=(("https:" == document.location.protocol) ? "https" : "http") + "://www.route360.net/analytics/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 9]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0]; g.type='text/javascript';
+        g.defer=true; g.async=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
     </script>
+    <noscript><p><img src="http://www.route360.net/analytics/piwik.php?idsite=9" style="border:0;" alt="" /></p></noscript>
+    <!-- End Piwik Code -->
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -114,6 +120,7 @@
     <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
     <script src="bower_components/ng-table/ng-table.js"></script>
     <script src="bower_components/jQuery.XDomainRequest/jQuery.XDomainRequest.js"></script>
+    <script src="bower_components/noty/js/noty/packaged/jquery.noty.packaged.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

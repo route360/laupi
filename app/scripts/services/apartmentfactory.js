@@ -22,9 +22,10 @@ angular.module('route360DemoApp')
 
         dataFactory.getApartmentsByIds = function (ids, callback) {
 
-            $http.jsonp(urlBase + 'list?' + $.param({id : ids, callback : 'JSON_CALLBACK'}, true))
-                .success(function(result){ callback(result) })
-                .error(function(result){ console.log('error'); console.log(result)});
+            if ( ids.length > 0 ) 
+                $http.jsonp(urlBase + 'list?' + $.param({id : ids, callback : 'JSON_CALLBACK'}, true))
+                    .success(function(result){ callback(result) })
+                    .error(function(result){ console.log('error'); console.log(result)});
         };
 
         return dataFactory;

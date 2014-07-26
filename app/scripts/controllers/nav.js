@@ -8,8 +8,10 @@
  * Controller of the route360DemoApp
  */
 angular.module('route360DemoApp')
-  .controller('NavCtrl', ['$scope', '$location', function ($scope, $location) {
+  .controller('NavCtrl', function ($scope, $location, $translate) {
     
+    $scope.language = $translate.use();
+
     $scope.navClass = function(page){
 
         var currentRoute = $location.path().substring(1) || 'home';
@@ -20,4 +22,10 @@ angular.module('route360DemoApp')
     $scope.loadContact    = function(){ $location.url('/contact'); };
     $scope.loadAbout      = function(){ $location.url('/about'); };
     $scope.loadTest       = function(){ $location.url('/test'); };
-  }]);
+
+    $scope.changeLanguage = function(language){ 
+
+        $translate.use(language); 
+        $scope.language = language;
+    };
+  });

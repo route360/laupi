@@ -3,33 +3,49 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Suche anpassen</h4>
+                <h4 class="modal-title">{{ 'EDIT_SEARCH' | translate }}</h4>
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-5"><h3>Wohnungen <small>({{apartments.length}})</small></h3></div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-5"></div>
+                    <div class="col-md-12"><h3>{{ 'APARTMENTS' | translate }} <small>({{apartments.length > 0 ? apartments.length : 'keine Apartments gefunden'}})</small></h3></div>
                 </div>
                 <div class="row">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4">von</div>
-                    <div class="col-md-4">bis</div>
+                    <div class="col-md-4">{{ 'FROM' | translate }}</div>
+                    <div class="col-md-4">{{ 'TO' | translate }}</div>
                 </div>
                 <div class="row top-buffer">
-                    <div class="col-md-4">Preis</div>
+                    <div class="col-md-4">{{ 'COLD_RENT' | translate }}</div>
                     <div class="col-md-4"><input type="text" ng-model="search.minPrice"/></div>
                     <div class="col-md-4"><input type="text" ng-model="search.maxPrice"/></div>
                 </div>
+                <div ng-if='priceError' class="row top-buffer">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                        <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
+                    </div>
+                </div>
                 <div class="row top-buffer">
-                    <div class="col-md-4">Fläche</div>
+                    <div class="col-md-4">{{ 'AREA' | translate }}</div>
                     <div class="col-md-4"><input type="text" ng-model="search.minArea"/></div>
                     <div class="col-md-4"><input type="text" ng-model="search.maxArea"/></div>
                 </div>
+                <div ng-if='areaError' class="row top-buffer">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                        <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
+                    </div>
+                </div>
                 <div class="row top-buffer">
-                    <div class="col-md-4">Zimmer</div>
+                    <div class="col-md-4">{{ 'ROOMS' | translate }}</div>
                     <div class="col-md-4"><input type="text" ng-model="search.minRooms"/></div>
                     <div class="col-md-4"><input type="text" ng-model="search.maxRooms"/></div>
+                </div>
+                <div ng-if='roomsError' class="row top-buffer">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-8">
+                        <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
+                    </div>
                 </div>
                 <div class="row top-buffer2x">
                     <div class="col-md-3"><checkbox name="custom-name" ng-model="search.courtage"></checkbox>    {{ 'FILTER_COURTAGE' | translate }}</div>
@@ -37,38 +53,54 @@
                     <div class="col-md-3"><checkbox name="custom-name" ng-model="search.garden"></checkbox>    {{ 'FILTER_GARDEN' | translate }}</div>
                     <div class="col-md-3"><checkbox name="custom-name" ng-model="search.kitchen"></checkbox>    {{ 'FILTER_KITCHEN' | translate }}</div>
                 </div>
-                <h3 class="top-buffer2x">Erreichbarkeiten</h3>
+                <h3 class="top-buffer2x">{{ 'REACHABILITY' | translate }}</h3>
                 <div class="row top-buffer2x">
                     <div class="col-md-12">
                         <div class="btn-group">
-                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'union'" uncheckable>Keine Verschneidung</label>
-                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'intersection'" uncheckable>Schnittmenge</label>
-                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'average'" uncheckable>Durchschnitt</label>
+                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'union'" uncheckable>{{ 'NO_INTERSECTION' | translate }}</label>
+                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'intersection'" uncheckable>{{ 'INTERSECT_INTERSECTION' | translate }}</label>
+                            <label class="btn btn-default" ng-model="search.intersection" btn-radio="'average'" uncheckable>{{ 'AVERAGE_INTERSECTION' | translate }}</label>
                         </div>
-                        <button class="btn btn-default pull-right" ng-click="hideHelp = !hideHelp">Hilfe anzeigen!</button>
+                        <button class="btn btn-default pull-right" ng-click="hideHelp = !hideHelp">{{ 'SHOW_HELP' | translate }}</button>
                         <div collapse="hideHelp" class='top-buffer2x'>
                             <hr>
                             <accordion close-others="status.oneAtATime">
                                 <accordion-group heading="Keine Verschneidung" class='help-heading'>
                                     <img src="/images/help/union.png" class="img-responsive padding-bottom-5px">
-                                    <p>Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.</p>
+                                    <p>{{ 'NO_INTERSECTION_HELP' | translate }}</p>
                                 </accordion-group>
                                 <accordion-group heading="Schnittmenge" is-open="status.isFirstOpen" class='help-heading'>
                                     <img src="/images/help/intersection.png" class="img-responsive padding-bottom-5px">
-                                    <p>Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.</p>
+                                    <p>{{ 'INTERSECT_INTERSECTION_HELP' | translate }}</p>
                                 </accordion-group>
                                 <accordion-group heading="Durchschnitt" class='help-heading'>
                                     <img src="/images/help/average.png" class="img-responsive padding-bottom-5px">
-                                    <p>Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.</p>
+                                    <p>{{ 'AVERAGE_INTERSECTION_HELP' | translate }}</p>
                                 </accordion-group>
                             </accordion>
                         </div>
                     </div>
                 </div>
+                <h3 class="top-buffer2x">{{ 'ÖPNV' | translate }}</h3>
+                <div class="row top-buffer2x">
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <timepicker ng-model="search.time" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="input-group oepnv-calender">
+                              <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="search.date" is-open="opened" datepicker-options="{ formatYear: 'yy', startingDay: 1 }" ng-required="true" close-text="Schließen" />
+                              <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                              </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
-                <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="showResultView()">Ergebnisliste</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-map-marker"></i> {{ 'MAP_VIEW' | translate }}</button>
+                <button type="submit" class="btn btn-default" data-dismiss="modal" ng-click="showResultView()"><i class="fa fa-list-ol"></i> {{ 'RESULT_VIEW' | translate }}</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -79,13 +111,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Ergebnisliste</h4>
+                <h4 class="modal-title"><i class="fa fa-list-ol"></i> {{ 'RESULT_VIEW' | translate }}</h4>
             </div>
             <div class="modal-body">
                 <table ng-table="apartmentsTableParams" class="table">
                     <tr ng-repeat="apartment in $data">
                         <td data-title="'Expose'" class='text-center'>
-                            <a href="http://immobilienscout24.de/expose/{{apartment.id}}">
+                            <a target='_blank' href="http://immobilienscout24.de/expose/{{apartment.id}}">
                                 <img class='img-responsive img-thumbnail' ng-src="{{apartment.img}}" style="max-height: 70px;">
                             </a>        
                         </td>
@@ -106,8 +138,8 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="showEditSearchView()">Suche editieren</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-map-marker"></i> {{ 'MAP_VIEW' | translate }}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="showEditSearchView()"><i class='fa fa-search'></i> Suche ändern</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -121,27 +153,30 @@
                 <h4 class="modal-title">Favouriten</h4>
             </div>
             <div class="modal-body">
-                <table ng-table="likedTableParams" class="table">
-                    <tr ng-repeat="apartment in $data">
-                        <td data-title="'Expose'" class='text-center'>
-                            <a href="http://immobilienscout24.de/expose/{{apartment.id}}">
-                                <img class='img-responsive img-thumbnail' ng-src="{{apartment.imageUrlLarge}}" style="max-height: 70px;">
-                            </a>        
-                        </td>
-                        <td data-title="'Preis (€)'" sortable="'price'" class='text-center'>
-                            {{apartment.price}}
-                        </td>
-                        <td data-title="'Fläche'" sortable="'area'" class='text-center'>
-                            {{apartment.area}}
-                        </td>
-                        <td data-title="'Räume'" sortable="'rooms'" class='text-center'>
-                            {{apartment.rooms}}
-                        </td>
-                    </tr>
-                </table>
+                <div ng-if='likeCookie.length == 0'>Es wurden bis jetzt noch keine Apartments gemerkt!</div>
+                <div ng-if='likeCookie.length > 0'>
+                    <table ng-table="likedTableParams" class="table">
+                        <tr ng-repeat="apartment in $data">
+                            <td data-title="'Expose'" class='text-center'>
+                                <a target='_blank' href="http://immobilienscout24.de/expose/{{apartment.id}}">
+                                    <img class='img-responsive img-thumbnail' ng-src="{{apartment.imageUrlLarge}}" style="max-height: 70px;">
+                                </a>        
+                            </td>
+                            <td data-title="'Kaltmiete'" sortable="'price'" class='text-center'>
+                                {{apartment.price}}
+                            </td>
+                            <td data-title="'Fläche'" sortable="'area'" class='text-center'>
+                                {{apartment.area}}
+                            </td>
+                            <td data-title="'Zimmer'" sortable="'rooms'" class='text-center'>
+                                {{apartment.rooms}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kartenansicht</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-map-marker"></i> {{ 'MAP_VIEW' | translate }}</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -150,28 +185,36 @@
 <div class="map" id="map-apartment">
     <div id='apartment-details' ng-show='apartment' class='container-fluid'>
         <div class="row" style="width: 319px; margin-left: 0px; margin-right: 0px;">
+            <div id='close-expose'><i class="fa fa-times"></i></div>
             <h4>{{apartment.title}}</h4>
             <div class="col-md-12 text-center" style="padding-left: 0px;">
                 <ul class="pager" style='margin: 2px 0px 4px 0px;'>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.price}}€ kalt</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.rooms}} Zimmer</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.price}}€ {{ 'COLD' | translate }}</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.rooms}} {{ 'ROOMS' | translate }}</a></li>
                   <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{apartment.area}}m²</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{apartment.averageTravelTime | secondsToHoursMin}} Ø Reisezeit</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{apartment.averageTravelTime | secondsToHoursMin}} Ø {{ 'TRAVELTIME' | translate }}</a></li>
+                  <!-- <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{apartment.id}}</a></li> -->
                 </ul>
             </div>
-            <div class="col-md-12">
-                <div class="col-md-3">{{ 'FILTER_COURTAGE' | translate }}
-                    <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.courtage" style='color: black; width: 25px;'></checkbox>
+            <div class="col-md-12 top-buffer">
+                <div class="col-md-2">
+                    <checkbox disabled name="custom-name "ng-init="courtage = !apartment.courtage" ng-model="courtage" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-3">{{ 'FILTER_BALCONY' | translate }}
+                <div class="col-md-4">{{ 'FILTER_COURTAGE' | translate }}</div>
+                <div class="col-md-2">
                     <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.balcony" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-3">{{ 'FILTER_GARDEN' | translate }}
+                <div class="col-md-4">{{ 'FILTER_BALCONY' | translate }}</div>
+            </div>
+            <div class="col-md-12 top-buffer">
+                <div class="col-md-2">
                     <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.garden" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-3">EBK   
+                <div class="col-md-4">{{ 'FILTER_GARDEN' | translate }}</div>
+                <div class="col-md-2">
                     <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.kitchen" style='color: black; width: 25px;'></checkbox>
                 </div>
+                <div class="col-md-4">{{ 'FILTER_KITCHEN' | translate }}</div>
             </div>
             <div class="col-md-12 text-center top-buffer">
                 <img  class="img-responsive img-thumbnail" ng-src='{{apartment.imageUrlLarge}}'>
@@ -179,16 +222,16 @@
             <div class="col-md-12 top-buffer text-center">
                 <!-- <pre>{{apartment|json}}</pre> -->
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default" ng-click='openExpose(apartment.id)'>Expose</button>
-                    <button ng-if='!apartment.liked' type="button" class="btn btn-default" ng-click='likeApartment(apartment.id)'><i class="fa fa-heart-o"> Merken</i></button>
-                    <button ng-if='apartment.liked' type="button" class="btn btn-default" ng-click='likeApartment(apartment.id)'><i class="fa fa-heart"> Gemerkt</i></button>
-                    <button type="button" class="btn btn-default" ng-click='hideApartment(apartment.id)'>Ausblenden</button>
+                    <button type="button" class="btn btn-default" ng-click='openExpose(apartment.id)'>{{ 'EXPOSE' | translate }}</button>
+                    <button ng-if='!apartment.liked' type="button" class="btn btn-default" ng-click='likeApartment(apartment.id)'><i class="fa fa-heart-o"> {{ 'LIKE' | translate }}</i></button>
+                    <button ng-if='apartment.liked' type="button" class="btn btn-default" ng-click='likeApartment(apartment.id)'><i class="fa fa-heart"> {{ 'LIKED' | translate }}</i></button>
+                    <button type="button" class="btn btn-default" ng-click='hideApartment(apartment.id)'>{{ 'HIDE' | translate }}</button>
                 </div>
             </div>
         </div>
         
         <div class="row top-buffer" style="width: 319px; margin-left: 0px; margin-right: 0px;">
-            <h4>Wege von dieser Wohnung:</h4>
+            <h4>{{ 'WAYS' | translate }}</h4>
             <tabset>
                 <tab ng-repeat="route in apartment.routes" class='route-tab'>
                     <tab-heading>
@@ -197,14 +240,14 @@
                     <table class="table table-striped" id="details-travel-table">
                         <tr ng-repeat="segment in route.getSegments()" ts-repeat>
                             <!-- WALK -->
-                            <td ng-if="segment.getType() == 'WALK'" class=""><div class="center"><img src="images/marker/walk.png"></div></td>
+                            <td ng-if="segment.getType() == 'WALK'" class=""><div class="center routeTypes"><img src="images/marker/walk.png"></div></td>
                             <td ng-if="segment.getType() == 'WALK' && route.getSegments().length > 1 && $index < route.getSegments().length - 2">
-                                <span class='destination-name'>{{route.getSegments()[1].startname | cleanName }}</span>
+                                <span class='start-name center-block'>{{route.getSegments()[1].startname | cleanName }}</span>
                             </td>
                             <td ng-if="segment.getType() == 'WALK' && $index == route.getSegments().length - 1 && route.getSegments().length > 1">
-                                <big class='destination-name'>{{route.end}}</big>
+                                <big class='start-name center-block'>{{route.end}}</big>
                             </td>
-                            <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1">{{route.end}}</td>
+                            <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{route.end}}</span></td>
                             <td ng-if="segment.getType() == 'WALK'">
                                 <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
                                 <div style="text-align: center"><small>{{segment.length | formatKilometer }}</small></div>
@@ -223,21 +266,21 @@
                             <td ng-if="segment.getType() == 'BIKE'"><div style="text-align: center;">{{segment.getTravelTime() | secondsToHoursMin }}</div></td>
                             <!-- TRANSIT -->
                             <td ng-if="segment.getType() == 'TRANSIT'">
-                                <div class="circle center"><div class="circle-name">{{segment.getRouteShortName()}}</div></div>
+                                <div class="circle center routeTypes"><div class="circle-name">{{segment.getRouteShortName()}}</div></div>
                             </td>
-                            <td ng-if="segment.getType() == 'TRANSIT'">
+                            <td ng-if="segment.getType() == 'TRANSIT' && dateChange">
                                 <table class="table table-condensed" style='margin-bottom: 0px;'>
                                   <tbody>
                                     <tr style="border-style:none;">
-                                      <td>Abfahrt:</td>
+                                      <td>{{ 'DEPARTURE' | translate }}</td>
                                       <td>{{segment.getDepartureTime() | secToTime }}</td>
                                     </tr>
                                     <tr>
-                                      <td>Richtung:</td>
+                                      <td>{{ 'DIRECTION' | translate }}</td>
                                       <td>{{ segment.getTripHeadSign() | cleanName }}</td>
                                     </tr>
                                     <tr>
-                                      <td>Ankunft:</td>
+                                      <td>{{ 'ARRIVAL' | translate }}</td>
                                       <td>{{segment.getArrivalTime() | secToTime }}</td>
                                     </tr>
                                     <tr>
@@ -245,15 +288,18 @@
                                     </tr>
                                   </tbody>
                                 </table>
-                                <td ng-if="segment.getType() == 'TRANSIT'">
-                                    <div style="text-align: center;">{{segment.getTravelTime() | secToMin }}min</div>
-                                    <div style='text-align: center;'><img style="width:40px;margin-top:5px;" ng-src="{{'images/marker/' + segment.routeType + '.png'}}"></div>
-                                </td>
+                            </td>
+                            <td ng-if="segment.getType() == 'TRANSIT' && !dateChange">
+                                <span class='destination-name-no-time center-block'>{{segment.endname | cleanName }}</span>
+                            </td>
+                            <td ng-if="segment.getType() == 'TRANSIT'">
+                                <div style="text-align: center;">{{segment.getTravelTime() | secToMin }}min</div>
+                                <div style='text-align: center;'><img style="width:40px;margin-top:5px;" ng-src="{{'images/marker/' + segment.routeType + '.png'}}"></div>
                             </td>
                         </tr>
                         <tr>
                             <td><i class="fa fa-clock-o fa-2x center"></i></td>
-                            <td class='destination-name'>Gesamtreisedauer</td>
+                            <td class='destination-name'>{{ 'COMPLETE_TRAVELTIME' | translate }}</td>
                             <td><div class='center destination-name'>{{route.travelTime | secondsToHoursMin }}</div></td>
                         </tr>
                     </table>
