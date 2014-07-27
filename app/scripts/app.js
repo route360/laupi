@@ -151,8 +151,8 @@ angular
     ARRIVAL: 'Ankunft:',
     DIRECTION: 'Richtung:',
     COMPLETE_TRAVELTIME: 'Gesamtreisedauer',
-    OCUMENTATION: 'Dokumentation',
-    CONTACT: 'Kontact',
+    DOCUMENTATION: 'Dokumentation',
+    CONTACT: 'Kontakt',
     ABOUT: 'Impressum',
     FAVOURITES : 'Favouriten'
   });

@@ -655,7 +655,9 @@ angular.module('route360DemoApp')
                 country     : "Deutschland", 
                 placeholder : 'Select start!', 
                 reset       : true,
-                image       : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[$scope.autoCompletes.length] + '.png'
+                reverse     : false,
+                image       : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[$scope.autoCompletes.length] + '.png',
+                options     : { car : true, bike : true, walk : true, transit : true, init : 'transit' }
             });
             autoComplete.index = $scope.autoCompletes.length;
 
