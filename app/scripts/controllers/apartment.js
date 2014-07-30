@@ -435,6 +435,7 @@ angular.module('route360DemoApp')
                 icon                 = $scope.buildIcon(apartment, Math.max(scale, $config.markerMinPercent)); // lower bound
                 apartmentMarker      = L.marker([apartment.lat, apartment.lon], { icon : icon } );
                 apartmentMarker.icon = icon;
+                apartmentMarker.addTo($scope.apartmentLayer);
             }
             else {
 
@@ -445,7 +446,6 @@ angular.module('route360DemoApp')
             }
 
             // add the apartment to the map
-            apartmentMarker.addTo($scope.apartmentLayer);
             apartmentMarker.id  = apartment.id;
             apartmentMarker.lat = apartment.lat;
             apartmentMarker.lon = apartment.lon;
