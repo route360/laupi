@@ -184,6 +184,8 @@ angular.module('route360DemoApp')
         $scope.currentMarker   = L.featureGroup().addTo($scope.map);
         $scope.polygonLayer    = r360.route360PolygonLayer();
         $scope.map.addLayer($scope.polygonLayer);
+        $scope.clusterLayer    = new L.MarkerClusterGroup();
+        $scope.map.addLayer($scope.clusterLayer);
 
         /**
          * [getPlaces get all the values from the autocomplete place choser]
@@ -277,6 +279,7 @@ angular.module('route360DemoApp')
             $scope.apartmentLayer.clearLayers();
             $scope.currentMarker.clearLayers();
             $scope.routesLayer.clearLayers();
+            $scope.clusterLayer.clearLayers();
             $('#apartment-details').hide();
             $scope.getPlaces();
 
@@ -435,6 +438,8 @@ angular.module('route360DemoApp')
                 icon                 = $scope.buildIcon(apartment, Math.max(scale, $config.markerMinPercent)); // lower bound
                 apartmentMarker      = L.marker([apartment.lat, apartment.lon], { icon : icon } );
                 apartmentMarker.icon = icon;
+
+                apartmentMarker.addTo($scope.apartmentLayer);
             }
             else {
 
@@ -442,10 +447,11 @@ angular.module('route360DemoApp')
                 icon                 = $scope.buildIcon(apartment, $config.markerMinPercent - .2);
                 apartmentMarker      = L.marker([apartment.lat, apartment.lon], { icon : icon });
                 apartmentMarker.icon = icon;
+
+                $scope.clusterLayer.addLayer(apartmentMarker);
             }
 
             // add the apartment to the map
-            apartmentMarker.addTo($scope.apartmentLayer);
             apartmentMarker.id  = apartment.id;
             apartmentMarker.lat = apartment.lat;
             apartmentMarker.lon = apartment.lon;
