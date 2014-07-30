@@ -9,7 +9,6 @@
 
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="fonts/map-icons/css/map-icons.css">
     <!-- endbuild -->
 
     <!-- build:css(app/..) styles/vendor.css -->
@@ -20,7 +19,6 @@
     <link rel="stylesheet" href="bower_components/route360/dist/jquery-ui-1.10.0.custom.css" />
     <link rel="stylesheet" href="bower_components/route360/dist/r360.css" />
     <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
-    <link rel="stylesheet" href="bower_components/flag-icon-css/css/flag-icon.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -59,8 +57,8 @@
                 <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> {{ 'DOCUMENTATION' | translate }}</a></li>
                 <li ng-class="navClass('contact')" ng-click="loadContact()"><a target='_blank' href="https://www.route360.net/#section-contact"><i class="fa fa-envelope"></i> {{ 'CONTACT' | translate }}</a></li>
                 <li ng-class="navClass('about')" ng-click="loadAbout()"><a target='_blank' href="https://www.route360.net/impressum/"><i class="fa fa-info"></i> {{ 'ABOUT' | translate }}</a></li>
-                <li ng-if='language == "de"' ng-click="changeLanguage('en')"><a href=""><span class="flag-icon flag-icon-us"></span> EN</a></li>
-                <li ng-if='language == "en"' ng-click="changeLanguage('de')"><a href=""><span class="flag-icon flag-icon-de"></span> DE</a></li>
+                <li ng-if='language == "de"' ng-click="changeLanguage('en')"><a href=""><img style='margin-top: -2px;' src='images/flags/usa.png'> EN</a></li>
+                <li ng-if='language == "en"' ng-click="changeLanguage('de')"><a href=""><img style='margin-top: -5px;' src='images/flags/germany.png'> DE</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
       </div>

@@ -23,6 +23,10 @@ html, body {
     .navbar  {
 
         background-color: #2C3E50;
+        border-color: #2C3E50;
+        -webkit-border-radius: 0px;
+        -moz-border-radius: 0px;
+        border-radius: 0px;
 
         a, a:hover, a:focus, a:active, a.active  {
             
@@ -105,6 +109,11 @@ html, body {
     color: black;
     overflow: auto;
 
+    .map-icon-walking, .map-icon-bicycling {
+
+        font-size: 24px;
+    }
+
     .route-tab {
 
         img {
@@ -176,8 +185,11 @@ html, body {
 
     .destination-name-no-time {
 
+        height: 50px;
         font-size: 18px;
-        padding-top: 18px;
+        top: 50%;
+        display: table-cell;
+        vertical-align: middle;
     } 
 }
 
@@ -206,6 +218,11 @@ html, body {
         background-color: white;
         width: 50px;
         z-index: 10000;
+
+        img {
+
+            margin-left: -5px;
+        }
     }
 }
 
@@ -253,4 +270,54 @@ html, body {
 
     width: 100%;
     height: 100%;
+}
+
+
+// 
+
+@font-face {
+    font-family: 'map-icons';
+    src:url('../fonts/map-icons.eot');
+    src:url('../fonts/map-icons.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/map-icons.woff') format('woff'),
+        url('../fonts/map-icons.ttf') format('truetype'),
+        url('../fonts/map-icons.svg#map-icons') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+    font-family: 'map-icons';
+    content: attr(data-icon);
+    speak: none;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.map-icon-walking, .map-icon-bicycling, .map-icon-train-station {
+    font-family: 'map-icons';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+}
+
+.map-icon-walking:before {
+    content: "\e0ae";
+}
+
+.map-icon-bicycling:before {
+    content: "\e0af";
+}
+
+.map-icon-train-station:before {
+    content: "\e068";
 }

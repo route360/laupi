@@ -94,7 +94,7 @@ angular
     LIKE: 'Save',
     LIKED: 'Saved',
     HIDE: 'Hide',
-    WAYS: 'Routes from this apartment:',
+    WAYS: 'Routes to this apartment:',
     DEPARTURE: 'Departure:',
     ARRIVAL: 'Arrival:',
     DIRECTION: 'Direction:',
@@ -102,7 +102,16 @@ angular
     DOCUMENTATION: 'Documentation',
     CONTACT: 'Contact',
     ABOUT: 'About',
-    FAVOURITES : 'Favourits'
+    FAVOURITES : 'Favourits',
+    SELECT_START : 'Starting point',
+    TRANSFER : 'Transfer',
+    ÖPNV : 'Public transportation',
+    INPUT_ERROR : 'Please check inputs!',
+    NO_FAVOURITES : 'There are no favourite apartments so far!',
+    NOT_REACHABLE: 'not reachable',
+    NO_AREA_WITHIN_TRAVELTIME : 'There are no areas with the given travel time that can be reached from all given points.',
+    INCREASE_TRAVELTIME : 'Do you want to increase travel time?',
+    MOVE_MARKER : '<span lang="en">You can drag the marker!</span><span lang="de">Du kannst den Marker verschieben!</span>'
   });
   
   $translateProvider.translations('de', {
@@ -146,7 +155,7 @@ angular
     LIKE: 'Merken',
     LIKED: 'Gemerkt',
     HIDE: 'Ausblenden',
-    WAYS: 'Wege von dieser Wohnung:',
+    WAYS: 'Wege zu dieser Wohnung:',
     DEPARTURE: 'Abfahrt:',
     ARRIVAL: 'Ankunft:',
     DIRECTION: 'Richtung:',
@@ -154,7 +163,16 @@ angular
     DOCUMENTATION: 'Dokumentation',
     CONTACT: 'Kontakt',
     ABOUT: 'Impressum',
-    FAVOURITES : 'Favouriten'
+    FAVOURITES : 'Favoriten',
+    SELECT_START : 'Ausgangspunkt',
+    TRANSFER : 'Umsteigen',
+    ÖPNV : 'Öffentlicher Nahverkehr',
+    INPUT_ERROR : 'Bitte Eingaben überprüfen!',
+    NO_FAVOURITES : 'Es wurden bis jetzt noch keine Apartments gemerkt!',
+    NOT_REACHABLE: 'nicht erreichbar',
+    NO_AREA_WITHIN_TRAVELTIME : 'Es gibt keine Gebiete die in der angegebene Reisezeit von allen Orten aus erreichbar sind.',
+    INCREASE_TRAVELTIME : 'Möchtest du die Reisezeit erhöhen?',
+    MOVE_MARKER : '<span lang="en">You can drag the marker!</span><span lang="de">Du kannst den Marker verschieben!</span>'
   });
 
   $translateProvider.preferredLanguage('de');

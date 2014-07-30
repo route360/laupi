@@ -9,6 +9,11 @@
  * Filter in the route360DemoApp.
  */
 angular.module('route360DemoApp')
+    .filter('reverse', function() {
+        return function(items) {
+            return items.slice().reverse();
+        };
+    })
     .filter('secondsToHoursMin', function () {
         return function (seconds) {
           return r360.Util.secondsToHoursAndMinutes(seconds);

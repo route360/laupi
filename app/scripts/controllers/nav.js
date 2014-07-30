@@ -12,6 +12,25 @@ angular.module('route360DemoApp')
     
     $scope.language = $translate.use();
 
+    $scope.translateR360 = function(language){
+
+        if ( language == 'de' ) {
+
+            $('span[lang="en"]').hide();
+            $('span[lang="de"]').show();
+            $('.r360-autocomplete').attr('placeholder', $translate.instant('SELECT_START'));
+            r360.config.i18n.language = 'de';
+        }
+        else {
+            $('span[lang="de"]').hide();
+            $('span[lang="en"]').show();
+            $('.r360-autocomplete').attr('placeholder', $translate.instant('SELECT_START'));
+            r360.config.i18n.language = 'en';
+        }
+    };
+
+    $scope.translateR360($translate.preferredLanguage());
+
     $scope.navClass = function(page){
 
         var currentRoute = $location.path().substring(1) || 'home';
@@ -27,5 +46,8 @@ angular.module('route360DemoApp')
 
         $translate.use(language); 
         $scope.language = language;
+        $scope.translateR360(language);
     };
+
+    
   });
