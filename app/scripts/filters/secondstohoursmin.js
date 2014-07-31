@@ -24,7 +24,8 @@ angular.module('route360DemoApp')
 
             name = name.trim().replace("(Berlin)", '');
             name = name.trim().replace("(Bln)", '');
-            name = name.trim().replace(/\[*U[0-9]{1,2}\]*$/g, '');
+            name = name.trim().replace(/\[.*\]$/g, '');
+            name = name.trim().replace(/U{0-9}{1,2}$/g, '');
 
             return name;
         };
