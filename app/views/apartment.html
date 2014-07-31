@@ -242,12 +242,12 @@
                             <!-- WALK -->
                             <td ng-if="segment.getType() == 'WALK'" class=""><div class="center routeTypes"><span class="map-icon-walking"></span></div></td>
                             <td ng-if="segment.getType() == 'WALK' && route.getSegments().length > 1 && $index < route.getSegments().length - 2">
-                                <span class='start-name center-block'>{{route.getSegments()[1].endname | cleanName }}</span>
+                                <span class='start-name center-block'>{{route.getSegments()[route.getSegments().length - 2].getStartName() | cleanName }}</span>
                             </td>
                             <td ng-if="segment.getType() == 'WALK' && $index == route.getSegments().length - 1 && route.getSegments().length > 1">
-                                <big class='start-name center-block'>{{route.end}}</big>
+                                <big class='start-name center-block'>{{apartment.street}} {{apartment.houseNumber}}</big>
                             </td>
-                            <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{route.end | cleanName}}</span></td>
+                            <td ng-if="segment.getType() == 'WALK' && route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{apartment.street}} {{apartment.houseNumber}}</span></td>
                             <td ng-if="segment.getType() == 'WALK'">
                                 <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
                                 <div style="text-align: center"><small>{{segment.length | formatKilometer }}</small></div>
@@ -258,14 +258,14 @@
                             <td ng-if="segment.getType() == 'TRANSFER'"><div style="text-align: center;">{{segment.getTravelTime() | secondsToHoursMin }}</div></td>
                              <!-- CAR -->
                             <td ng-if="segment.getType() == 'CAR'"><div class="center routeTypes"><i class="fa fa-automobile center"></i></div></td>
-                            <td ng-if="segment.getType() == 'CAR'"><span class='destination-name center-block' style='margin-top: 8px;'>{{route.end | cleanName}}</span></td>
+                            <td ng-if="segment.getType() == 'CAR'"><span class='destination-name center-block' style='margin-top: 8px;'>{{apartment.street}} {{apartment.houseNumber}}</span></td>
                             <td ng-if="segment.getType() == 'CAR'">
                                 <div style="text-align: center">{{segment.getTravelTime() | secToMin }}min</div>
                                 <div style="text-align: center"><small>{{segment.getLength() | formatKilometer }}</small></div>
                             </td>
                              <!-- BIKE -->
                             <td ng-if="segment.getType() == 'BIKE'"><div class="center routeTypes"><span class="map-icon-bicycling"></span></div></td>
-                            <td ng-if="segment.getType() == 'BIKE'"><span class='destination-name center-block' style='margin-top: 8px;'>{{route.end | cleanName}}</span></td>
+                            <td ng-if="segment.getType() == 'BIKE'"><span class='destination-name center-block' style='margin-top: 8px;'>{{apartment.street}} {{apartment.houseNumber}}</span></td>
                             <td ng-if="segment.getType() == 'BIKE'">
                                 <div style="text-align: center">{{segment.getTravelTime() | secToMin }}min</div>
                                 <div style="text-align: center"><small>{{segment.getLength() | formatKilometer }}</small></div>
@@ -290,13 +290,13 @@
                                       <td>{{segment.getArrivalTime() | secToTime }}</td>
                                     </tr>
                                     <tr>
-                                      <td colspan="2" class='destination-name'>{{segment.startname | cleanName }}</td>
+                                      <td colspan="2" class='destination-name'>{{segment.getEndName() | cleanName }}</td>
                                     </tr>
                                   </tbody>
                                 </table>
                             </td>
                             <td ng-if="segment.getType() == 'TRANSIT' && !dateChange" >
-                                <span class='destination-name-no-time center-block'>{{segment.startname | cleanName }}</span>
+                                <span class='destination-name-no-time center-block'>{{segment.getEndName() | cleanName }}</span>
                             </td>
                             <td ng-if="segment.getType() == 'TRANSIT'">
                                 <div style="text-align: center;">{{segment.getTravelTime() | secToMin }}min</div>
