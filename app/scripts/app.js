@@ -10,18 +10,17 @@
  */
 angular
   .module('route360DemoApp', [
-    'ngAnimate',
+    // 'ngAnimate',
     'ngCookies',
-    'ngResource',
+    // 'ngResource',
     'ngRoute',
-    'ngSanitize',
+    // 'ngSanitize',
     'ngTouch',
     'cfg',
     'ui.checkbox',
     'pascalprecht.translate',
     'ngTable',
     'ui.bootstrap',
-    'ngAnimate',
     'ngCookies'
     // 'PubService'
   ])
@@ -141,7 +140,7 @@ angular
     AVERAGE_INTERSECTION_HELP: 'Bacon ipsum dolor sit amet filet mignon pastrami turducken meatball short ribs bacon kevin prosciutto, bresaola ribeye meatloaf. Pig ham hock brisket sirloin capicola doner beef biltong. Biltong chicken ball tip pig hamburger.',
     SHOW_HELP: 'Hilfe anzeigen!',
     MAP_VIEW: 'Kartenansicht',
-    RESULT_VIEW: 'Ergebnisliste',
+    RESULT_VIEW: 'Wohnungen',
     PUBLIC_TOILETS: 'Öffentliche Toiletten',
     WHERE_ARE_YOU : 'Wo bist du?',
     FIND_BEER : 'Wo geht\'s zum nächsten Pub',
