@@ -302,6 +302,8 @@ angular.module('route360DemoApp')
                     $scope.tableParams = TableParamFactory.create($scope.apartments);
                     // do not query server if no apartments found
                     if ( apartments.length == 0 ) {
+
+                        $scope.waitControl.hide();
                         var error = noty({text: $translate.instant('NO_APARTMENTS_FOUND'), layout : $config.notyLayout, type : 'error' });
                         return;
                     }
@@ -446,7 +448,6 @@ angular.module('route360DemoApp')
                 icon                 = $scope.buildIcon(apartment, Math.max(scale, $config.markerMinPercent)); // lower bound
                 apartmentMarker      = L.marker([apartment.lat, apartment.lon], { icon : icon } );
                 apartmentMarker.icon = icon;
-                apartmentMarker.addTo($scope.apartmentLayer);
                 $scope.noApartmentsFound = false;
             }
             else {
@@ -461,6 +462,7 @@ angular.module('route360DemoApp')
             apartmentMarker.id  = apartment.id;
             apartmentMarker.lat = apartment.lat;
             apartmentMarker.lon = apartment.lon;
+            apartmentMarker.addTo($scope.apartmentLayer);
 
             return apartmentMarker;   
         }
