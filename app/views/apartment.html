@@ -57,23 +57,23 @@
                 <div class="row top-buffer2x">
                     <div class="col-md-12">
                         <div class="btn-group">
-                            <label class="btn btn-default" ng-model="search.r360.intersection" btn-radio="'union'" uncheckable>{{ 'NO_INTERSECTION' | translate }}</label>
-                            <label class="btn btn-default" ng-model="search.r360.intersection" btn-radio="'intersection'" uncheckable>{{ 'INTERSECT_INTERSECTION' | translate }}</label>
-                            <label class="btn btn-default" ng-model="search.r360.intersection" btn-radio="'average'" uncheckable>{{ 'AVERAGE_INTERSECTION' | translate }}</label>
+                            <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'union'" uncheckable>{{ 'NO_INTERSECTION' | translate }}</label>
+                            <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'intersection'" uncheckable>{{ 'INTERSECT_INTERSECTION' | translate }}</label>
+                            <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'average'" uncheckable>{{ 'AVERAGE_INTERSECTION' | translate }}</label>
                         </div>
                         <button class="btn btn-default pull-right" ng-click="hideHelp = !hideHelp"><i class="fa fa-lightbulb-o"></i> {{ 'SHOW_HELP' | translate }}</button>
                         <div collapse="hideHelp" class='top-buffer2x'>
-                            <hr>
+                            <!-- <hr> -->
                             <accordion close-others="status.oneAtATime">
                                 <accordion-group heading="Keine Verschneidung" class='help-heading'>
                                     <img src="/images/help/union.png" class="img-responsive padding-bottom-5px">
                                     <p>{{ 'NO_INTERSECTION_HELP' | translate }}</p>
                                 </accordion-group>
-                                <accordion-group heading="Schnittmenge" is-open="status.isFirstOpen" class='help-heading'>
+                                <accordion-group heading="Schnittmenge" class='help-heading'>
                                     <img src="/images/help/intersection.png" class="img-responsive padding-bottom-5px">
                                     <p>{{ 'INTERSECT_INTERSECTION_HELP' | translate }}</p>
                                 </accordion-group>
-                                <accordion-group heading="Durchschnitt" class='help-heading'>
+                                <accordion-group heading="Durchschnitt" is-open="status.isFirstOpen" class='help-heading'>
                                     <img src="/images/help/average.png" class="img-responsive padding-bottom-5px">
                                     <p>{{ 'AVERAGE_INTERSECTION_HELP' | translate }}</p>
                                 </accordion-group>

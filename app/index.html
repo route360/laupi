@@ -53,10 +53,14 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <!-- <li ng-class="navClass('test')" ng-click="loadTest()"><a href=""><i class="fa fa-cogs"></i> Test</a></li> -->
-                <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> {{ 'DOCUMENTATION' | translate }}</a></li>
-                <li ng-class="navClass('contact')" ng-click="loadContact()"><a target='_blank' href="https://www.route360.net/#section-contact"><i class="fa fa-envelope"></i> {{ 'CONTACT' | translate }}</a></li>
-                <li ng-class="navClass('about')" ng-click="loadAbout()"><a target='_blank' href="https://www.route360.net/impressum/"><i class="fa fa-info"></i> {{ 'ABOUT' | translate }}</a></li>
+                <li class="dropdown" style='z-index: 10000;'>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'HELP' | translate }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> {{ 'DOCUMENTATION' | translate }}</a></li>
+                        <li ng-class="navClass('contact')" ng-click="loadContact()"><a target='_blank' href="https://www.route360.net/#section-contact"><i class="fa fa-envelope"></i> {{ 'CONTACT' | translate }}</a></li>
+                        <li ng-class="navClass('about')" ng-click="loadAbout()"><a target='_blank' href="https://www.route360.net/impressum/">&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;{{ 'ABOUT' | translate }}</a></li>          
+                    </ul>
+                </li>
                 <li ng-if='language == "de"' ng-click="changeLanguage('en')"><a href=""><img style='margin-top: -2px;' src='images/flags/usa.png'> EN</a></li>
                 <li ng-if='language == "en"' ng-click="changeLanguage('de')"><a href=""><img style='margin-top: -5px;' src='images/flags/germany.png'> DE</a></li>
             </ul>
