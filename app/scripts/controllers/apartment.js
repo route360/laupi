@@ -282,6 +282,7 @@ angular.module('route360DemoApp')
             $scope.clusterLayer.clearLayers();
             $('#apartment-details').hide();
             $scope.getPlaces();
+            $scope.noApartmentsFound = true;
 
             var travelOptions = r360.travelOptions();
 
@@ -303,7 +304,10 @@ angular.module('route360DemoApp')
                     // and update the result list modal view
                     $scope.tableParams = TableParamFactory.create($scope.apartments);
                     // do not query server if no apartments found
-                    if ( apartments.length == 0 ) return;
+                    if ( apartments.length == 0 ) {
+                        var error = noty({text: $translate.instant('NO_APARTMENTS_FOUND'), layout : $config.notyLayout, type : 'error' });
+                        return;
+                    }
                     
                     // service configuration
                     var travelOptions = r360.travelOptions();
@@ -314,9 +318,6 @@ angular.module('route360DemoApp')
                     travelOptions.setIntersectionMode($scope.search.r360.instant.intersection);
                     travelOptions.setDate($scope.getDate());
                     travelOptions.setTime($scope.getTime());
-
-                    // console.log($scope.places);
-                    // console.log($scope.apartments);
 
                     // call the time service to get the travel times
                     r360.TimeService.getRouteTime(travelOptions, function(sources){
@@ -337,6 +338,13 @@ angular.module('route360DemoApp')
                         });
 
                         $scope.waitControl.hide();
+
+                        if ($scope.noApartmentsFound) {
+
+                            var error = noty({text: $translate.instant('NO_AREA_WITHIN_TRAVELTIME'), layout : $config.notyLayout, type : 'error' });
+                            $scope.showNoApartmentsFoundWarning(error);
+                            $scope.map.fitBounds($scope.placesLayer.getBounds());
+                        }
                     });
                 });
             }
@@ -358,33 +366,36 @@ angular.module('route360DemoApp')
                     if ( $scope.polygonLayer.getBoundingBox().equals(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180))) ) {
 
                         var error = noty({text: $translate.instant('NO_AREA_WITHIN_TRAVELTIME'), layout : $config.notyLayout, type : 'error' });
-
-                        if ( $scope.travelTimeControl.getMaxValue() / 60 < 60 ) {
-
-                            noty({
-                                text: $translate.instant('INCREASE_TRAVELTIME'),
-                                layout : $config.notyLayout, 
-                                buttons: [ 
-                                    { addClass: 'btn btn-primary', text: 'Ja', onClick: function($noty) {
-
-                                        $scope.travelTimeControl.setValue(Math.min($scope.travelTimeControl.getMaxValue() / 60 + 10, 60));
-                                        $scope.showApartments();
-                                        $noty.close();
-                                        error.close();
-                                    }},
-                                    { addClass: 'btn btn-danger', text: 'Nein', onClick: function($noty) {
-                                        $noty.close();
-                                        error.close();
-                                }}]
-                            });
-                        }
-
+                        $scope.showNoApartmentsFoundWarning(error);
                         $scope.map.fitBounds($scope.placesLayer.getBounds());
                     }
                     else {
 
                         $scope.map.fitBounds($scope.polygonLayer.getBoundingBox());
                     }
+                });
+            }
+        };
+
+        $scope.showNoApartmentsFoundWarning = function(error){
+
+            if ( $scope.travelTimeControl.getMaxValue() / 60 < 60 ) {
+
+                noty({
+                    text: $translate.instant('INCREASE_TRAVELTIME'),
+                    layout : $config.notyLayout, 
+                    buttons: [ 
+                        { addClass: 'btn btn-primary', text: 'Ja', onClick: function($noty) {
+
+                            $scope.travelTimeControl.setValue(Math.min($scope.travelTimeControl.getMaxValue() / 60 + 10, 60));
+                            $scope.showApartments();
+                            $noty.close();
+                            error.close();
+                        }},
+                        { addClass: 'btn btn-danger', text: 'Nein', onClick: function($noty) {
+                            $noty.close();
+                            error.close();
+                    }}]
                 });
             }
         };
@@ -438,8 +449,8 @@ angular.module('route360DemoApp')
                 icon                 = $scope.buildIcon(apartment, Math.max(scale, $config.markerMinPercent)); // lower bound
                 apartmentMarker      = L.marker([apartment.lat, apartment.lon], { icon : icon } );
                 apartmentMarker.icon = icon;
-
                 apartmentMarker.addTo($scope.apartmentLayer);
+                $scope.noApartmentsFound = false;
             }
             else {
 
