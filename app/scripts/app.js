@@ -112,7 +112,7 @@ angular
     NO_AREA_WITHIN_TRAVELTIME : 'There are no areas with the given travel time that can be reached from all given points.',
     INCREASE_TRAVELTIME : 'Do you want to increase travel time?',
     MOVE_MARKER : '<span lang="en">You can drag the marker!</span><span lang="de">Du kannst den Marker verschieben!</span>',
-    NO_APARTMENTS_FOUND: 'No apartments found that match the search criteria.'
+    NO_APARTMENTS_FOUND: 'No apartments found that match the search criteria.',
     HELP : 'Help'
   });
   
@@ -175,7 +175,7 @@ angular
     NO_AREA_WITHIN_TRAVELTIME : 'Es gibt keine Gebiete die in der angegebene Reisezeit von allen Orten aus erreichbar sind.',
     INCREASE_TRAVELTIME : 'Möchtest du die Reisezeit erhöhen?',
     MOVE_MARKER : '<span lang="en">You can drag the marker!</span><span lang="de">Du kannst den Marker verschieben!</span>',
-    NO_APARTMENTS_FOUND: 'Es wurden keine Wohnungen für die angegebenen Suchkriterien gefunden.'
+    NO_APARTMENTS_FOUND: 'Es wurden keine Wohnungen für die angegebenen Suchkriterien gefunden.',
     HELP : 'Hilfe'
   });
 
