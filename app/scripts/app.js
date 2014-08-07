@@ -10,11 +10,8 @@
  */
 angular
   .module('route360DemoApp', [
-    'ngAnimate',
     'ngCookies',
-    'ngResource',
     'ngRoute',
-    'ngSanitize',
     'ngTouch',
     'cfg',
     'ui.checkbox',
@@ -23,7 +20,6 @@ angular
     'ui.bootstrap',
     'ngAnimate',
     'ngCookies'
-    // 'PubService'
   ])
   .config(function ($routeProvider) {
     $routeProvider
