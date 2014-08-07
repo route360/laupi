@@ -208,7 +208,7 @@ angular.module('route360DemoApp')
                     item.travelType = autoComplete.getTravelType();
                     $scope.places.push(item);
 
-                    var icon = L.icon({ iconSize     : [48, 48], iconUrl      : L.Icon.Default.imagePath + 'pin-' + $scope.markerColors[index] + '.png', iconAnchor   : [24, 48]});
+                    var icon = L.icon({ iconSize     : [25, 41], iconUrl      : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[index] + '.png', iconAnchor   : [12, 41]});
                     var marker = L.marker(item.latlng, {icon : icon, draggable : true }).addTo($scope.placesLayer);
 
                     // var marker = r360.Util.getMarker(item.latlng, 
@@ -497,12 +497,12 @@ angular.module('route360DemoApp')
          */
         $scope.buildIcon = function(apartment, scale) {
 
-            var iconUrl   = 'images/marker/marker-icon-red.png';
+            var iconUrl   = 'images/marker/pin-blue.png';
             if (_.contains($cookieStore.get($scope.cookieKeys.visited), apartment.id) ) 
-                iconUrl = 'images/marker/marker-icon-grey.png';
+                iconUrl = 'images/marker/pin-grey.png';
 
-            var iconSize    = { width : 25 * scale, height : 41 * scale };
-            var shadowSize  = { width : 41 * scale, height : 41 * scale };
+            var iconSize    = { width : 48 * scale, height : 48 * scale };
+            // var shadowSize  = { width : 41 * scale, height : 41 * scale };
 
             // create the icon with the calculated scaled width and height
             return L.icon({ 
@@ -510,9 +510,9 @@ angular.module('route360DemoApp')
                 iconAnchor:     [iconSize.width / 2,   iconSize.height], 
                 iconSize:       [iconSize.width,   iconSize.height],
 
-                shadowUrl:      'images/marker/marker-shadow.png',
-                shadowAnchor:   [shadowSize.width / 3,   shadowSize.height], 
-                shadowSize:     [shadowSize.width,       shadowSize.height]
+                // shadowUrl:      'images/marker/marker-shadow.png',
+                // shadowAnchor:   [shadowSize.width / 3,   shadowSize.height], 
+                // shadowSize:     [shadowSize.width,       shadowSize.height]
                 // popupAnchor:    [-15,  - iconSize.height * scale + 5]
             });
         };
@@ -627,7 +627,7 @@ angular.module('route360DemoApp')
          */
         $scope.changeapartmentMarkerColor = function(apartmentMarker, apartment, travelOptions){
 
-            apartmentMarker.icon.options.iconUrl = L.Icon.Default.imagePath + 'marker-icon-grey.png';;
+            apartmentMarker.icon.options.iconUrl = L.Icon.Default.imagePath + 'pin-grey.png';;
             apartmentMarker.setIcon(apartmentMarker.icon);
         }
 
@@ -742,7 +742,7 @@ angular.module('route360DemoApp')
                 placeholder : $translate.instant('SELECT_START'), 
                 reset       : true,
                 reverse     : false,
-                image       : L.Icon.Default.imagePath + 'pin-' + $scope.markerColors[$scope.autoCompletes.length] + '.png',
+                image       : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[$scope.autoCompletes.length] + '.png',
                 options     : { car : true, bike : true, walk : true, transit : true, init : 'transit' }
             });
             autoComplete.index = $scope.autoCompletes.length;

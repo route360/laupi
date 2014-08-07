@@ -15,7 +15,8 @@
     "angular-bootstrap-checkbox": "~0.3.1",
     "ng-table": "~0.3.3",
     "jQuery.XDomainRequest": "~1.0.2",
-    "noty": "~2.2.5"
+    "noty": "~2.2.5",
+    "bootstrap": "*"
   },
   "devDependencies": {
     "angular-mocks": "1.2.16",

@@ -6,94 +6,96 @@
                 <h4 class="modal-title">{{ 'EDIT_SEARCH' | translate }}</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12"><h3>{{ 'APARTMENTS' | translate }} <small>({{apartments.length > 0 ? apartments.length : 'keine Apartments gefunden'}})</small></h3></div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">{{ 'FROM' | translate }}</div>
-                    <div class="col-md-4">{{ 'TO' | translate }}</div>
-                </div>
-                <div class="row top-buffer">
-                    <div class="col-md-4">{{ 'COLD_RENT' | translate }}</div>
-                    <div class="col-md-4"><input type="text" ng-model="search.apartment.minPrice"/></div>
-                    <div class="col-md-4"><input type="text" ng-model="search.apartment.maxPrice"/></div>
-                </div>
-                <div ng-if='priceError' class="row top-buffer">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-8">
-                        <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12"><h3>{{ 'APARTMENTS' | translate }} <small>({{apartments.length > 0 ? apartments.length : 'keine Apartments gefunden'}})</small></h3></div>
                     </div>
-                </div>
-                <div class="row top-buffer">
-                    <div class="col-md-4">{{ 'AREA' | translate }}</div>
-                    <div class="col-md-4"><input type="text" ng-model="search.apartment.minArea"/></div>
-                    <div class="col-md-4"><input type="text" ng-model="search.apartment.maxArea"/></div>
-                </div>
-                <div ng-if='areaError' class="row top-buffer">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-8">
-                        <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">{{ 'FROM' | translate }}</div>
+                        <div class="col-md-4">{{ 'TO' | translate }}</div>
                     </div>
-                </div>
-                <div class="row top-buffer">
-                    <div class="col-md-4">{{ 'ROOMS' | translate }}</div>
-                    <div class="col-md-4"><input type="text" ng-model="search.apartment.minRooms"/></div>
-                    <div class="col-md-4"><input type="text" ng-model="search.apartment.maxRooms"/></div>
-                </div>
-                <div ng-if='roomsError' class="row top-buffer">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-8">
-                        <div class="alert alert-danger" role="alert">{{'INPUT_ERROR' | translate }}</div>
+                    <div class="row top-buffer">
+                        <div class="col-md-4">{{ 'COLD_RENT' | translate }}</div>
+                        <div class="col-md-4"><input type="text" ng-model="search.apartment.minPrice"/></div>
+                        <div class="col-md-4"><input type="text" ng-model="search.apartment.maxPrice"/></div>
                     </div>
-                </div>
-                <div class="row top-buffer2x">
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.courtage"></checkbox>    {{ 'FILTER_COURTAGE' | translate }}</div>
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.balcony"></checkbox>    {{ 'FILTER_BALCONY' | translate }}</div>
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.garden"></checkbox>    {{ 'FILTER_GARDEN' | translate }}</div>
-                    <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.kitchen"></checkbox>    {{ 'FILTER_KITCHEN' | translate }}</div>
-                </div>
-                <h3 class="top-buffer2x">{{ 'REACHABILITY' | translate }}</h3>
-                <div class="row top-buffer2x">
-                    <div class="col-md-12">
-                        <div class="btn-group">
-                            <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'union'" uncheckable>{{ 'NO_INTERSECTION' | translate }}</label>
-                            <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'intersection'" uncheckable>{{ 'INTERSECT_INTERSECTION' | translate }}</label>
-                            <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'average'" uncheckable>{{ 'AVERAGE_INTERSECTION' | translate }}</label>
-                        </div>
-                        <button class="btn btn-default pull-right" ng-click="hideHelp = !hideHelp"><i class="fa fa-lightbulb-o"></i> {{ 'SHOW_HELP' | translate }}</button>
-                        <div collapse="hideHelp" class='top-buffer2x'>
-                            <!-- <hr> -->
-                            <accordion close-others="status.oneAtATime">
-                                <accordion-group heading="Keine Verschneidung" class='help-heading'>
-                                    <img src="/images/help/union.png" class="img-responsive padding-bottom-5px">
-                                    <p>{{ 'NO_INTERSECTION_HELP' | translate }}</p>
-                                </accordion-group>
-                                <accordion-group heading="Schnittmenge" class='help-heading'>
-                                    <img src="/images/help/intersection.png" class="img-responsive padding-bottom-5px">
-                                    <p>{{ 'INTERSECT_INTERSECTION_HELP' | translate }}</p>
-                                </accordion-group>
-                                <accordion-group heading="Durchschnitt" is-open="status.isFirstOpen" class='help-heading'>
-                                    <img src="/images/help/average.png" class="img-responsive padding-bottom-5px">
-                                    <p>{{ 'AVERAGE_INTERSECTION_HELP' | translate }}</p>
-                                </accordion-group>
-                            </accordion>
+                    <div ng-if='priceError' class="row top-buffer">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
                         </div>
                     </div>
-                </div>
-                <h3 class="top-buffer2x">{{ 'ÖPNV' | translate }}</h3>
-                <div class="row top-buffer2x">
-                    <div class="col-md-12">
-                        <div class="col-md-2">
-                            <timepicker ng-model="search.r360.timeout.time" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+                    <div class="row top-buffer">
+                        <div class="col-md-4">{{ 'AREA' | translate }}</div>
+                        <div class="col-md-4"><input type="text" ng-model="search.apartment.minArea"/></div>
+                        <div class="col-md-4"><input type="text" ng-model="search.apartment.maxArea"/></div>
+                    </div>
+                    <div ng-if='areaError' class="row top-buffer">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <div class="alert alert-danger" role="alert">Bitte Eingaben überprüfen!</div>
                         </div>
-                        <div class="col-md-6">
-                            <p class="input-group oepnv-calender">
-                              <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="search.r360.timeout.date" is-open="opened" datepicker-options="{ formatYear: 'yy', startingDay: 1 }" ng-required="true" close-text="Schließen" />
-                              <span class="input-group-btn">
-                                <button type="button" class="btn btn-default" ng-click="openCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                              </span>
-                            </p>
+                    </div>
+                    <div class="row top-buffer">
+                        <div class="col-md-4">{{ 'ROOMS' | translate }}</div>
+                        <div class="col-md-4"><input type="text" ng-model="search.apartment.minRooms"/></div>
+                        <div class="col-md-4"><input type="text" ng-model="search.apartment.maxRooms"/></div>
+                    </div>
+                    <div ng-if='roomsError' class="row top-buffer">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-8">
+                            <div class="alert alert-danger" role="alert">{{'INPUT_ERROR' | translate }}</div>
+                        </div>
+                    </div>
+                    <div class="row top-buffer2x">
+                        <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.courtage"></checkbox>    {{ 'FILTER_COURTAGE' | translate }}</div>
+                        <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.balcony"></checkbox>    {{ 'FILTER_BALCONY' | translate }}</div>
+                        <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.garden"></checkbox>    {{ 'FILTER_GARDEN' | translate }}</div>
+                        <div class="col-md-3"><checkbox name="custom-name" ng-model="search.apartment.kitchen"></checkbox>    {{ 'FILTER_KITCHEN' | translate }}</div>
+                    </div>
+                    <h3 class="top-buffer2x">{{ 'REACHABILITY' | translate }}</h3>
+                    <div class="row top-buffer2x">
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'union'" uncheckable>{{ 'NO_INTERSECTION' | translate }}</label>
+                                <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'intersection'" uncheckable>{{ 'INTERSECT_INTERSECTION' | translate }}</label>
+                                <label class="btn btn-default" ng-model="search.r360.instant.intersection" btn-radio="'average'" uncheckable>{{ 'AVERAGE_INTERSECTION' | translate }}</label>
+                            </div>
+                            <button class="btn btn-default pull-right" ng-click="hideHelp = !hideHelp"><i class="fa fa-lightbulb-o"></i> {{ 'SHOW_HELP' | translate }}</button>
+                            <div collapse="hideHelp" class='top-buffer2x'>
+                                <!-- <hr> -->
+                                <accordion close-others="status.oneAtATime">
+                                    <accordion-group heading="Keine Verschneidung" class='help-heading'>
+                                        <img src="/images/help/union.png" class="img-responsive padding-bottom-5px">
+                                        <p>{{ 'NO_INTERSECTION_HELP' | translate }}</p>
+                                    </accordion-group>
+                                    <accordion-group heading="Schnittmenge" class='help-heading'>
+                                        <img src="/images/help/intersection.png" class="img-responsive padding-bottom-5px">
+                                        <p>{{ 'INTERSECT_INTERSECTION_HELP' | translate }}</p>
+                                    </accordion-group>
+                                    <accordion-group heading="Durchschnitt" is-open="status.isFirstOpen" class='help-heading'>
+                                        <img src="/images/help/average.png" class="img-responsive padding-bottom-5px">
+                                        <p>{{ 'AVERAGE_INTERSECTION_HELP' | translate }}</p>
+                                    </accordion-group>
+                                </accordion>
+                            </div>
+                        </div>
+                    </div>
+                    <h3 class="top-buffer2x">{{ 'ÖPNV' | translate }}</h3>
+                    <div class="row top-buffer2x">
+                        <div class="col-md-12">
+                            <div class="col-md-2">
+                                <timepicker ng-model="search.r360.timeout.time" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="input-group oepnv-calender">
+                                  <input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="search.r360.timeout.date" is-open="opened" datepicker-options="{ formatYear: 'yy', startingDay: 1 }" ng-required="true" close-text="Schließen" />
+                                  <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="openCalendar($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                                  </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,30 +198,30 @@
                   <!-- <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{apartment.id}}</a></li> -->
                 </ul>
             </div>
-            <div class="col-md-12 top-buffer">
-                <div class="col-md-2">
+            <div class="col-xs-12 top-buffer">
+                <div class="col-xs-2">
                     <checkbox disabled name="custom-name "ng-init="courtage = !apartment.courtage" ng-model="courtage" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-4">{{ 'FILTER_COURTAGE' | translate }}</div>
-                <div class="col-md-2">
+                <div class="col-xs-4">{{ 'FILTER_COURTAGE' | translate }}</div>
+                <div class="col-xs-2">
                     <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.balcony" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-4">{{ 'FILTER_BALCONY' | translate }}</div>
+                <div class="col-xs-4">{{ 'FILTER_BALCONY' | translate }}</div>
             </div>
-            <div class="col-md-12 top-buffer">
-                <div class="col-md-2">
+            <div class="col-xs-12 top-buffer">
+                <div class="col-xs-2">
                     <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.garden" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-4">{{ 'FILTER_GARDEN' | translate }}</div>
-                <div class="col-md-2">
+                <div class="col-xs-4">{{ 'FILTER_GARDEN' | translate }}</div>
+                <div class="col-xs-2">
                     <checkbox disabled ng-if="apartment" name="custom-name" ng-model="apartment.kitchen" style='color: black; width: 25px;'></checkbox>
                 </div>
-                <div class="col-md-4">{{ 'FILTER_KITCHEN' | translate }}</div>
+                <div class="col-xs-4">{{ 'FILTER_KITCHEN' | translate }}</div>
             </div>
-            <div class="col-md-12 text-center top-buffer">
+            <div class="col-xs-12 text-center top-buffer">
                 <img  class="img-responsive img-thumbnail" ng-src='{{apartment.imageUrlLarge}}'>
             </div>  
-            <div class="col-md-12 top-buffer text-center">
+            <div class="col-xs-12 top-buffer text-center">
                 <!-- <pre>{{apartment|json}}</pre> -->
                 <div class="btn-group">
                     <button type="button" class="btn btn-default" ng-click='openExpose(apartment.id)'>{{ 'EXPOSE' | translate }}</button>
