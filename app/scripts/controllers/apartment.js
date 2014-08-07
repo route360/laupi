@@ -305,6 +305,8 @@ angular.module('route360DemoApp')
                     $scope.tableParams = TableParamFactory.create($scope.apartments);
                     // do not query server if no apartments found
                     if ( apartments.length == 0 ) {
+
+                        $scope.waitControl.hide();
                         var error = noty({text: $translate.instant('NO_APARTMENTS_FOUND'), layout : $config.notyLayout, type : 'error' });
                         return;
                     }
