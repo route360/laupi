@@ -59,7 +59,7 @@ angular.module('route360DemoApp')
         // NOT STARTED. hinweis für neue reisezeiten, übersetzung
         // kein scrollrad zoom
         // start marker shadwo
-        // route colors
+        // route colors fur not_reachable
         $scope.places           = [];
         $scope.autoCompletes    = [];
         $scope.updatePolygons   = true;
@@ -151,7 +151,7 @@ angular.module('route360DemoApp')
         L.Icon.Default.imagePath = 'images/marker/';
 
         // add the map and set the initial center to berlin
-        $scope.map = L.map('map-apartment', {zoomControl : false, scrollWheelZoom : false}).setView([52.516389, 13.377778], 13);
+        $scope.map = L.map('map-apartment', {zoomControl : false, scrollWheelZoom : true }).setView([52.516389, 13.377778], 13);
         // attribution to give credit to OSM map data and VBB for public transportation 
         var attribution ="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | ÖPNV Daten © <a href='http://www.vbb.de/de/index.html' target='_blank'>VBB</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
         // initialising the base map. To change the base map just change following lines as described by cloudmade, mapbox etc..
@@ -287,7 +287,7 @@ angular.module('route360DemoApp')
             $scope.clusterLayer.clearLayers();
             $('#apartment-details').hide();
             $scope.getPlaces();
-            $scope.noApartmentsFound = true;
+            $scope.noApartmentsInTravelTimeFound = true;
 
             var travelOptions = r360.travelOptions();
 
@@ -346,10 +346,11 @@ angular.module('route360DemoApp')
 
                         $scope.waitControl.hide();
 
-                        if ($scope.noApartmentsFound) {
+                        if ($scope.noApartmentsInTravelTimeFound && 
+                            !$scope.polygonLayer.getBoundingBox().equals(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180))) ) {
 
-                            var error = noty({text: $translate.instant('NO_AREA_WITHIN_TRAVELTIME'), layout : $config.notyLayout, type : 'error' });
-                            $scope.showNoApartmentsFoundWarning(error);
+                            var error = noty({text: $translate.instant('NO_APARTMENTS_IN_REACHABLE_AREA'), layout : $config.notyLayout, type : 'error' });
+                            $scope.showIncreaseTravelTimeQuestion(error);
                             $scope.map.fitBounds($scope.placesLayer.getBounds());
                         }
                     });
@@ -373,7 +374,7 @@ angular.module('route360DemoApp')
                     if ( $scope.polygonLayer.getBoundingBox().equals(L.latLngBounds(L.latLng(-90, -180), L.latLng(90, 180))) ) {
 
                         var error = noty({text: $translate.instant('NO_AREA_WITHIN_TRAVELTIME'), layout : $config.notyLayout, type : 'error' });
-                        $scope.showNoApartmentsFoundWarning(error);
+                        $scope.showIncreaseTravelTimeQuestion(error);
                         $scope.map.fitBounds($scope.placesLayer.getBounds());
                     }
                     else {
@@ -384,7 +385,7 @@ angular.module('route360DemoApp')
             }
         };
 
-        $scope.showNoApartmentsFoundWarning = function(error){
+        $scope.showIncreaseTravelTimeQuestion = function(error){
 
             if ( $scope.travelTimeControl.getMaxValue() / 60 < 60 ) {
 
@@ -392,14 +393,14 @@ angular.module('route360DemoApp')
                     text: $translate.instant('INCREASE_TRAVELTIME'),
                     layout : $config.notyLayout, 
                     buttons: [ 
-                        { addClass: 'btn btn-primary', text: 'Ja', onClick: function($noty) {
+                        { addClass: 'btn btn-primary', text:  $translate.instant('YES'), onClick: function($noty) {
 
                             $scope.travelTimeControl.setValue(Math.min($scope.travelTimeControl.getMaxValue() / 60 + 10, 60));
                             $scope.showApartments();
                             $noty.close();
                             error.close();
                         }},
-                        { addClass: 'btn btn-danger', text: 'Nein', onClick: function($noty) {
+                        { addClass: 'btn btn-danger', text:  $translate.instant('NO'), onClick: function($noty) {
                             $noty.close();
                             error.close();
                     }}]
@@ -457,7 +458,7 @@ angular.module('route360DemoApp')
                 apartmentMarker      = L.marker([apartment.lat, apartment.lon], { icon : icon } );
                 apartmentMarker.icon = icon;
                 apartmentMarker.addTo($scope.apartmentLayer);
-                $scope.noApartmentsFound = false;
+                $scope.noApartmentsInTravelTimeFound = false;
             }
             else {
 
@@ -507,7 +508,7 @@ angular.module('route360DemoApp')
          */
         $scope.buildIcon = function(apartment, scale) {
 
-            var iconUrl   = 'images/marker/pin-blue.png';
+            var iconUrl   = 'images/marker/pin-purple.png';
             if (_.contains($cookieStore.get($scope.cookieKeys.visited), apartment.id) ) 
                 iconUrl = 'images/marker/pin-grey.png';
 
@@ -938,8 +939,9 @@ angular.module('route360DemoApp')
         // });
 
         $scope.showApartments();
-        noty({text: $translate.instant('MOVE_MARKER'), layout : $config.notyLayout, type : 'warning', timeout : 5000 });
-        $timeout(function(){ noty({text: $translate.instant('MARKER_SIZE'), layout : $config.notyLayout, type : 'warning', timeout : 5000 }); }, 2000);
+        noty({text: $translate.instant('MOVE_MARKER'), layout : $config.notyLayout, type : 'success', timeout : 5000 });
+        $timeout(function(){ noty({text: $translate.instant('MARKER_SIZE'), layout : $config.notyLayout, type : 'success', timeout : 5000 }); }, 4000);
+        $timeout(function(){ noty({text: $translate.instant('POLYGON_HELP'), layout : $config.notyLayout, type : 'success', timeout : 6000 }); }, 8000);
         $scope.translateR360($translate.preferredLanguage());
         $scope.resize();
         // $('#apartment-details').css('max-height',  ($('#map-apartment').height() -  (53 * $scope.autoCompletes.length) - 20) + 'px');
