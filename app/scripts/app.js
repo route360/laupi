@@ -108,7 +108,8 @@ angular
     INCREASE_TRAVELTIME : 'Do you want to increase travel time?',
     MOVE_MARKER : '<span lang="en">You can drag the marker!</span><span lang="de">Du kannst den Marker verschieben!</span>',
     NO_APARTMENTS_FOUND: 'No apartments found that match the search criteria.',
-    HELP : 'Help'
+    HELP : 'Help',
+    MARKER_SIZE : 'Larger markers indicate smaller travel times.'
   });
   
   $translateProvider.translations('de', {
@@ -171,7 +172,8 @@ angular
     INCREASE_TRAVELTIME : 'Möchtest du die Reisezeit erhöhen?',
     MOVE_MARKER : '<span lang="en">You can drag the marker!</span><span lang="de">Du kannst den Marker verschieben!</span>',
     NO_APARTMENTS_FOUND: 'Es wurden keine Wohnungen für die angegebenen Suchkriterien gefunden.',
-    HELP : 'Hilfe'
+    HELP : 'Hilfe',
+    MARKER_SIZE : 'Größere Marker symbolisieren kürzere Reisezeiten.'
   });
 
   $translateProvider.preferredLanguage('de');
