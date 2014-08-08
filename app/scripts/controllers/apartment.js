@@ -698,23 +698,33 @@ angular.module('route360DemoApp')
          */
         $scope.paintPolylines = function(route, color){
 
-            _.each(route.getSegments(), function(segment, index){
+            // _.each(route.getSegments(), function(segment, index){
 
-                if ( segment.getType() == "TRANSFER" ) return;
+            //     if ( segment.getType() == "TRANSFER" ) return;
 
-                var polylineOptions         = {};
-                polylineOptions.color       = color;
+            //     var polylineOptions         = {};
+            //     polylineOptions.color       = color;
 
-                var polylineHaloOptions     = {};
-                polylineHaloOptions.weight  = 7;
-                polylineHaloOptions.color   = "white";
+            //     var polylineHaloOptions     = {};
+            //     polylineHaloOptions.weight  = 7;
+            //     polylineHaloOptions.color   = "white";
                 
-                // the first and the last segment is walking so we need to dotted lines
-                if ( index == 0 || index == (route.getLength() - 1) ) polylineOptions.dashArray = "1, 8";
+            //     // the first and the last segment is walking so we need to dotted lines
+            //     if ( index == 0 || index == (route.getLength() - 1) ) polylineOptions.dashArray = "1, 8";
 
-                var halo = L.polyline(segment.getPoints(), polylineHaloOptions).addTo($scope.routesLayer);
-                var line = L.polyline(segment.getPoints(), polylineOptions).addTo($scope.routesLayer);
+            //     var halo = L.polyline(segment.getPoints(), polylineHaloOptions).addTo($scope.routesLayer);
+            //     var line = L.polyline(segment.getPoints(), polylineOptions).addTo($scope.routesLayer);
+            // });
+
+            // create one polyline for the route and a polyline for the polyline's halo
+            _.each(r360.Util.routeToLeafletPolylines(route, { addPopup : false, opacity : 0.7 }), function(polylineSegment){
+
+                 // if ( polylineSegment.getType() == "TRANSFER" ) return;
+
+                // add halo and line
+                _.each(polylineSegment, function(polylines){ polylines.addTo($scope.routesLayer); });
             });
+
 
             // we have to do this twice because otherwise the transfer marker would be
             // on top of one line and underneath another 
@@ -723,7 +733,7 @@ angular.module('route360DemoApp')
                 if ( segment.getType() == "TRANSFER" ) {
 
                     var transfer = L.circleMarker(_.last(route.getSegments()[index - 1].getPoints()), { color: "white", 
-                        fillColor: color, fillOpacity: 1.0, stroke : true, radius : 7 }).addTo($scope.routesLayer);
+                        fillColor: "orange", fillOpacity: 1.0, stroke : true, radius : 7 }).addTo($scope.routesLayer);
 
                     transfer.bindPopup(route.getSegments()[index - 1].getStartName());
 
