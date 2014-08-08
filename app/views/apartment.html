@@ -66,15 +66,15 @@
                             <div collapse="hideHelp" class='top-buffer2x'>
                                 <!-- <hr> -->
                                 <accordion close-others="status.oneAtATime">
-                                    <accordion-group heading="Keine Verschneidung" class='help-heading'>
+                                    <accordion-group heading="{{ 'NO_INTERSECTION' | translate }}" class='help-heading'>
                                         <img src="/images/help/union.png" class="img-responsive padding-bottom-5px">
                                         <p>{{ 'NO_INTERSECTION_HELP' | translate }}</p>
                                     </accordion-group>
-                                    <accordion-group heading="Schnittmenge" class='help-heading'>
+                                    <accordion-group heading="{{ 'INTERSECT_INTERSECTION' | translate }}" class='help-heading'>
                                         <img src="/images/help/intersection_annotated.png" class="img-responsive padding-bottom-5px">
                                         <p>{{ 'INTERSECT_INTERSECTION_HELP' | translate }}</p>
                                     </accordion-group>
-                                    <accordion-group heading="Durchschnitt" is-open="status.isFirstOpen" class='help-heading'>
+                                    <accordion-group heading="{{ 'AVERAGE_INTERSECTION' | translate }}" is-open="status.isFirstOpen" class='help-heading'>
                                         <img src="/images/help/average_annotated.png" class="img-responsive padding-bottom-5px">
                                         <p>{{ 'AVERAGE_INTERSECTION_HELP' | translate }}</p>
                                     </accordion-group>
