@@ -42,14 +42,13 @@ angular.module('route360DemoApp')
         // DONE........ 38. wenn keine apartments gefunden werden, wird timeservice ohne targets angefragt
         // DONE ....... 17. Keine Polygone abfragen bei Apartmentänderung
         // DONE ....... 11a. Translations
-        // IN PROGRESS. Browserkompatibilität
+        // DONE ....... Browserkompatibilität
         // NOT STARTED. 18. Bilder und ERklärungstexte für Verschneidung
         // DONE ....... 22. beim löschen von marker checken ob zwei leer sind und dann einen löschen
         // DONE........ 23. marker farben korrigieren
         // DONE ....... 26. selektierter marker andere farbe
         // DONE ....... 33. Optionsslide out für place autocomplete
         // DONE ....... 14. Cache aufwärmen
-        // 
         // DONE ....... weißer rand um navbar
         // DONE ....... 'ausgangspunkt' für autocomplete
         // DONE ....... bitte warten balken
@@ -57,6 +56,10 @@ angular.module('route360DemoApp')
         // DONE ....... timout für date und time setzen  
         // DONE ....... map-icons css marker für routen
         // DONE ....... label für halte stelle vertikal zentrieren
+        // NOT STARTED. hinweis für neue reisezeiten, übersetzung
+        // kein scrollrad zoom
+        // start marker shadwo
+        // route colors
         $scope.places           = [];
         $scope.autoCompletes    = [];
         $scope.updatePolygons   = true;
@@ -208,11 +211,13 @@ angular.module('route360DemoApp')
                     item.travelType = autoComplete.getTravelType();
                     $scope.places.push(item);
 
-                    var icon = L.icon({ iconSize     : [25, 41], iconUrl      : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[index] + '.png', iconAnchor   : [12, 41]});
+                    var icon = L.icon({ 
+                        iconSize     : [25, 41], 
+                        iconUrl      : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[index] + '.png', 
+                        iconAnchor   : [12, 41],
+                        shadowUrl    : L.Icon.Default.imagePath + 'marker-shadow.png'
+                    });
                     var marker = L.marker(item.latlng, {icon : icon, draggable : true }).addTo($scope.placesLayer);
-
-                    // var marker = r360.Util.getMarker(item.latlng, 
-                    //     { color : $scope.markerColors[index], iconPath: L.Icon.Default.imagePath, draggable : true }).addTo($scope.placesLayer);
 
                     // save the marker to initialy add popup for dragging
                     autoComplete.marker = marker;
@@ -927,6 +932,7 @@ angular.module('route360DemoApp')
 
         $scope.showApartments();
         noty({text: $translate.instant('MOVE_MARKER'), layout : $config.notyLayout, type : 'warning', timeout : 5000 });
+        $timeout(function(){ noty({text: $translate.instant('MARKER_SIZE'), layout : $config.notyLayout, type : 'warning', timeout : 5000 }); }, 2000);
         $scope.translateR360($translate.preferredLanguage());
         $scope.resize();
         // $('#apartment-details').css('max-height',  ($('#map-apartment').height() -  (53 * $scope.autoCompletes.length) - 20) + 'px');

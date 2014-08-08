@@ -73,6 +73,43 @@ html, body {
 
         margin-top: 34px;
     }
+
+    #feedback { 
+      // height: 104px; 
+      // width: 0px; 
+      position: fixed; 
+      top: 20%; 
+      right: -42px;
+      z-index: 999;
+      
+    }
+
+    #feedback a { 
+        display: block; 
+        background: #f00; 
+        height: 40px; 
+        width: 125px; 
+        padding: 8px 16px;
+        color: #fff; 
+        font-family: Arial, sans-serif; 
+        font-size: 17px; 
+        font-weight: bold; 
+        text-decoration: none; 
+        text-transform: uppercase;
+        font-family: Montserrat, "Helvetica Neue", Helvetica, Arial,sans-serif;
+        font-weight: 700;
+        transform: rotate(-90deg);
+        -webkit-transform: rotate(-90deg); 
+        -moz-transform: rotate(-90deg); 
+        -o-transform: rotate(-90deg); 
+        filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+        -webkit-box-shadow: 0 0 5px 2px #7D7D7D;
+        box-shadow: 0 0 5px 2px #7D7D7D;
+    }
+
+    #feedback a:hover { 
+        background: #06c; 
+    }
 }
 
 .html-control {
