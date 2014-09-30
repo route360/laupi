@@ -488,7 +488,7 @@ angular.module('route360DemoApp')
                 // get the travel time for this target for every source
                 var tt = source.targets[targetIndex].travelTime;
 
-                // if ( tt != -1 ) console.log(apartment.id + ': ' + tt);
+                if ( tt != -1 ) console.log(apartment.id + ': ' + tt);
 
                 travelTime += tt == -1 ? undefined : tt;
                 travelTimes.push({id: targetIndex, travelTime : tt});
