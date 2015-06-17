@@ -19,6 +19,35 @@ angular.module('route360DemoApp')
           return r360.Util.secondsToHoursAndMinutes(seconds);
         };
     })
+    .filter('formatMeter', function(){
+        return function (kilometer) {
+
+            var approxMeters = kilometer.toFixed(3);
+            if ( approxMeters < 1000 ) return Math.round(approxMeters/10)*10 + "m";
+            else {
+
+                var approxKilometer = Math.round(approxMeters/10)*10;
+                return approxKilometer / 1000 + "km";
+            }
+        };
+    })
+    .filter('secToHoursMin', function(){
+        return function (seconds) {
+
+            var minutes = (seconds / 60).toFixed(0);
+            var hours = Math.floor(minutes / 60);
+
+            minutes = minutes - hours * 60;
+            var timeString = "";
+
+            if (hours != 0){
+                timeString += (hours + "h "); 
+            }
+
+            timeString += (minutes + "min");
+            return timeString;
+        };
+    })
     .filter('cleanName', function () {
         return function (name) {
 

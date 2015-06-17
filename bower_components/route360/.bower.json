@@ -1,6 +1,6 @@
 {
   "name": "r360",
-  "version": "0.0.9",
+  "version": "0.1.3",
   "authors": [
     "gerber@motionintelligence.net",
     "hollburg@motionintelligence.net"
@@ -8,14 +8,15 @@
   "description": "Route360° JavaScript API",
   "main": [
     "dist/r360.js",
-    "dist/jquery-ui-1.10.0.custom.css",
     "dist/r360.css",
+    "dist/jquery-ui-1.10.0.custom.css",
     "dist/images/marker-icon-red.png",
     "dist/images/marker-icon-blue.png",
     "dist/images/marker-icon-purple.png",
     "dist/images/marker-icon-green.png",
     "dist/images/marker-icon-orange.png",
-    "dist/images/marker-icon.png"
+    "dist/images/marker-icon.png",
+    "dist/images/ui-bg_glass_75_ffffff_1x400.png"
   ],
   "keywords": [
     "r360",
@@ -30,7 +31,6 @@
     "jquery": "1.10.2",
     "underscore": "1.6.0",
     "font-awesome": "4.1.0",
-    "raphael": "2.1.2",
     "jquery-ui": "1.10.4"
   },
   "homepage": "http://developers.route360.net/",
@@ -48,13 +48,13 @@
     "src",
     "build"
   ],
-  "_release": "0.0.9",
+  "_release": "0.1.3",
   "_resolution": {
     "type": "version",
-    "tag": "v0.0.9",
-    "commit": "19d303ace934af2adcb547279e4d1a713621ce23"
+    "tag": "v0.1.3",
+    "commit": "bc0fea63a50ff1790a8948bd11e101aef204261d"
   },
   "_source": "git://github.com/route360/r360-js.git",
-  "_target": "~0.0.9",
+  "_target": "0.1.3",
   "_originalSource": "route360"
 }

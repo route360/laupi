@@ -16,9 +16,10 @@
     <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
-    <link rel="stylesheet" href="bower_components/route360/dist/jquery-ui-1.10.0.custom.css" />
     <link rel="stylesheet" href="bower_components/route360/dist/r360.css" />
+    <link rel="stylesheet" href="bower_components/route360/dist/jquery-ui-1.10.0.custom.css" />
     <link rel="stylesheet" href="bower_components/ng-table/ng-table.css" />
+    <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css" />
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -40,29 +41,15 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="" ng-click="loadHome()">
-            <img src="images/home/logo.png" class="img-responsive" style='width: 30px;float: left;margin-top: -5px;' alt="Route360° - Wohnungssuche 2.0"/><span style='margin-left: 8px; font-size: 22px;'>Route360°</span>
+            <img src="images/logo/logo.png" class="img-responsive" style='height: 40px; float: left;margin-top: -10px;' alt="Laupi - Rein ins Grüne"/>
           </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="left-nav-bar" class="nav navbar-nav">
-                <li id='apartment-search-edit' ng-class='navClass("apartment-search-edit")'><a href=''><i class='fa fa-search'></i> {{ 'EDIT_SEARCH' | translate }}</a></li>
-                <li id='apartment-results' ng-class='navClass("apartment-results")'><a href=''><i class='fa fa-list-ol'></i> {{ 'RESULT_VIEW' | translate }}</a></li>
-                <li id='apartment-liked' ng-class='navClass("apartment-liked")'><a href=''><i class='fa fa-heart'></i> {{ 'FAVOURITES' | translate }}</a></li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown" style='z-index: 10000;'>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'HELP' | translate }} <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-                        <li><a href="http://developers.route360.net"><i class="fa fa-code"></i> {{ 'DOCUMENTATION' | translate }}</a></li>
-                        <li ng-class="navClass('contact')" ng-click="loadContact()"><a target='_blank' href="https://www.route360.net/#section-contact"><i class="fa fa-envelope"></i> {{ 'CONTACT' | translate }}</a></li>
-                        <li ng-class="navClass('about')" ng-click="loadAbout()"><a target='_blank' href="https://www.route360.net/impressum/">&nbsp;<i class="fa fa-info"></i>&nbsp;&nbsp;{{ 'ABOUT' | translate }}</a></li>          
-                    </ul>
-                </li>
-                <li ng-if='language == "de"' ng-click="changeLanguage('en')"><a href=""><img style='margin-top: -2px;' src='images/flags/usa.png'> EN</a></li>
-                <li ng-if='language == "en"' ng-click="changeLanguage('de')"><a href=""><img style='margin-top: -5px;' src='images/flags/germany.png'> DE</a></li>
+                <li id='laupi-search-edit' ng-class='navClass("laupi-search-edit")'><a href=''><i class='fa fa-search'></i> {{ 'Suche anpassen'  }}</a></li>
+                <li id='laupi-results' ng-class='navClass("laupi-results")'><a href=''><i class='fa fa-list-ol'></i> {{ 'Ergebnisse'  }}</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
       </div>
@@ -94,40 +81,30 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/leaflet/dist/leaflet.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/underscore/underscore.js"></script>
-    <script src="bower_components/raphael/raphael.js"></script>
     <script src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script src="bower_components/route360/dist/r360.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
     <script src="bower_components/ng-table/ng-table.js"></script>
-    <script src="bower_components/jQuery.XDomainRequest/jQuery.XDomainRequest.js"></script>
+    <script src="bower_components/jQuery.XDomainRequest/jquery.xdomainrequest.min.js"></script>
     <script src="bower_components/noty/js/noty/packaged/jquery.noty.packaged.js"></script>
+    <script src="bower_components/isteven-angular-multiselect/isteven-multi-select.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/cfg.js"></script>
-        <script src="scripts/data/pubs.js"></script>
-        <script src="scripts/controllers/home.js"></script>
-        <script src="scripts/controllers/contact.js"></script>
-        <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/nav.js"></script>
-        <script src="scripts/controllers/beer.js"></script>
-        <script src="scripts/services/pubservice.js"></script>
+        <script src="scripts/controllers/map.js"></script>
         <script src="scripts/filters/secondstohoursmin.js"></script>
-        <script src="scripts/controllers/apartment.js"></script>
-        <script src="scripts/services/apartmentfactory.js"></script>
         <script src="scripts/services/tableparamfactory.js"></script>
-        <script src="scripts/directives/apartmentdetails.js"></script>
-        <script src="scripts/services/apartmentservice.js"></script>
         <!-- endbuild -->
 </body>
 </html>
