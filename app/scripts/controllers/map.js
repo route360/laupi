@@ -25,6 +25,7 @@ angular.module('route360DemoApp')
         });
         // das sind die laupis die den suckriterien entsprechen
         $scope.laupis = angular.copy($scope.laupisDatabase);
+        $scope.laupis = _.reject($scope.laupis, function(laupi){ return laupi.lat == 0 });
 
         // die verschiedenen suchkriterien, alles wo 'ticked: true' steht sind die standardvorgaben
         $scope.kaufpreis = [
@@ -215,8 +216,8 @@ angular.module('route360DemoApp')
             var travelOptions = r360.travelOptions();
             travelOptions.addSource($scope.source); // die quelle ist der rote marker
             travelOptions.setTravelTimes($scope.travelTimeControl.getValues()); // reisezeiten vom slider holen
-            travelOptions.setDate('20150617'); // beliebigen festen tag wählen
-            travelOptions.setTime('39000'); // beliebige feste urhzeit wählen
+            travelOptions.setDate('20150626'); // beliebigen festen freitag wählen
+            travelOptions.setTime('61200'); //  feste urhzeit 17:00 wählen
 
             // call the service
             r360.PolygonService.getTravelTimePolygons(travelOptions, function(polygons){
@@ -243,8 +244,8 @@ angular.module('route360DemoApp')
                 travelOptions.setTravelTimes($scope.travelTimeControl.getValues()); // reisezeit festlegen
                 travelOptions.setMaxRoutingTime($scope.travelTimeControl.getMaxValue()); // bis hirerhin wird geroutet 
                 // zwingend für polygone und routen den selben tag/zeit auswählen
-                travelOptions.setDate('20150617'); // beliebigen festen tag wählen
-                travelOptions.setTime('39000'); // beliebige feste urhzeit wählen
+                travelOptions.setDate('20150626'); // beliebigen festen freitag wählen
+                travelOptions.setTime('61200'); //  feste urhzeit 17:00 wählen
 
                 // call the time service to get the travel times
                 r360.TimeService.getRouteTime(travelOptions, function(sources){
@@ -268,9 +269,7 @@ angular.module('route360DemoApp')
                     // falls keine laupis gefunden worden hinweis anzeigen
                     if ( $scope.noApartmentsInTravelTimeFound ) {
 
-                        var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Laupis die den Suchkriterien entsprechen.', layout : $config.notyLayout, type : 'error' });
-                        // so lange man noch die reisezeit erhöhen kann, wird gefragt ob man das erhöhen möchte
-                        $scope.showIncreaseTravelTimeQuestion(error);
+                        var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Laupis die den Suchkriterien entsprechen.', timeout: 3000, layout : $config.notyLayout, type : 'error' });
                         $scope.map.fitBounds($scope.sourceLayer.getBounds());
                     }
                 });
@@ -327,10 +326,8 @@ angular.module('route360DemoApp')
                 });
             }
 
-            laupiMarker = L.marker([laupi.lat, laupi.lng], {icon : icon, draggable : false }).addTo($scope.sourceLayer);
-
             // add the laupi to the map
-            laupiMarker.addTo($scope.laupiLayer);
+            laupiMarker = L.marker([laupi.lat, laupi.lng], {icon : icon, draggable : false }).addTo($scope.laupiLayer);
 
             return laupiMarker;   
         }
@@ -358,7 +355,8 @@ angular.module('route360DemoApp')
                 // route vom serverholen
                 r360.RouteService.getRoutes(travelOptions, function(routes){
 
-                    $scope.laupi.route = routes[0];
+                    $scope.laupi.travelTime = routes[0].travelTime;
+                    $scope.laupi.route      = routes[0];
                     $scope.laupi.route.fadeIn($scope.routesLayer, 1000, 'travelDistance', { 
                             transferColor       : '#659742',
                             transferHaloColor   : '#4B7C27',
@@ -383,7 +381,7 @@ angular.module('route360DemoApp')
             $scope.autoComplete = r360.placeAutoCompleteControl({ 
                 country     : "Deutschland", 
                 placeholder : 'Startpunkt', 
-                reset       : true,
+                reset       : false,
                 reverse     : false,
                 image       : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[2] + '.png',
                 options     : { car : true, bike : true, walk : true, transit : true, init : 'transit' },
@@ -396,6 +394,8 @@ angular.module('route360DemoApp')
                 if ( $scope.autoComplete.getFieldValue() != '' ) {
                     $scope.autoComplete.reset();
                     $scope.polygonLayer.clearLayers();
+                    $scope.routesLayer.clearLayers();
+                    $scope.sourceLayer.clearLayers();
                     $('#laupi-details').hide();
                 }
             };

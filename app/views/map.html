@@ -98,7 +98,7 @@
 
 <div class="map" id="map-laupi">
     <div id='laupi-details' ng-show='laupi' class='container-fluid'>
-        <div class="row" style="width: 316px; margin-left: 0px; margin-right: 0px;">
+        <div class="row" style="width: 380px; margin-left: 0px; margin-right: 0px;">
             <div id='close-expose'><i class="fa fa-times"></i></div>
             <h4>{{laupi['freitexte-objekttitel']}}</h4>
             <div class="col-md-12 text-center" style="padding-left: 0px;">
@@ -116,22 +116,17 @@
             </div>  
         </div>
         
-        <div class="row top-buffer" style="width: 316px; margin-left: 0px; margin-right: 0px;">
+        <div class="row top-buffer" style="width: 380px; margin-left: 0px; margin-right: 0px;">
             <h4>Anfahrt</h4>
             <table class="table table-striped" id="details-travel-table">
-                <tr ng-repeat="segment in laupi.route.getSegments().slice() " class="routeType-{{segment.routeType ? segment.routeType : segment.type}}">
+                <tr ng-repeat="segment in laupi.route.getSegments().slice() track by $index" class="routeType-{{segment.routeType ? segment.routeType : segment.type}}">
                     <!-- WALK -->
-                    <td ng-if="segment.getType() == 'WALK'" class="">
-                        <div class="center"><img class='walk-icon' src="images/marker/walk.png"></div>
-                    </td>
-                    <td ng-if="segment.getType() == 'WALK' && $index == 0">
-                        <span class='start-name center-block'>Ausgangspunkt</span>
-                    </td>
-                    <td ng-if="segment.getType() == 'WALK' && ($index == laupi.route.getSegments().length - 1 || laupi.route.getSegments().length == 1)">
-                        <big class='start-name center-block'>{{laupi['freitexte-objekttitel']}} asdasdasd</big>
-                    </td>
+                    <td ng-if="segment.getType() == 'WALK'"><div class="center routeTypes"><i class="fa fa-male center"></i></div></td>
+                    <td ng-if="segment.getType() == 'WALK' && $index == 0 && laupi.route.getSegments().length > 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{laupi.route.getSegments()[laupi.route.getSegments().length - 3].startname}}</span></td>
+                    <td ng-if="segment.getType() == 'WALK' && laupi.route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>Gesamtreisedauer</span></td>
+                    <td ng-if="segment.getType() == 'WALK' && $index == laupi.route.getSegments().length - 1 && laupi.route.getSegments().length > 1"><span class='destination-name center-block' style='margin-top: 8px;'>Ziel</span></td>
                     <td ng-if="segment.getType() == 'WALK'">
-                        <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
+                        <div style="text-align: center">{{segment.getTravelTime() | secToMin }}min</div>
                         <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
                     </td>
                     <!-- TRANSFER -->
@@ -140,22 +135,16 @@
                     <td ng-if="segment.travelTime != 0 && segment.getType() == 'TRANSFER'"><div style="text-align: center;">{{segment.getTravelTime() | secToHoursMin }}</div></td>
                      <!-- CAR -->
                     <td ng-if="segment.getType() == 'CAR'"><div class="center routeTypes"><i class="fa fa-automobile center"></i></div></td>
-                    <td ng-if="segment.getType() == 'CAR'"><span class='destination-name center-block' style='margin-top: 8px;'>{{apartment.street}} {{apartment.houseNumber}}</span></td>
+                    <td ng-if="segment.getType() == 'CAR'"><span class='destination-name center-block' style='margin-top: 8px;'>Gesamtreisedauer</span></td>
                     <td ng-if="segment.getType() == 'CAR'">
                         <div style="text-align: center">{{segment.getTravelTime() | secToMin }}min</div>
-                        <div style="text-align: center"><small>{{segment.getLength() | formatMeter }}</small></div>
+                        <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
                     </td>
                      <!-- BIKE -->
-                    <td ng-if="segment.getType() == 'BIKE'" class=""><div class="center"><img class='walk-icon' src="images/marker/bike.png"></div></td>
-                    <td ng-if="segment.getType() == 'BIKE' && laupi.route.getSegments().length > 1 && $index < laupi.route.getSegments().length - 2">
-                        <span class='start-name center-block'>{{laupi.route.getSegments()[laupi.route.getSegments().length - 2].getStartName() | cleanName }}</span>
-                    </td>
-                    <td ng-if="segment.getType() == 'BIKE' && $index == laupi.route.getSegments().length - 1 && laupi.route.getSegments().length > 1">
-                        <big class='start-name center-block'>{{poi.title}}</big>
-                    </td>
-                    <td ng-if="segment.getType() == 'BIKE' && laupi.route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{poi.title}}</span></td>
+                    <td ng-if="segment.getType() == 'BIKE'"><div class="center routeTypes"><i class="fa fa-bicycle center"></i></div></td>
+                    <td ng-if="segment.getType() == 'BIKE'"><span class='destination-name center-block' style='margin-top: 8px;'>Gesamtreisedauer</span></td>
                     <td ng-if="segment.getType() == 'BIKE'">
-                        <div style="text-align: center">{{segment.travelTime | secToMin }}min</div>
+                        <div style="text-align: center">{{segment.getTravelTime() | secToMin }}min</div>
                         <div style="text-align: center"><small>{{segment.getDistance() * 1000 | formatMeter }}</small></div>
                     </td>
                     <!-- TRANSIT -->
@@ -188,7 +177,7 @@
                         <div style='text-align: center;'><img style="width:40px;margin-top:5px;" ng-src="{{'images/marker/' + segment.routeType + '.png'}}"></div>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-if="laupi.route.getSegments().length > 1">
                     <td><i class="fa fa-clock-o fa-2x center"></i></td>
                     <td class='destination-name'>Gesamtreisedauer</td>
                     <td><div class='center destination-name'>{{laupi.route.travelTime | secToHoursMin }}</div></td>
