@@ -66,24 +66,24 @@
                                 <img class='img-responsive img-thumbnail' ng-src="http://laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}" style="max-height: 70px;">
                             </a>        
                         </td>
-                        <td data-title="'Eigentumsart' " sortable="'laupi-eigentumsart'" class='text-center'>
+                        <td data-title="'Eigentumsart'" sortable="'laupi-eigentumsart'" class='text-center'>
                             {{laupi['laupi-eigentumsart']}}
                         </td>
-                        <td data-title="'Grundstück' " sortable="'flaechen-gesamtflaeche'" class='text-center'>
-                            {{laupi['flaechen-gesamtflaeche']}}
+                        <td data-title="'Grundstück'" sortable="'flaechen-gesamtflaeche'" class='text-center'>
+                            {{laupi['flaechen-gesamtflaeche'] | prettifyNumber: 'm²'}}
                         </td>
-                        <td data-title="'Hausfläche '" sortable="'laupi-hausflaeche'" class='text-center'>
-                            {{laupi['laupi-hausflaeche']}}
+                        <td data-title="'Hausfläche'" sortable="'laupi-hausflaeche'" class='text-center'>
+                            {{laupi['laupi-hausflaeche'] | prettifyNumber: 'm²'}}
                         </td>
-                        <td data-title="'Hausart' " sortable="'laupi-hausart'" class='text-center'>
+                        <td data-title="'Hausart'" sortable="'laupi-hausart'" class='text-center'>
                             {{laupi['laupi-hausart']}}
                         </td>
-                        <td data-title="'Preis' " sortable="'preise-kaufpreisbrutto'" class='text-center'>
-                            {{laupi['preise-kaufpreisbrutto']}}
+                        <td data-title="'Preis'" sortable="'preise-kaufpreisbrutto'" class='text-center'>
+                            {{laupi['preise-kaufpreisbrutto'] | prettifyNumber: '€'}}
                         </td>
-                        <td data-title="'Reisezeit' " sortable="'travelTime'" class='text-center'>
-                            <div ng-if='laupi.travelTime < 10000000'>{{ laupi.travelTime | secondsToHoursMin }}</div>
-                            <div ng-if='laupi.travelTime == 10000000'>{{ 'NOT_REACHABLE'  }}</div>
+                        <td data-title="'Reisezeit'" sortable="'travelTime'" class='text-center'>
+                            <div ng-if='laupi.travelTime >= 0 && laupi.travelTime < travelTimeControl.getMaxValue()'>{{ laupi.travelTime | secToHoursMin }}</div>
+                            <div ng-if='laupi.travelTime == -1 || laupi.travelTime > travelTimeControl.getMaxValue()'>{{'Nicht erreichbar in'}} {{travelTimeControl.getMaxValue() | secToHoursMin }}</div>
                         </td>
                     </tr>
                 </table>
@@ -103,11 +103,11 @@
             <h4>{{laupi['freitexte-objekttitel']}}</h4>
             <div class="col-md-12 text-center" style="padding-left: 0px;">
                 <ul class="pager" style='margin: 2px 0px 4px 0px;'>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['preise-kaufpreisbrutto']}}€</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['laupi-hausflaeche']}}m² Hausfläche</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['flaechen-gesamtflaeche']}}m² Gesamtfläche</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['preise-kaufpreisbrutto'] | prettifyNumber: '€'}}</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['laupi-hausflaeche'] | prettifyNumber: 'm²'}} Hausfläche</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['flaechen-gesamtflaeche'] | prettifyNumber: 'm²'}} Gesamtfläche</a></li>
                   <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['laupi-hausart']}}</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{laupi.travelTime | secondsToHoursMin}} Reisezeit</a></li>
+                  <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{laupi.travelTime | secToHoursMin}} Reisezeit</a></li>
                 </ul>
             </div>
             <div class="col-xs-12 text-center top-buffer">

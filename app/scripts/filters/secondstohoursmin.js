@@ -41,10 +41,13 @@ angular.module('route360DemoApp')
             var timeString = "";
 
             if (hours != 0){
-                timeString += (hours + "h "); 
+                timeString += (hours + " Std. "); 
             }
 
-            timeString += (minutes + "min");
+            if (minutes != 0) {
+                timeString += (minutes + " Min.");
+            }
+
             return timeString;
         };
     })
@@ -94,6 +97,20 @@ angular.module('route360DemoApp')
                 var approxKilometer = Math.round(approxMeters/10)*10;
                 return approxKilometer / 1000 + "km";
             }
+        };
+    })
+    .filter('prettifyNumber', function () {
+        return function (number,unit) {
+
+            // output is german format ie 10.000,00
+            var fl = parseFloat(number);
+            var str = fl.toFixed(2).toString().replace(".", ",").replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
+           
+            if (unit != null && unit != "") {
+                str += " " + unit;
+            }
+
+            return str;
         };
     })
     .filter('truncate', function () {

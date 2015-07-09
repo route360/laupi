@@ -15,7 +15,7 @@ angular.module('route360DemoApp')
         create : function (apartments) {
 
             var tableParams = new ngTableParams(
-                { page : 1, count : 10, sorting: { averageTravelTime : 'asc' } }, 
+                { page : 1, count : 10, sorting: { travelTime : 'asc' } }, 
                 {
                     counts : [],
                     total: apartments.length,

@@ -91,6 +91,7 @@ angular.module('route360DemoApp')
             { time : 60 * 100  , color : "#F15A24" , opacity : 1.0 },
             { time : 60 * 120  , color : "#C1272D" , opacity : 1.0 }
         ];
+
         $scope.travelTimeControl = r360.travelTimeControl({
             travelTimes : r360.config.defaultTravelTimeControlOptions.travelTimes,
             position    : 'topright', // this is the position in the map
@@ -213,10 +214,12 @@ angular.module('route360DemoApp')
             $scope.getPlaces();
             $scope.noApartmentsInTravelTimeFound = true;
 
+            $scope.maxTime = $scope.travelTimeControl.getMaxValue();
+
             var travelOptions = r360.travelOptions();
             travelOptions.addSource($scope.source); // die quelle ist der rote marker
             travelOptions.setTravelTimes($scope.travelTimeControl.getValues()); // reisezeiten vom slider holen
-            travelOptions.setDate('20150626'); // beliebigen festen freitag wählen
+            travelOptions.setDate('20150710'); // beliebigen festen freitag wählen
             travelOptions.setTime('61200'); //  feste urhzeit 17:00 wählen
 
             // call the service
@@ -244,7 +247,7 @@ angular.module('route360DemoApp')
                 travelOptions.setTravelTimes($scope.travelTimeControl.getValues()); // reisezeit festlegen
                 travelOptions.setMaxRoutingTime($scope.travelTimeControl.getMaxValue()); // bis hirerhin wird geroutet 
                 // zwingend für polygone und routen den selben tag/zeit auswählen
-                travelOptions.setDate('20150626'); // beliebigen festen freitag wählen
+                travelOptions.setDate('20150710'); // beliebigen festen freitag wählen
                 travelOptions.setTime('61200'); //  feste urhzeit 17:00 wählen
 
                 // call the time service to get the travel times
@@ -306,7 +309,7 @@ angular.module('route360DemoApp')
             var laupiMarker, icon;
 
             // marker die erreicht werden können sind grün
-            if ( laupi.travelTime != undefined && laupi.travelTime <= $scope.travelTimeControl.getMaxValue() ) {
+            if ( laupi.travelTime != -1 && laupi.travelTime != undefined && laupi.travelTime <= $scope.travelTimeControl.getMaxValue() ) {
 
                 icon = L.icon({ 
                     iconSize     : [25, 41], iconAnchor   : [12, 41],
