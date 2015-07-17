@@ -8,7 +8,12 @@
  * Controller of the route360DemoApp
  */
 angular.module('route360DemoApp')
-    .controller('MapCtrl', function ($window, $http, $scope, $config, ngTableParams, $timeout, TableParamFactory) {
+    .controller('MapCtrl', function ($window, $http, $scope, $config, ngTableParams, $timeout, TableParamFactory, PolygonService) {
+
+        $scope.travelDate = '20150717';
+        // $scope.travelDate = '20150713';
+        $scope.travelTime = (3600 * 17) + '';
+        // $scope.travelTime = (3600 * 11) + '';
 
         // das ist der startmarker
         $scope.source           = undefined;
@@ -81,6 +86,7 @@ angular.module('route360DemoApp')
         var attribution ="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | ÖPNV Daten © <a href='http://www.vbb.de/de/index.html' target='_blank'>VBB</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
         // initialising the base map. To change the base map just change following lines as described by cloudmade, mapbox etc..
         L.tileLayer('http://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', { maxZoom: 18, attribution: attribution }).addTo($scope.map);
+        L.control.scale({ metric : true, imperial : false }).addTo($scope.map);
 
         // der reisezeit slider mit werten von 20 bis 120 minuten in 20 minuten abständen
         r360.config.defaultTravelTimeControlOptions.travelTimes = [
@@ -107,15 +113,14 @@ angular.module('route360DemoApp')
                 // each button has a label which is displayed, a key, a tooltip for mouseover events 
                 // and a boolean which indicates if the button is selected by default
                 // labels may contain html
-                { label: '<span class=""></span> Farbig',         key: 'color',   checked : true  },
-                { label: '<span class=""></span> Schwarz/Weiß',   key: 'inverse', checked : false }
+                { label: '<span class=""></span> Farbig',         key: 'color',   checked : false  },
+                { label: '<span class=""></span> Schwarz/Weiß',   key: 'inverse', checked : true }
             ]
         });
 
         // umstellen der polygone
         $scope.polygonButtons.onChange(function(){ 
-            r360.config.defaultPolygonLayerOptions.inverse = !r360.config.defaultPolygonLayerOptions.inverse;
-            $scope.polygonLayer.setInverse(r360.config.defaultPolygonLayerOptions.inverse);
+            $scope.polygonLayer.setInverse($scope.polygonButtons.getValue() == 'color' ? false : true);
             $scope.showLaupis();
         });
         // zur karte hinzufügen
@@ -130,7 +135,7 @@ angular.module('route360DemoApp')
         $scope.laupiLayer      = L.featureGroup().addTo($scope.map);
         $scope.sourceLayer     = L.featureGroup().addTo($scope.map);
         $scope.routesLayer     = L.featureGroup().addTo($scope.map);
-        $scope.polygonLayer    = r360.route360PolygonLayer();
+        $scope.polygonLayer    = r360.leafletPolygonLayer({ inverse : true });
         $scope.map.addLayer($scope.polygonLayer);
 
         /**
@@ -219,20 +224,16 @@ angular.module('route360DemoApp')
             var travelOptions = r360.travelOptions();
             travelOptions.addSource($scope.source); // die quelle ist der rote marker
             travelOptions.setTravelTimes($scope.travelTimeControl.getValues()); // reisezeiten vom slider holen
-            travelOptions.setDate('20150710'); // beliebigen festen freitag wählen
-            travelOptions.setTime('61200'); //  feste urhzeit 17:00 wählen
+            travelOptions.setDate($scope.travelDate); // beliebigen festen freitag wählen
+            travelOptions.setTime($scope.travelTime); //  feste urhzeit 17:00 wählen
 
             // call the service
             r360.PolygonService.getTravelTimePolygons(travelOptions, function(polygons){
 
                 // die polygone zum layer hinzufügen und die karten so ausrichten
                 // das die polygone komplett zu sehen sind
-                $scope.polygonLayer.clearAndAddLayers(polygons);
-                $scope.map.fitBounds($scope.polygonLayer.getBoundingBox());
+                $scope.polygonLayer.clearAndAddLayers(polygons, true);
 
-                // ergebnisstabelle updaten
-                $scope.tableParams = TableParamFactory.create($scope.laupis);
-                
                 // do not query server if no laupis found
                 if ( $scope.laupis.length == 0 ) {
                     $scope.waitControl.hide();
@@ -247,10 +248,10 @@ angular.module('route360DemoApp')
                 travelOptions.setTravelTimes($scope.travelTimeControl.getValues()); // reisezeit festlegen
                 travelOptions.setMaxRoutingTime($scope.travelTimeControl.getMaxValue()); // bis hirerhin wird geroutet 
                 // zwingend für polygone und routen den selben tag/zeit auswählen
-                travelOptions.setDate('20150710'); // beliebigen festen freitag wählen
-                travelOptions.setTime('61200'); //  feste urhzeit 17:00 wählen
+                travelOptions.setDate($scope.travelDate); // beliebigen festen freitag wählen
+                travelOptions.setTime($scope.travelTime); //  feste urhzeit 17:00 wählen
 
-                // call the time service to get the travel times
+                // // call the time service to get the travel times
                 r360.TimeService.getRouteTime(travelOptions, function(sources){
                     _.each(sources[0].targets, function(target){
 
@@ -258,23 +259,27 @@ angular.module('route360DemoApp')
                         var laupi = _.find($scope.laupis, function(laupi){ return laupi.uriident == target.id; });
                         // reiszeit zu laupi hinzufügen
                         laupi.travelTime = target.travelTime;
+                        // wir machen das hier nur damit wir normal sortieren können
+                        if ( laupi.travelTime == -1 ) laupi.travelTime = 10000000;
                         
                         // create a marker which represents good or bad reachability
                         var laupiMarker = $scope.createlaupiMarker(laupi, travelOptions);
 
                         // show the info window on mouseover and click
                         laupiMarker.on('click', $scope.clickMarker(laupiMarker, laupi, travelOptions));
-                    })
+                    });
+                    // noch nach den reisezeiten sortieren
+                    $scope.laupis.sort(function(a, b){ return a.travelTime - b.travelTime; });
+
+                    // ergebnisstabelle updaten
+                    $scope.tableParams = TableParamFactory.create($scope.laupis);
 
                     // 'bitte warten' entfernen
                     $scope.waitControl.hide();
 
                     // falls keine laupis gefunden worden hinweis anzeigen
-                    if ( $scope.noApartmentsInTravelTimeFound ) {
-
+                    if ( $scope.noApartmentsInTravelTimeFound ) 
                         var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Laupis die den Suchkriterien entsprechen.', timeout: 3000, layout : $config.notyLayout, type : 'error' });
-                        $scope.map.fitBounds($scope.sourceLayer.getBounds());
-                    }
                 });
             });
         };
@@ -309,7 +314,8 @@ angular.module('route360DemoApp')
             var laupiMarker, icon;
 
             // marker die erreicht werden können sind grün
-            if ( laupi.travelTime != -1 && laupi.travelTime != undefined && laupi.travelTime <= $scope.travelTimeControl.getMaxValue() ) {
+            if ( laupi.travelTime != -1 && laupi.travelTime != undefined && laupi.travelTime <= $scope.travelTimeControl.getMaxValue() &&
+                    PolygonService.pointInPolygon([laupi.lat, laupi.lng]) ) {
 
                 icon = L.icon({ 
                     iconSize     : [25, 41], iconAnchor   : [12, 41],
@@ -360,7 +366,7 @@ angular.module('route360DemoApp')
 
                     $scope.laupi.travelTime = routes[0].travelTime;
                     $scope.laupi.route      = routes[0];
-                    $scope.laupi.route.fadeIn($scope.routesLayer, 1000, 'travelDistance', { 
+                    r360.LeafletUtil.fadeIn($scope.routesLayer, $scope.laupi.route, 1000, 'travelDistance', { 
                             transferColor       : '#659742',
                             transferHaloColor   : '#4B7C27',
                             transferFillOpacity : 1,
@@ -387,7 +393,13 @@ angular.module('route360DemoApp')
                 reset       : false,
                 reverse     : false,
                 image       : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[2] + '.png',
-                options     : { car : true, bike : true, walk : true, transit : true, init : 'transit' },
+                options     : { car : true, bike : true, walk : true, transit : true, biketransit : true, init : 'transit', labels : {
+                    bike : '<span class="fa fa-bicycle travel-type-icon"></span>',
+                    walk : '<span class="fa fa-male travel-type-icon"></span>',
+                    car : '<span class="fa fa-car travel-type-icon"></span>',
+                    transit : '<span class="fa fa-bus travel-type-icon"></span>',
+                    biketransit : '<span class="fa fa-bicycle travel-type-icon"></span> + <span class="fa fa-bus travel-type-icon"></span>',
+                }},
                 width : 400
             });
 
@@ -456,8 +468,8 @@ angular.module('route360DemoApp')
         // defaultmäßiges aufrufen zu begin des website ladens
         $scope.showLaupis();
         noty({text: 'Man kann den Marker verscchieben', layout : $config.notyLayout, type : 'success', timeout : 3000 });
-        $timeout(function(){ noty({text: 'Größere Marker symbolisieren kürzere Reisezeiten.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 4000);
-        $timeout(function(){ noty({text: 'Die farbigen Markierungen auf der Karte entsprechen den Gebieten die in der angegebenen Reisezeit erreichbar sind.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 8000);
+        // $timeout(function(){ noty({text: 'Größere Marker symbolisieren kürzere Reisezeiten.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 4000);
+        // $timeout(function(){ noty({text: 'Die farbigen Markierungen auf der Karte entsprechen den Gebieten die in der angegebenen Reisezeit erreichbar sind.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 8000);
         $scope.resize();
         // select language
         $("[lang='en']").hide();
