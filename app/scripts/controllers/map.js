@@ -174,7 +174,9 @@ angular.module('route360DemoApp')
         // den travel mode einstellungs button klickt
         $scope.resize = function(){
             var height = $('.leaflet-top.leaflet-left').height();
-            $('#laupi-details').animate({ top: ((height) + 10) + 'px' }, 250, function() {
+            var pos = $('.leaflet-top.leaflet-left').offset();
+            console.log(pos);
+            $('#laupi-details').animate({ top: ((height) + (pos.top) + 10) + 'px' }, 250, function() {
                 $('#laupi-details').css('max-height',  ($('#map-laupi').height() -  (height) - 20) + 'px');    // Animation complete.
             });
         };
@@ -434,7 +436,7 @@ angular.module('route360DemoApp')
             $scope.resize();
         }();
 
-        $('#laupi-details').css('top',  ((53) + 10) + 'px');
+        $('#laupi-details').css('top',  (117) + 'px');
         $('#laupi-details').on('mouseover', function(){ $scope.map.scrollWheelZoom.disable(); });
         $('#laupi-details').on('mouseout' , function(){ $scope.map.scrollWheelZoom.enable(); });      
 
