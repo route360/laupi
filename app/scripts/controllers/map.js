@@ -123,6 +123,7 @@ angular.module('route360DemoApp')
             $scope.polygonLayer.setInverse($scope.polygonButtons.getValue() == 'color' ? false : true);
             $scope.showLaupis();
         });
+
         // zur karte hinzufügen
         $scope.polygonButtons.addTo($scope.map);
         L.control.zoom({position : 'topright'}).addTo($scope.map);
@@ -135,7 +136,11 @@ angular.module('route360DemoApp')
         $scope.laupiLayer      = L.featureGroup().addTo($scope.map);
         $scope.sourceLayer     = L.featureGroup().addTo($scope.map);
         $scope.routesLayer     = L.featureGroup().addTo($scope.map);
-        $scope.polygonLayer    = r360.leafletPolygonLayer({ inverse : true });
+        $scope.polygonLayer    = r360.leafletPolygonLayer({ 
+            inverse : true,
+            extendWidthX: 500,
+            extendWidthY: 500
+        });
         $scope.map.addLayer($scope.polygonLayer);
 
         /**
@@ -175,7 +180,6 @@ angular.module('route360DemoApp')
         $scope.resize = function(){
             var height = $('.leaflet-top.leaflet-left').height();
             var pos = $('.leaflet-top.leaflet-left').offset();
-            console.log(pos);
             $('#laupi-details').animate({ top: ((height) + (pos.top) + 10) + 'px' }, 250, function() {
                 $('#laupi-details').css('max-height',  ($('#map-laupi').height() -  (height) - 20) + 'px');    // Animation complete.
             });
@@ -390,7 +394,7 @@ angular.module('route360DemoApp')
 
             // create a autocomplete
             $scope.autoComplete = r360.placeAutoCompleteControl({ 
-                country     : "Deutschland", 
+                country     : 'Deutschland', 
                 placeholder : 'Startpunkt', 
                 reset       : false,
                 reverse     : false,

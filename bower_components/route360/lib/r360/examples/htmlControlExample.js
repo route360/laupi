@@ -22,10 +22,8 @@ function htmlControlExample(){
     r360.config.serviceKey = 'YWtKiQB7MiZETbCoVsG6';
     r360.config.defaultPolygonLayerOptions.inverse = false;
 
-    // create the layer to add the polygons
-    var polygonLayer = r360.route360PolygonLayer();
-    // add it to the map
-    map.addLayer(polygonLayer);
+    // create the layer to add the polygons and add it to the map
+    var polygonLayer = r360.leafletPolygonLayer().addTo(map);
 
     // create and add the control to the map
     var htmlControl = r360.htmlControl({ classes : "html-control" });
@@ -59,7 +57,14 @@ function htmlControlExample(){
         // in case there are already polygons on the map/layer
         polygonLayer.clearAndAddLayers(polygons);
 
-        // zoom the map to fit the polygons perfectly
-        map.fitBounds(polygonLayer.getBoundingBox(), {paddingTopLeft : [300,0]});
+        // this will be refactored in future version to return a leaflet
+        // LatLngBounds object to fit the map
+        var bounds = polygonLayer.getBoundingBox4326();
+        var sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
+
+        // zoom the map to fit the polygons and the html control perfectly
+        map.fitBounds(
+            L.latLngBounds(L.latLng({ lat : sw.lat, lng : sw.lng}), L.latLng({ lat : ne.lat, lng : ne.lng})),
+            {paddingTopLeft : [300,0]});
     });
 }
