@@ -360,10 +360,15 @@ angular.module('route360DemoApp')
 
                 $scope.laupi = laupi;
                 $scope.routesLayer.clearLayers();
+
+                $scope.map.removeLayer($scope.routesLayer);
+                $scope.routesLayer     = L.featureGroup().addTo($scope.map);
+
                 $scope.resize();
                 $('#laupi-details').show();
 
                 // define source and target
+                var travelOptions = r360.travelOptions();
                 travelOptions.addSource($scope.source);
                 travelOptions.setTargets([laupiMarker]);
 
@@ -372,6 +377,7 @@ angular.module('route360DemoApp')
 
                     $scope.laupi.travelTime = routes[0].travelTime;
                     $scope.laupi.route      = routes[0];
+
                     r360.LeafletUtil.fadeIn($scope.routesLayer, $scope.laupi.route, 1000, 'travelDistance', { 
                             transferColor       : '#659742',
                             transferHaloColor   : '#4B7C27',

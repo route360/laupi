@@ -120,7 +120,7 @@
                 <tr ng-repeat="segment in laupi.route.getSegments().slice() track by $index" class="routeType-{{segment.routeType ? segment.routeType : segment.type}}">
                     <!-- WALK -->
                     <td ng-if="segment.getType() == 'WALK'"><div class="center routeTypes"><i class="fa fa-male fa-2x center"></i></div></td>
-                    <td ng-if="segment.getType() == 'WALK' && $index == 0 && laupi.route.getSegments().length > 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{laupi.route.getSegments()[laupi.route.getSegments().length - 3].startname}}</span></td>
+                    <td ng-if="segment.getType() == 'WALK' && $index == 0 && laupi.route.getSegments().length > 1"><span class='destination-name center-block' style='margin-top: 8px;'>{{laupi.route.getSegments()[1].startname}}</span></td>
                     <td ng-if="segment.getType() == 'WALK' && laupi.route.getSegments().length == 1"><span class='destination-name center-block' style='margin-top: 8px;'>Gesamtreisedauer</span></td>
                     <td ng-if="segment.getType() == 'WALK' && $index == laupi.route.getSegments().length - 1 && laupi.route.getSegments().length > 1"><span class='destination-name center-block' style='margin-top: 8px;'>Ziel</span></td>
                     <td ng-if="segment.getType() == 'WALK'">
