@@ -10,5 +10,11 @@ angular.module('cfg', [])
 
 r360.config.i18n.language   = 'de';
 r360.config.i18n.configuredLanguages = ['de'];
-r360.config.serviceUrl = 'http://api.route360.net/api_naturtrip_rc1/';
-r360.config.serviceKey = '1RIFMP3HTK2CWALAFR1A';
+
+// hier bitte eigene API und KEY eingeben
+r360.config.serviceUrl = 'http://api.route360.net/api_brandenburg/';
+r360.config.serviceKey = '<<API KEY>>';
+
+// der tolerance Wert sollte immer geringer sein als der StrokeWidth Wert
+r360.config.defaultPolygonLayerOptions.strokeWidth = 20
+r360.config.defaultPolygonLayerOptions.tolerance = 13;

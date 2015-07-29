@@ -57,8 +57,7 @@ function routingExample(){
         // one route for each source and target combination
         _.each(routes, function(route){
 
-            // routeLayer.clearLayers();
-            route.fadeIn(routeLayer, 1000, "travelDistance");
+            r360.LeafletUtil.fadeIn(routeLayer, route, 1000, "travelDistance");
         });
     });
 }

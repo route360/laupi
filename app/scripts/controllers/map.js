@@ -123,6 +123,7 @@ angular.module('route360DemoApp')
             $scope.polygonLayer.setInverse($scope.polygonButtons.getValue() == 'color' ? false : true);
             $scope.showLaupis();
         });
+
         // zur karte hinzufügen
         $scope.polygonButtons.addTo($scope.map);
         L.control.zoom({position : 'topright'}).addTo($scope.map);
@@ -135,7 +136,11 @@ angular.module('route360DemoApp')
         $scope.laupiLayer      = L.featureGroup().addTo($scope.map);
         $scope.sourceLayer     = L.featureGroup().addTo($scope.map);
         $scope.routesLayer     = L.featureGroup().addTo($scope.map);
-        $scope.polygonLayer    = r360.leafletPolygonLayer({ inverse : true });
+        $scope.polygonLayer    = r360.leafletPolygonLayer({ 
+            inverse : true,
+            extendWidthX: 500,
+            extendWidthY: 500
+        });
         $scope.map.addLayer($scope.polygonLayer);
 
         /**
@@ -174,7 +179,8 @@ angular.module('route360DemoApp')
         // den travel mode einstellungs button klickt
         $scope.resize = function(){
             var height = $('.leaflet-top.leaflet-left').height();
-            $('#laupi-details').animate({ top: ((height) + 10) + 'px' }, 250, function() {
+            var pos = $('.leaflet-top.leaflet-left').offset();
+            $('#laupi-details').animate({ top: ((height) + (pos.top) + 10) + 'px' }, 250, function() {
                 $('#laupi-details').css('max-height',  ($('#map-laupi').height() -  (height) - 20) + 'px');    // Animation complete.
             });
         };
@@ -354,10 +360,15 @@ angular.module('route360DemoApp')
 
                 $scope.laupi = laupi;
                 $scope.routesLayer.clearLayers();
+
+                $scope.map.removeLayer($scope.routesLayer);
+                $scope.routesLayer     = L.featureGroup().addTo($scope.map);
+
                 $scope.resize();
                 $('#laupi-details').show();
 
                 // define source and target
+                var travelOptions = r360.travelOptions();
                 travelOptions.addSource($scope.source);
                 travelOptions.setTargets([laupiMarker]);
 
@@ -366,6 +377,7 @@ angular.module('route360DemoApp')
 
                     $scope.laupi.travelTime = routes[0].travelTime;
                     $scope.laupi.route      = routes[0];
+
                     r360.LeafletUtil.fadeIn($scope.routesLayer, $scope.laupi.route, 1000, 'travelDistance', { 
                             transferColor       : '#659742',
                             transferHaloColor   : '#4B7C27',
@@ -388,7 +400,7 @@ angular.module('route360DemoApp')
 
             // create a autocomplete
             $scope.autoComplete = r360.placeAutoCompleteControl({ 
-                country     : "Deutschland", 
+                country     : 'Deutschland', 
                 placeholder : 'Startpunkt', 
                 reset       : false,
                 reverse     : false,
@@ -434,7 +446,7 @@ angular.module('route360DemoApp')
             $scope.resize();
         }();
 
-        $('#laupi-details').css('top',  ((53) + 10) + 'px');
+        $('#laupi-details').css('top',  (117) + 'px');
         $('#laupi-details').on('mouseover', function(){ $scope.map.scrollWheelZoom.disable(); });
         $('#laupi-details').on('mouseout' , function(){ $scope.map.scrollWheelZoom.enable(); });      
 

@@ -27,9 +27,7 @@ function gettingStartedExample(){
     // No we add a layer for the reachability polygons, call the Route360° 
     // web service and render the resulting polygons on the map:
     // create the layer to add the polygons
-    var polygonLayer = r360.route360PolygonLayer();
-    // add it to the map
-    map.addLayer(polygonLayer);
+    var polygonLayer = r360.leafletPolygonLayer().addTo(map);
 
     // you need to define some options for the polygon service
     // for more travel options check out the other tutorials
@@ -37,7 +35,7 @@ function gettingStartedExample(){
     // we only have one source which is the marker we just added
     travelOptions.addSource(marker);
     // we want to have polygons for 5 to 30 minutes
-    travelOptions.setTravelTimes([300, 600,900, 1200, 1500, 1800]);
+    travelOptions.setTravelTimes([300, 600, 900, 1200, 1500, 1800]);
     // and we want to go by foot
     travelOptions.setTravelType('walk')
 
@@ -45,10 +43,8 @@ function gettingStartedExample(){
     r360.PolygonService.getTravelTimePolygons(travelOptions, function(polygons){
             
         // add the returned polygons to the polygon layer 
-        polygonLayer.addLayer(polygons);
-        
-        // zoom the map to fit the polygons perfectly
-        map.fitBounds(polygonLayer.getBoundingBox());
+        // and zoom the map to fit the polygons perfectly (the 'true' parameter)
+        polygonLayer.clearAndAddLayers(polygons, true);
     }, 
     function(status, message){
 

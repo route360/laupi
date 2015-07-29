@@ -30,7 +30,7 @@ module.exports = function (grunt) {
     uglify: {
         options: {
             beautify: false,
-            report: 'gzip'
+            report: 'min'
         }
     },
 
@@ -47,10 +47,10 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         }
       },
-      jsTest: {
-        files: ['test/spec/{,*/}*.js'],
-        tasks: ['newer:jshint:test', 'karma']
-      },
+      // jsTest: {
+      //   files: ['test/spec/{,*/}*.js'],
+      //   tasks: ['newer:jshint:test', 'karma']
+      // },
       compass: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         tasks: ['compass:server', 'autoprefixer']

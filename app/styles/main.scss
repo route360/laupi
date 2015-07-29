@@ -17,7 +17,7 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0px;
-    overflow-x: hidden;
+    overflow: hidden;
 
     .navbar  {
 
@@ -116,7 +116,8 @@ html, body {
     padding: 7px;
     z-index: 1000;
     color: black;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     .map-icon-walking, .map-icon-bicycling {
 
