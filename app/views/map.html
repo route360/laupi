@@ -62,8 +62,8 @@
                 <table ng-table="laupisTableParams" class="table">
                     <tr ng-repeat="laupi in $data">
                         <td data-title="'Expose'" class='text-center'>
-                            <a target='_blank' href="http://google.com/{{laupi.uuid}}">
-                                <img class='img-responsive img-thumbnail' ng-src="http://laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}" style="max-height: 70px;">
+                            <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">
+                                <img class='img-responsive img-thumbnail' ng-src="https://www.laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}" style="max-height: 70px;">
                             </a>        
                         </td>
                         <td data-title="'Eigentumsart'" sortable="'laupi-eigentumsart'" class='text-center'>
@@ -110,7 +110,10 @@
                 </ul>
             </div>
             <div class="col-xs-12 text-center top-buffer">
-                    <img  class="img-responsive img-thumbnail" ng-src="http://laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}">
+                <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">
+                    <img  class="img-responsive img-thumbnail" ng-src="https://www.laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}">
+                </a><br />
+                <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">Zum Exposé</a>
             </div>
         </div>
         
