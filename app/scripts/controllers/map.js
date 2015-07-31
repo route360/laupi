@@ -26,8 +26,8 @@ angular.module('route360DemoApp')
         $scope.laupisDatabase = laupisDatabase.data;
 
         _.each($scope.laupisDatabase, function(laupi){
-            laupi.lat = laupi['geo-lat'];
-            laupi.lng = laupi['geo-lon'];
+            laupi.lat = laupi['geo-lat_forged'];
+            laupi.lng = laupi['geo-lon_forged'];
             laupi.id = laupi.uriident;
         });
         // das sind die laupis die den suckriterien entsprechen
@@ -87,7 +87,7 @@ angular.module('route360DemoApp')
         // attribution to give credit to OSM map data and VBB for public transportation 
         var attribution ="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | ÖPNV Daten © <a href='http://www.vbb.de/de/index.html' target='_blank'>VBB</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
         // initialising the base map. To change the base map just change following lines as described by cloudmade, mapbox etc..
-        L.tileLayer('http://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', { maxZoom: 18, attribution: attribution }).addTo($scope.map);
+        L.tileLayer('https://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', { maxZoom: 18, attribution: attribution }).addTo($scope.map);
         L.control.scale({ metric : true, imperial : false }).addTo($scope.map);
 
         // der reisezeit slider mit werten von 20 bis 120 minuten in 20 minuten abständen
