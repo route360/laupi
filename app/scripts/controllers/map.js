@@ -98,6 +98,7 @@ angular.module('route360DemoApp')
 
             // baut das datenmodell für die tabelle
             $scope.laupisTableParams = TableParamFactory.create($scope.laupis);
+            $scope.laupisTableParams.settings().$scope = $scope; 
             $scope.$apply();
             $("#laupi-results-modal").modal('show'); 
         });
