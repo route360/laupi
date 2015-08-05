@@ -22,7 +22,14 @@ angular
     $routeProvider
         .when('/', {
             templateUrl: 'views/map.html',
-            controller: 'MapCtrl'
+            controller: 'MapCtrl',
+            resolve: {
+                laupisDatabase: function (DataService) {
+                    return DataService.getData().then(function (response) {
+                        return response.data;
+                    });
+                }
+            }
         })
         .otherwise({
             redirectTo: '/'
