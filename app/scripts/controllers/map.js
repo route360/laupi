@@ -46,40 +46,63 @@ angular.module('route360DemoApp')
         $scope.laupis = _.reject($scope.laupis, function(laupi){ return laupi.lat == 0 });
 
         // die verschiedenen suchkriterien, alles wo 'ticked: true' steht sind die standardvorgaben
-        $scope.kaufpreis = [
-            {  value: 10000, name : 'bis 10.000 €', ticked : false }, {  value: 20000, name : 'bis 20.000 €', ticked : false },
-            {  value: 30000, name : 'bis 30.000 €', ticked : true  }, {  value: 40000, name : 'bis 40.000 €', ticked : false },
-            {  value: 50000, name : 'bis 50.000 €', ticked : false }, {  value: 60000, name : 'bis 60.000 €', ticked : false }
-        ];
+        $scope.kaufpreis = [];
+        var kaufpreis = laupisDatabase.filterConfig.values['preise-kaufpreisbrutto'];
+        var size = kaufpreis.length;
+        angular.forEach(kaufpreis, function(value, key) {
+            var vals = value.css.split('-');
+            var obj = {
+                value: vals[1],
+                name: 'bis ' + String(vals[1]).split("").reverse().join("").replace(/(\d{3}\B)/g, "$1.").split("").reverse().join("") + ' €',
+                ticked: false
+            };
+            if(size-1 == key) obj.ticked = true;
+            this.push(obj);
+        }, $scope.kaufpreis);
 
-        $scope.eigentumsArt = [ 
-            {  value: 'Eigentum',         ticked : true  , name : 'Eigentum'},          {  value: 'Pacht',            ticked : true  , name : 'Pacht'},
-            {  value: 'Pacht über BufIM', ticked : true  , name : 'Pacht über BufIM'},  {  value: 'Teileigentum',     ticked : true  , name : 'Teileigentum'}
-        ];
+        $scope.eigentumsArt = [];
+        angular.forEach(laupisDatabase.filterConfig.values['laupi-eigentumsart'], function(value, key) {
+            var obj = {
+                value: value.name,
+                name: value.name,
+                ticked: true
+            };
+            this.push(obj);
+        }, $scope.eigentumsArt);
 
-        $scope.grundstuecksFlaeche = [
-            {  value: 200, ticked : false , name : 'bis 200 m²'},    {  value: 300, ticked : false , name : 'bis 300 m²'},
-            {  value: 400, ticked : false , name : 'bis 400 m²'},    {  value: 500, ticked : true , name : 'bis 500 m²'},
-            {  value: 800, ticked : false , name : 'bis 800 m²'},    {  value: 1100, ticked : false , name : 'bis 1.100 m²'},
-            {  value: 1300, ticked : false , name : 'bis 1.300 m²'}, {  value: 1500, ticked : false , name : 'bis 1.500 m²'}
-        ];
+        $scope.grundstuecksFlaeche = [];
+        var gesamtflaeche = laupisDatabase.filterConfig.values['flaechen-gesamtflaeche'];
+        var size = gesamtflaeche.length;
+        angular.forEach(gesamtflaeche, function(value, key) {
+            var vals = value.css.split('-');
+            var obj = {
+                value: vals[1],
+                name: 'bis ' + String(vals[1]).split("").reverse().join("").replace(/(\d{3}\B)/g, "$1.").split("").reverse().join("") + ' ' + 'm²',
+                ticked: false
+            };
+            // if(vals[1] == '500') obj.ticked = true;
+            if(size-1 == key) obj.ticked = true;
+            this.push(obj);
+        }, $scope.grundstuecksFlaeche);
 
-        $scope.hausArt = [
-            {  ticked : true , value: 'Blockbohlenhaus', name : 'Blockbohlenhaus'}, {  ticked : true , value: 'DDR-Bungalow', name : 'DDR-Bungalow'},
-            {  ticked : true , value: 'Finnhütte', name : 'Finnhütte'},             {  ticked : true ,  value: 'Gartenhaus', name : 'Gartenhaus'},
-            {  ticked : true , value: 'Holzhaus', name : 'Holzhaus'},               {  ticked : true , value: 'Steinhaus', name : 'Steinhaus'}
-        ];
-
-        $scope.hausFlaeche = [
-            {  ticked : false , value: '20', name : 'bis 20 m²'}, {  ticked : false , value: '30', name : 'bis 30 m²'},
-            {  ticked : false , value: '40', name : 'bis 40 m²'}, {  ticked : true , value: '50', name : 'bis 50 m²'},
-            {  ticked : false , value: '60', name : 'bis 60 m²'}, {  ticked : false , value: '70', name : 'bis 70 m²'}
-        ];
+        $scope.hausFlaeche = [];
+        var hausflaeche = laupisDatabase.filterConfig.values['laupi-hausflaeche'];
+        var size = hausflaeche.length;
+        angular.forEach(hausflaeche, function(value, key) {
+            var vals = value.css.split('-');
+            var obj = {
+                value: vals[1],
+                name: 'bis ' + String(vals[1]).split("").reverse().join("").replace(/(\d{3}\B)/g, "$1.").split("").reverse().join("") + ' ' + 'm²',
+                ticked: false
+            };
+            if(size-1 == key) obj.ticked = true;
+            this.push(obj);
+        }, $scope.hausFlaeche);
 
         // das öffnet das modal fenster für die bearbeitung der suche
         $("#laupi-search-edit").show();
         $("#laupi-search-edit").on('click', function(){ $("#laupi-search-edit-modal").modal('show'); });
-        
+
         // öffnet die ergebnissliste
         $("#laupi-results").show();
         $("#laupi-results").on('click', function(){ 
@@ -90,6 +113,10 @@ angular.module('route360DemoApp')
             $scope.$apply();
             $("#laupi-results-modal").modal('show'); 
         });
+
+        // öffnet das modal fenster für die legende
+        $("#laupi-legend").show();
+        $("#laupi-legend").on('click', function(){ $("#laupi-legend-modal").modal('show'); });
         
         // leaflet complains if project is build/minimized if this is not present
         L.Icon.Default.imagePath = 'images/marker/';
@@ -173,7 +200,9 @@ angular.module('route360DemoApp')
             var icon = L.icon({ 
                 iconSize     : [25, 41], iconAnchor   : [12, 41],
                 iconUrl      : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[2] + '.png', 
-                shadowUrl    : L.Icon.Default.imagePath + 'marker-shadow.png'
+                shadowUrl    : L.Icon.Default.imagePath + 'marker-shadow.png',
+                label        : 'Startpunkt',
+                placeholder  : 'Startpunkt'
             });
             $scope.source = L.marker($scope.autoComplete.getValue().latlng, {icon : icon, draggable : true }).addTo($scope.sourceLayer);
             $scope.source.travelType = $scope.autoComplete.getTravelType();
@@ -205,19 +234,17 @@ angular.module('route360DemoApp')
 
         // symbolisiert die abfrage an den webservice oder wie auch immer 
         // nach den suchkriterien gefiltert wird
-        $scope.filterLaupis = function () { 
-
+        $scope.filterLaupis = function () {
             $scope.laupis = [];
             _.each($scope.laupisDatabase, function(laupi){
 
-                if ( laupi['flaechen-gesamtflaeche'] <= $scope.getSelection($scope.selectedGrundstuecksFlaeche)[0] && 
-                     laupi['laupi-hausflaeche']      <= $scope.getSelection($scope.selectedHausFlaeche)[0] &&
-                     laupi['preise-kaufpreisbrutto'] <= $scope.getSelection($scope.selectedKaufpreis)[0] && 
-                     _.contains($scope.getSelection($scope.selectedEigentumsArt), laupi['laupi-eigentumsart'])  && 
-                     _.contains($scope.getSelection($scope.selectedHausArt), laupi['laupi-hausart']) )  {
-
+                if ( parseFloat(laupi['flaechen-gesamtflaeche']) <= parseFloat($scope.getSelection($scope.selectedGrundstuecksFlaeche)[0]) &&
+                     parseFloat(laupi['laupi-hausflaeche'])      <= parseFloat($scope.getSelection($scope.selectedHausFlaeche)[0]) &&
+                     parseFloat(laupi['preise-kaufpreisbrutto']) <= parseFloat($scope.getSelection($scope.selectedKaufpreis)[0]) &&
+                     _.contains($scope.getSelection($scope.selectedEigentumsArt), laupi['laupi-eigentumsart']) )  {
                     $scope.laupis.push(laupi);
                 }
+
             });
         };
 
@@ -303,7 +330,7 @@ angular.module('route360DemoApp')
 
                     // falls keine laupis gefunden worden hinweis anzeigen
                     if ( $scope.noApartmentsInTravelTimeFound ) 
-                        var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Laupis die den Suchkriterien entsprechen.', timeout: 3000, layout : $config.notyLayout, type : 'error' });
+                        var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Objekte, die den Suchkriterien entsprechen.', timeout: 3000, layout : $config.notyLayout, type : 'error' });
                 });
             });
         };
@@ -499,7 +526,7 @@ angular.module('route360DemoApp')
 
         // defaultmäßiges aufrufen zu begin des website ladens
         $scope.showLaupis();
-        noty({text: 'Man kann den Marker verscchieben', layout : $config.notyLayout, type : 'success', timeout : 3000 });
+        noty({text: 'Man kann den Marker verschieben', layout : $config.notyLayout, type : 'success', timeout : 3000 });
         // $timeout(function(){ noty({text: 'Größere Marker symbolisieren kürzere Reisezeiten.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 4000);
         // $timeout(function(){ noty({text: 'Die farbigen Markierungen auf der Karte entsprechen den Gebieten die in der angegebenen Reisezeit erreichbar sind.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 8000);
         $scope.resize();

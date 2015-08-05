@@ -58,7 +58,7 @@ r360.PhotonPlaceAutoCompleteControl = L.Control.extend({
 
             that.options.input += 
                 '<span id="'+that.options.id+'-image" class="input-group-addon btn-autocomplete-marker"> \
-                    <img style="height:22px;" src="'+that.options.image+'"> \
+                    <img style="height:22px;" src="'+that.options.image+'" title="'+that.options.placeholder+'"> \
                  </span>';
         }
 
@@ -419,11 +419,11 @@ r360.PlaceAutoCompleteControl = L.Control.extend({
 
             that.options.input += 
                 '<span id="'+that.options.id+'-image" class="input-group-addon btn-autocomplete-marker"> \
-                    <img style="height:22px;" src="'+that.options.image+'"> \
+                    <img style="height:22px;" src="'+that.options.image+'" title="'+that.options.placeholder+'"> \
                  </span>';
         }
 
-        console.log(that.options);
+        // console.log(that.options);
 
         var optionsHtml = [];
         // if ( that.options.options ) {
@@ -462,12 +462,12 @@ r360.PlaceAutoCompleteControl = L.Control.extend({
 
             if ( that.options.options && that.options.options.walk ) 
                 optionsHtml.push('<button type="button" class="btn btn-default travel-type-button ' + (this.options.travelType == 'walk' ? 'active' : '') + 
-                    '" travel-type="walk">' + walkLabel+ '</button>');
+                    '" travel-type="walk" title="Zu Fuß">' + walkLabel+ '</button>');
             
             if ( that.options.options && that.options.options.bike ) 
                 optionsHtml.push('<button type="button" class="btn btn-default travel-type-button '
                     + (this.options.travelType == 'bike' ? 'active' : '') + 
-                    '" travel-type="bike">' + bikeLabel + '</button>');
+                    '" travel-type="bike" title="Mit dem Fahrrad">' + bikeLabel + '</button>');
 
             if ( that.options.options && that.options.options.rentbike ) 
                 optionsHtml.push('<button type="button" class="btn btn-default travel-type-button '
@@ -487,17 +487,17 @@ r360.PlaceAutoCompleteControl = L.Control.extend({
             if ( that.options.options && that.options.options.transit ) 
                 optionsHtml.push('<button type="button" class="btn btn-default travel-type-button '
                     + (this.options.travelType == 'transit' ? 'active' : '') + 
-                    '" travel-type="transit">'+walkTransitLabel+'</button>');
+                    '" travel-type="transit" title="ÖPNV">'+walkTransitLabel+'</button>');
 
             if ( that.options.options && that.options.options.biketransit ) 
                 optionsHtml.push('<button type="button" class="btn btn-default travel-type-button '
                     + (this.options.travelType == 'bike' ? 'active' : '') + 
-                    '" travel-type="biketransit">'+bikeTransitLabel+'</button>');
+                    '" travel-type="biketransit" title="ÖPNV und Fahrrad">'+bikeTransitLabel+'</button>');
             
             if ( that.options.options && that.options.options.car ) 
                 optionsHtml.push('<button type="button" class="btn btn-default travel-type-button '
                     + (this.options.travelType == 'car' ? 'active' : '') + 
-                    '" travel-type="car">'+carLabel+'</button>');
+                    '" travel-type="car" title="Mit dem Auto">'+carLabel+'</button>');
             
             optionsHtml.push('  </div>');
             optionsHtml.push('</div>');

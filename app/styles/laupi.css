@@ -1,0 +1,153 @@
+
+.leaflet-control-scale-line {
+    background-color: #50af31;
+    color: #fff;
+}
+
+#laupi-details {
+    bottom: 30px;
+}
+
+#laupi-details #close-expose {
+    padding: 5px 10px;
+}
+
+#laupi-details a:hover {
+     text-decoration: none;
+}
+
+#laupi-details h4 {
+    color: #736357;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    padding: 20px 0;
+    margin-bottom: 0;
+    border: 0;
+    font-weight: 700;
+}
+
+#laupi-details .estate-box {
+    background-color: #cceabe;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#laupi-details .estate-box h2 {
+    color: #736357;
+    font-size: 1em;
+    border-bottom: 1px solid #50af31;
+    margin-top: 0;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+    text-align: left;
+}
+
+#laupi-details .attr-info {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    color: #736357;
+}
+
+#laupi-details .attr-info > li span.pull-left {
+    width: 30%;
+    float: left;
+    text-align: left;
+}
+
+#laupi-details .attr-info > li span.qty {
+    width: 70%;
+}
+
+#laupi-details .btn-info {
+    margin-top: 10px;
+    color: #fff;
+    background-color: #50af31;
+    border-color: transparent;
+}
+
+#laupi-details .label-info {
+    background-color: #736357;
+    font-size: 0.9em;
+}
+
+#laupi-results-modal table>tbody>tr:nth-child(odd)>td, #laupi-results-modal table>tbody>tr:nth-child(odd)>th {
+    background-color: #f9f9f9;
+}
+
+
+#laupi-search-edit-modal .modal-body h4 {
+    text-transform: uppercase;
+    width: 100%;
+    font-size: 0.9em;
+    line-height: 1.7em;
+}
+
+#laupi-search-edit-modal .multiSelect > button {
+    border: 1px solid #50af31;
+    color: #fff;
+    background-color: #50af31;
+    background-image: none;
+    border-color: #fff;
+    width: 300px;
+    text-align: left;
+}
+
+#laupi-search-edit-modal .multiSelect .checkboxLayer {
+    min-width: 300px;
+}
+
+#laupi-search-edit-modal .multiSelect .multiSelectItem:not(.multiSelectGroup).selected {
+    background: none;
+    border: 0;
+}
+
+#laupi-search-edit-modal .multiSelect .multiSelectItem:hover, .multiSelect .multiSelectGroup:hover {
+    background-image: none !important;
+    color: #fff !important;
+    cursor: pointer;
+    border: 1px solid #cceabe !important;
+    background-color: #cceabe !important;
+}
+
+#laupi-search-edit-modal .multiSelect .multiSelectFocus {
+    background-image: none !important;
+    color: #444 !important;
+    border: 0 !important;
+}
+
+#laupi-search-edit-modal .multiSelect .caret {
+    border-top: 4px solid #fff;
+}
+
+#laupi-legend-modal .icon {
+    margin-right: 5px;
+}
+
+#laupi-legend-modal p span {
+    display: inline-table;
+}
+
+@media (max-width: 720px) {
+    .leaflet-top.leaflet-right {
+        padding-top: 78px;
+    }
+
+    .leaflet-bottom .leaflet-control-scale {
+        margin-bottom: 35px;
+    }
+
+    .autocomplete {
+        width: auto !important;
+        margin-right: 10px;
+    }
+
+    #laupi-details {
+        bottom: 55px;
+    }
+
+    #laupi-search-edit-modal .multiSelect > button {
+        width: 100%;
+    }
+}
