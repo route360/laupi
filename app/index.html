@@ -9,6 +9,7 @@
 
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+
     <!-- endbuild -->
 
     <!-- build:css(app/..) styles/vendor.css -->
@@ -22,6 +23,8 @@
     <link rel="stylesheet" href="bower_components/isteven-angular-multiselect/isteven-multi-select.css" />
     <!-- endbower -->
     <!-- endbuild -->
+
+    <link rel="stylesheet" href="styles/laupi.css">
 
   </head>
   <body ng-app="route360DemoApp">
@@ -48,8 +51,9 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul id="left-nav-bar" class="nav navbar-nav">
-                <li id='laupi-search-edit' ng-class='navClass("laupi-search-edit")'><a href=''><i class='fa fa-search'></i> {{ 'Suche anpassen'  }}</a></li>
-                <li id='laupi-results' ng-class='navClass("laupi-results")'><a href=''><i class='fa fa-list-ol'></i> {{ 'Ergebnisse'  }}</a></li>
+                <li id='laupi-search-edit' ng-class='navClass("laupi-search-edit")'><a href=''><i class='fa fa-search'></i> {{ 'Erweiterte Suche'  }}</a></li>
+                <li id='laupi-results' ng-class='navClass("laupi-results")'><a href=''><i class='fa fa-list-ol'></i> {{ 'Ergebnisliste'  }}</a></li>
+                <li id='laupi-legend' ng-class='navClass("laupi-legend")'><a href=''><i class='fa fa-info'></i> {{ 'Legende'  }}</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
       </div>

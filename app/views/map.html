@@ -8,33 +8,27 @@
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <h4>Eigentumsart</h4>
                                 <div id="eigentumsArt-select" isteven-multi-select input-model="eigentumsArt" output-model="selectedEigentumsArt" button-label="icon name" item-label="icon name" helper-elements="" max-labels="1" default-label="Nichts ausgewählt" tick-property="ticked"></div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <h4>Grundstück</h4>
                                 <div id="grundstuecksFlaeche-select" isteven-multi-select selection-mode="single" input-model="grundstuecksFlaeche" output-model="selectedGrundstuecksFlaeche" button-label="icon name" item-label="icon name" helper-elements="" max-labels="1" default-label="Nichts ausgewählt" tick-property="ticked"></div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <h4>Hausfläche</h4>
                                 <div id="hausFlaeche-select" isteven-multi-select selection-mode="single" input-model="hausFlaeche" output-model="selectedHausFlaeche" button-label="icon name" item-label="icon name" helper-elements="" max-labels="1" default-label="Nichts ausgewählt" tick-property="ticked"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <h4>Hausart</h4>
-                                <div id="hausArt-select" isteven-multi-select input-model="hausArt" output-model="selectedHausArt" button-label="icon name" item-label="icon name" helper-elements="" max-labels="1" default-label="Nichts ausgewählt" tick-property="ticked"></div>
-                            </div>
-                        </div>  
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <h4>Preis</h4>
                                 <div id="kaufpreis-select" isteven-multi-select selection-mode="single" input-model="kaufpreis" output-model="selectedKaufpreis" button-label="icon name" item-label="icon name" helper-elements="" max-labels="1" default-label="Nichts ausgewählt" tick-property="ticked"></div>
@@ -61,10 +55,18 @@
             <div class="modal-body">
                 <table ng-table="laupisTableParams" class="table">
                     <tr ng-repeat="laupi in $data">
-                        <td data-title="'Expose'" class='text-center'>
+                        <td data-title="'Nr.'" sortable="'verwaltung_techn-objektnr_extern'" class='text-center'>
+                            {{laupi['verwaltung_techn-objektnr_extern']}}
+                        </td>
+                        <td data-title="'Produkt'" class='text-center'>
+                            <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">
+                                {{laupi['freitexte-objekttitel']}}
+                            </a>
+                        </td>
+                        <td data-title="'Foto'" class='text-center'>
                             <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">
                                 <img class='img-responsive img-thumbnail' ng-src="https://www.laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}" style="max-height: 70px;">
-                            </a>        
+                            </a>
                         </td>
                         <td data-title="'Eigentumsart'" sortable="'laupi-eigentumsart'" class='text-center'>
                             {{laupi['laupi-eigentumsart']}}
@@ -74,9 +76,6 @@
                         </td>
                         <td data-title="'Hausfläche'" sortable="'laupi-hausflaeche'" class='text-center'>
                             {{laupi['laupi-hausflaeche'] | prettifyNumber: 'm²'}}
-                        </td>
-                        <td data-title="'Hausart'" sortable="'laupi-hausart'" class='text-center'>
-                            {{laupi['laupi-hausart']}}
                         </td>
                         <td data-title="'Preis'" sortable="'preise-kaufpreisbrutto'" class='text-center'>
                             {{laupi['preise-kaufpreisbrutto'] | prettifyNumber: '€'}}
@@ -96,24 +95,75 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="laupi-legend-modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> {{ 'Legende'  }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Marker</h3>
+                            <p><img src="images/marker/marker-icon-red.png" title="Startpunkt" class="icon">
+                                <span>Startpunkt / Ihr Wohnort<br>
+                                    <small>Diesen Marker können Sie entsprechend Ihres Standortes verschieben.</small></span>
+                            </p>
+                            <p><img src="images/marker/marker-icon-grey.png" class="icon">Objekte außer Reichweite</p>
+                            <p><img src="images/marker/marker-icon-green.png" class="icon">Erreichbare Objekte in der gewählten Reisezeit</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Wege</h3>
+                            <p><img src="images/help/line-bahn.png" class="icon"> Bahn</p>
+                            <p><img src="images/help/line-bus.png" class="icon"> Bus</p>
+                            <p><img src="images/help/line-fahrrad-auto.png" class="icon"> Fahrrad</p>
+                            <p><img src="images/help/line-fahrrad-auto.png" class="icon"> Auto</p>
+                            <p><img src="images/help/line-sbahn.png" class="icon"> S-Bahn</p>
+                            <p><img src="images/help/line-zufuss.png" class="icon"> Zu Fuß</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Fahrzeitermittlung</h3>
+                            <p>Die angezeigte Verbindung ist die schnellste zwischen 17:00 und 20:00 Uhr am Freitag.</p>
+                            <h3>Erreichbarkeitsanalsyse</h3>
+                            <p>Derzeit steht die Erreichbarkeitsanalyse nur für Objekte in Berlin und Brandenburg zur Verfügung.</p>
+                            <p>Die Marker zeigen abweichende Objektadressen.</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <p>Benötigen Sie Hilfe bei der Suche eines passenden Objektes, oder sind sie an einer präzisen Objektadresse interessiert, dann nutzen Sie doch bitte eine der folgenden <a href="http://relaunch.laupi.de/de/kontaktdaten-anfragen.html">Kontaktmöglichkeiten</a>.</p>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <div id='laupi-details' ng-show='laupi' class='container-fluid'>
         <div class="row" style="width: 380px; margin-left: 0px; margin-right: 0px;">
             <div id='close-expose'><i class="fa fa-times"></i></div>
             <h4>{{laupi['freitexte-objekttitel']}}</h4>
             <div class="col-md-12 text-center" style="padding-left: 0px;">
-                <ul class="pager" style='margin: 2px 0px 4px 0px;'>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['preise-kaufpreisbrutto'] | prettifyNumber: '€'}}</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['laupi-hausflaeche'] | prettifyNumber: 'm²'}} Hausfläche</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['flaechen-gesamtflaeche'] | prettifyNumber: 'm²'}} Gesamtfläche</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer;'>{{laupi['laupi-hausart']}}</a></li>
-                  <li class='disabled' ><a href="" style='color:black;cursor: pointer; margin-top: 5px;'>{{laupi.travelTime | secToHoursMin}} Reisezeit</a></li>
-                </ul>
+                <div class="estate-box clearfix">
+                    <h2>Daten &amp; Fakten</h2>
+                    <ul class="attr-info">
+                        <li class="info-label clearfix"> <span class="pull-left">Garten:</span> <span class="qty pull-left"><div class="field value-number flaechen-gesamtflaeche">ca. {{laupi['flaechen-gesamtflaeche'] | prettifyNumber: 'm²'}} </div></span></li>
+                        <li class="info-label clearfix"> <span class="pull-left">Haus:</span> <span class="qty pull-left"><div class="field value-number laupi-hausflaeche">ca. {{laupi['laupi-hausflaeche'] | prettifyNumber: 'm²'}}</div></span></li>
+                        <li class="info-label clearfix"> <span class="pull-left">Preis:</span> <span class="qty pull-left">{{laupi['preise-kaufpreisbrutto'] | prettifyNumber: '€'}}<br><small>(inklusive Provision und MwSt.)</small></span></li>
+                        <li class="info-label clearfix" ng-show="laupi['preise-pacht_jahr'] != '0.00'"> <span class="pull-left">Pacht / Jahr:</span> <span class="qty pull-left">{{laupi['preise-pacht_jahr'] | prettifyNumber: '€'}}</span></li>
+                        <li class="info-label clearfix" ng-show="laupi['preise-pacht_jahr'] == '0.00'"><span class="pull-left">{{laupi['laupi-eigentumsart']}}</span></li>
+                    </ul>
+                </div>
             </div>
             <div class="col-xs-12 text-center top-buffer">
                 <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">
                     <img  class="img-responsive img-thumbnail" ng-src="https://www.laupi.de/{{laupi['anhaenge-anhang-#1-daten-pfad']}}">
                 </a><br />
-                <a target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">Zum Exposé</a>
+                <p><a class="btn btn-info btn-block" target='_blank' href="http://relaunch.laupi.de/ansicht/expose/{{laupi['uriident']}}.html" title="Zum Exposé">Zum Exposé</a></p>
+                <span class="label label-info">Reisezeit: {{laupi.travelTime | secToHoursMin}}</span>
             </div>
         </div>
         
