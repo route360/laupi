@@ -8,7 +8,7 @@
  * Controller of the route360DemoApp
  */
 angular.module('route360DemoApp')
-    .controller('MapCtrl', function ($window, $http, $scope, $config, ngTableParams, $timeout, TableParamFactory, PolygonService) {
+    .controller('MapCtrl', function ($window, $http, $scope, $config, ngTableParams, $timeout, TableParamFactory, PolygonService, laupisDatabase) {
 
         $scope.travelDate = '20150717';
         // $scope.travelDate = '20150713';
@@ -22,10 +22,12 @@ angular.module('route360DemoApp')
         $scope.markerColors     = [ 'green', 'orange', 'red', 'blue', 'purple', 'grey' ];
 
         // das symbolisiert die laupi datenbank
-        $scope.laupisDatabase = [{"uriident":"kleingarten-nahe-bad-doberan-8-km-bis-zur-ostsee-p-81","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-teileigentum preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Kleingarten nahe Bad Doberan, 8 km bis zur Ostsee","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/c\/P-81_10_%20Kleingarten_Wochenendgrundstueck_Bad_Doberan_Laupi_Berlin-1731127c.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10__Kleingarten_Wochenendgrundstueck_Bad_Doberan_Laupi_Berlin.jpg","geo-plz":"18209","geo-ort":"Bad Doberan","flaechen-gesamtflaeche":"400.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"24.00","laupi-eigentumsart":"Teileigentum","preise-kaufpreisbrutto":"10292.00","laupi-objektart":"Kleingarten","geo-lat":"54.0900000","geo-lon":"11.9300000","geo-lat_forged":"54.0900000","geo-lon_forged":"11.9300000"},{"uriident":"wochenendgrundstueck-in-beelitz-nahe-bei-potsdam-und-berlin-p-246","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-blockbohlenhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-1-10000","freitexte-objekttitel":"Wochenendgrundst\u00fcck in Beelitz, nahe bei Potsdam und Berlin","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"14547","geo-ort":"Beelitz","flaechen-gesamtflaeche":"467.00","laupi-hausart":"Blockbohlenhaus","laupi-hausflaeche":"24.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"8667.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.2200000","geo-lon":"12.9700000","geo-lat_forged":"52.2200000","geo-lon_forged":"12.9700000"},{"uriident":"kleingarten-in-templin-in-seenreicher-umgebung-75-km-von-berlin-p-205","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-20000-30000","freitexte-objekttitel":"Kleingarten in Templin, in seenreicher Umgebung, 75 km von Berlin","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/2\/P-205_10_Kleingarten_Wochenendhaus_Templin_Laupi_Berlin-aff86632.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10_Kleingarten_Wochenendhaus_Templin_Laupi_Berlin.jpg","geo-plz":"","geo-ort":"Templin","flaechen-gesamtflaeche":"400.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"28.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"21666.00","laupi-objektart":"Kleingarten","geo-lat":"53.1200000","geo-lon":"13.5000000","geo-lat_forged":"53.1200000","geo-lon_forged":"13.5000000"},{"uriident":"wochendendhaus-am-schervenzsee-im-schlaubetal-nicht-weit-bis-frankfurtioder-p-244","css-filter-class-string":"estate flaechen-gesamtflaeche-200-300 laupi-hausart-ddr-bungalow laupi-hausflaeche-30-40 laupi-eigentumsart-pacht preise-kaufpreisbrutto-1-10000","freitexte-objekttitel":"Wochendendhaus am Schervenzsee im Schlaubetal, nicht weit bis Frankfurt\/IOder","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10_Wochenendgrundst\u00c3\u00bcck_Schervenzsee_Laupi_Berlin.jpg","geo-plz":"15890","geo-ort":"Schernsdorf","flaechen-gesamtflaeche":"250.00","laupi-hausart":"DDR-Bungalow","laupi-hausflaeche":"34.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"5595.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.1800000","geo-lon":"14.4400000","geo-lat_forged":"52.1900000","geo-lon_forged":"14.4600000"},{"uriident":"grosses-wochenendgrundstueck-in-golssen-am-rande-des-spreewalds-p-150","css-filter-class-string":"estate flaechen-gesamtflaeche-1400-1500 laupi-hausart-holzhaus laupi-hausflaeche-10-20 laupi-eigentumsart-eigentum preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Gro\u00dfes Wochenendgrundst\u00fcck in Gol\u00dfen am Rande des Spreewalds","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/5\/P-150_2_Wochenendgrundstueck_Gartengrundstueck_Golssen_Spreewald_Laupi_Berlin-10a102d5.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"2_Wochenendgrundstueck_Gartengrundstueck_Golssen_Spreewald_Laupi_Berlin.jpg","geo-plz":"15938","geo-ort":"Gol\u00dfen","flaechen-gesamtflaeche":"1400.00","laupi-hausart":"Holzhaus","laupi-hausflaeche":"12.00","laupi-eigentumsart":"Eigentum","preise-kaufpreisbrutto":"16250.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"0.0000000","geo-lon":"0.0000000","geo-lat_forged":"51.9700000","geo-lon_forged":"13.6000000"},{"uriident":"romantische-scheune-mit-garten-in-seenaehe-180-km-von-berlin-20-km-bis-guestrow-p-126","css-filter-class-string":"estate flaechen-gesamtflaeche-700-800 laupi-hausart-steinhaus laupi-hausflaeche-60-70 laupi-eigentumsart-eigentum preise-kaufpreisbrutto-40000-50000","freitexte-objekttitel":"Romantische Scheune mit Garten in Seen\u00e4he, 180 km von Berlin, 20 km bis G\u00fcstrow","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"18292","geo-ort":"Koppelow","flaechen-gesamtflaeche":"717.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"60.00","laupi-eigentumsart":"Eigentum","preise-kaufpreisbrutto":"43332.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"53.7000000","geo-lon":"12.3100000","geo-lat_forged":"53.6900000","geo-lon_forged":"12.3100000"},{"uriident":"bungalow-zaue-am-schwielochsee-seenaehe-45-km-von-cottbus-p-158","css-filter-class-string":"estate flaechen-gesamtflaeche-200-300 laupi-hausart-steinhaus laupi-hausflaeche-30-40 laupi-eigentumsart-teileigentum preise-kaufpreisbrutto-20000-30000","freitexte-objekttitel":"Bungalow Zaue am Schwielochsee, Seen\u00e4he, 45 km von Cottbus","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/3\/P-158_3_Wochenendgrundstueck_Wochenendhaus_Schlaubetal_See_Laupi_Berlin-153fae33.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"3_Wochenendgrundstueck_Wochenendhaus_Schlaubetal_See_Laupi_Berlin.jpg","geo-plz":"15913","geo-ort":"Zaue am Schwielochsee","flaechen-gesamtflaeche":"250.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"38.00","laupi-eigentumsart":"Teileigentum","preise-kaufpreisbrutto":"21666.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.0500000","geo-lon":"14.1900000","geo-lat_forged":"52.0600000","geo-lon_forged":"14.1900000"},{"uriident":"wochenendhaus-in-berlin-nikolassee-nahe-wannsee-p-252","css-filter-class-string":"estate flaechen-gesamtflaeche-100-200 laupi-hausart-gartenhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-20000-30000","freitexte-objekttitel":"Wochenendhaus in Berlin-Nikolassee, nahe Wannsee","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/e\/P-252_01_Wochenendhaus_Berlin_Laupi-86a6af4e.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"01_Wochenendhaus_Berlin_Laupi.jpg","geo-plz":"14109","geo-ort":"Berlin","flaechen-gesamtflaeche":"144.00","laupi-hausart":"Gartenhaus","laupi-hausflaeche":"21.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"22500.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.4200000","geo-lon":"13.1900000","geo-lat_forged":"52.4200000","geo-lon_forged":"13.1900000"},{"uriident":"kleingarten-in-fuerstenwalde-an-der-spree-30-km-bis-berlin-erkner-p-211","css-filter-class-string":"estate flaechen-gesamtflaeche-300-400 laupi-hausart-ddr-bungalow laupi-hausflaeche-30-40 laupi-eigentumsart-pacht preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Kleingarten in F\u00fcrstenwalde an der Spree, 30 km bis Berlin \/ Erkner","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"15517","geo-ort":"F\u00fcrstenwalde","flaechen-gesamtflaeche":"386.00","laupi-hausart":"DDR-Bungalow","laupi-hausflaeche":"30.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"17333.00","laupi-objektart":"Kleingarten","geo-lat":"52.3400000","geo-lon":"14.0600000","geo-lat_forged":"52.3400000","geo-lon_forged":"14.0600000"},{"uriident":"finnhuette-wochenendgrundstueck-niederlausitz-32-km-von-cottbus-p-206","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-finnhuette laupi-hausflaeche-40-50 laupi-eigentumsart-eigentum preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Finnh\u00fctte, Wochenendgrundst\u00fcck Niederlausitz, 32 km von Cottbus","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"02959","geo-ort":"Gro\u00df D\u00fcben","flaechen-gesamtflaeche":"487.00","laupi-hausart":"Finnh\u00fctte","laupi-hausflaeche":"42.00","laupi-eigentumsart":"Eigentum","preise-kaufpreisbrutto":"10833.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"51.5800000","geo-lon":"14.5700000","geo-lat_forged":"51.5700000","geo-lon_forged":"14.5700000"},{"uriident":"gartenhaus-keingarten-in-prenzlau-ganz-nah-am-unteruckersee-p-157","css-filter-class-string":"estate flaechen-gesamtflaeche-300-400 laupi-hausart-steinhaus laupi-hausflaeche-30-40 laupi-eigentumsart-pacht preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Gartenhaus \/ Keingarten in Prenzlau,  ganz nah am Unteruckersee","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"17291","geo-ort":"Prenzlau","flaechen-gesamtflaeche":"300.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"38.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"10292.00","laupi-objektart":"Kleingarten","geo-lat":"53.3100000","geo-lon":"13.8600000","geo-lat_forged":"53.3100000","geo-lon_forged":"13.8500000"},{"uriident":"kleingarten-in-eberswalde-seenaehe-schorfheide-p-249","css-filter-class-string":"estate flaechen-gesamtflaeche-300-400 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-1-10000","freitexte-objekttitel":"Kleingarten in Eberswalde, Seen\u00e4he, Schorfheide","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/6\/P-249_10_Kleingarten_Eberswalde_Laupi_Berlin-02791296.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10_Kleingarten_Eberswalde_Laupi_Berlin.jpg","geo-plz":"16227","geo-ort":"Eberswalde","flaechen-gesamtflaeche":"300.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"25.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"8000.00","laupi-objektart":"Kleingarten","geo-lat":"52.8500000","geo-lon":"13.7300000","geo-lat_forged":"52.8500000","geo-lon_forged":"13.7300000"},{"uriident":"wochenendhaus-rangsdorf-bauland-30-km-von-berlin-p-151","css-filter-class-string":"estate flaechen-gesamtflaeche-1200-1300 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht-ueber-bufim preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Wochenendhaus Rangsdorf, Bauland, 30 km von Berlin","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"15834","geo-ort":"Rangsdorf","flaechen-gesamtflaeche":"1200.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"25.00","laupi-eigentumsart":"Pacht \u00fcber BufIM","preise-kaufpreisbrutto":"12500.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.2900000","geo-lon":"13.4500000","geo-lat_forged":"52.2900000","geo-lon_forged":"13.4600000"}];
+        // $scope.laupisDatabase = [{"uriident":"kleingarten-nahe-bad-doberan-8-km-bis-zur-ostsee-p-81","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-teileigentum preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Kleingarten nahe Bad Doberan, 8 km bis zur Ostsee","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/c\/P-81_10_%20Kleingarten_Wochenendgrundstueck_Bad_Doberan_Laupi_Berlin-1731127c.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10__Kleingarten_Wochenendgrundstueck_Bad_Doberan_Laupi_Berlin.jpg","geo-plz":"18209","geo-ort":"Bad Doberan","flaechen-gesamtflaeche":"400.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"24.00","laupi-eigentumsart":"Teileigentum","preise-kaufpreisbrutto":"10292.00","laupi-objektart":"Kleingarten","geo-lat":"54.0900000","geo-lon":"11.9300000","geo-lat_forged":"54.0900000","geo-lon_forged":"11.9300000"},{"uriident":"wochenendgrundstueck-in-beelitz-nahe-bei-potsdam-und-berlin-p-246","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-blockbohlenhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-1-10000","freitexte-objekttitel":"Wochenendgrundst\u00fcck in Beelitz, nahe bei Potsdam und Berlin","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"14547","geo-ort":"Beelitz","flaechen-gesamtflaeche":"467.00","laupi-hausart":"Blockbohlenhaus","laupi-hausflaeche":"24.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"8667.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.2200000","geo-lon":"12.9700000","geo-lat_forged":"52.2200000","geo-lon_forged":"12.9700000"},{"uriident":"kleingarten-in-templin-in-seenreicher-umgebung-75-km-von-berlin-p-205","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-20000-30000","freitexte-objekttitel":"Kleingarten in Templin, in seenreicher Umgebung, 75 km von Berlin","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/2\/P-205_10_Kleingarten_Wochenendhaus_Templin_Laupi_Berlin-aff86632.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10_Kleingarten_Wochenendhaus_Templin_Laupi_Berlin.jpg","geo-plz":"","geo-ort":"Templin","flaechen-gesamtflaeche":"400.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"28.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"21666.00","laupi-objektart":"Kleingarten","geo-lat":"53.1200000","geo-lon":"13.5000000","geo-lat_forged":"53.1200000","geo-lon_forged":"13.5000000"},{"uriident":"wochendendhaus-am-schervenzsee-im-schlaubetal-nicht-weit-bis-frankfurtioder-p-244","css-filter-class-string":"estate flaechen-gesamtflaeche-200-300 laupi-hausart-ddr-bungalow laupi-hausflaeche-30-40 laupi-eigentumsart-pacht preise-kaufpreisbrutto-1-10000","freitexte-objekttitel":"Wochendendhaus am Schervenzsee im Schlaubetal, nicht weit bis Frankfurt\/IOder","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10_Wochenendgrundst\u00c3\u00bcck_Schervenzsee_Laupi_Berlin.jpg","geo-plz":"15890","geo-ort":"Schernsdorf","flaechen-gesamtflaeche":"250.00","laupi-hausart":"DDR-Bungalow","laupi-hausflaeche":"34.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"5595.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.1800000","geo-lon":"14.4400000","geo-lat_forged":"52.1900000","geo-lon_forged":"14.4600000"},{"uriident":"grosses-wochenendgrundstueck-in-golssen-am-rande-des-spreewalds-p-150","css-filter-class-string":"estate flaechen-gesamtflaeche-1400-1500 laupi-hausart-holzhaus laupi-hausflaeche-10-20 laupi-eigentumsart-eigentum preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Gro\u00dfes Wochenendgrundst\u00fcck in Gol\u00dfen am Rande des Spreewalds","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/5\/P-150_2_Wochenendgrundstueck_Gartengrundstueck_Golssen_Spreewald_Laupi_Berlin-10a102d5.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"2_Wochenendgrundstueck_Gartengrundstueck_Golssen_Spreewald_Laupi_Berlin.jpg","geo-plz":"15938","geo-ort":"Gol\u00dfen","flaechen-gesamtflaeche":"1400.00","laupi-hausart":"Holzhaus","laupi-hausflaeche":"12.00","laupi-eigentumsart":"Eigentum","preise-kaufpreisbrutto":"16250.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"0.0000000","geo-lon":"0.0000000","geo-lat_forged":"51.9700000","geo-lon_forged":"13.6000000"},{"uriident":"romantische-scheune-mit-garten-in-seenaehe-180-km-von-berlin-20-km-bis-guestrow-p-126","css-filter-class-string":"estate flaechen-gesamtflaeche-700-800 laupi-hausart-steinhaus laupi-hausflaeche-60-70 laupi-eigentumsart-eigentum preise-kaufpreisbrutto-40000-50000","freitexte-objekttitel":"Romantische Scheune mit Garten in Seen\u00e4he, 180 km von Berlin, 20 km bis G\u00fcstrow","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"18292","geo-ort":"Koppelow","flaechen-gesamtflaeche":"717.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"60.00","laupi-eigentumsart":"Eigentum","preise-kaufpreisbrutto":"43332.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"53.7000000","geo-lon":"12.3100000","geo-lat_forged":"53.6900000","geo-lon_forged":"12.3100000"},{"uriident":"bungalow-zaue-am-schwielochsee-seenaehe-45-km-von-cottbus-p-158","css-filter-class-string":"estate flaechen-gesamtflaeche-200-300 laupi-hausart-steinhaus laupi-hausflaeche-30-40 laupi-eigentumsart-teileigentum preise-kaufpreisbrutto-20000-30000","freitexte-objekttitel":"Bungalow Zaue am Schwielochsee, Seen\u00e4he, 45 km von Cottbus","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/3\/P-158_3_Wochenendgrundstueck_Wochenendhaus_Schlaubetal_See_Laupi_Berlin-153fae33.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"3_Wochenendgrundstueck_Wochenendhaus_Schlaubetal_See_Laupi_Berlin.jpg","geo-plz":"15913","geo-ort":"Zaue am Schwielochsee","flaechen-gesamtflaeche":"250.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"38.00","laupi-eigentumsart":"Teileigentum","preise-kaufpreisbrutto":"21666.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.0500000","geo-lon":"14.1900000","geo-lat_forged":"52.0600000","geo-lon_forged":"14.1900000"},{"uriident":"wochenendhaus-in-berlin-nikolassee-nahe-wannsee-p-252","css-filter-class-string":"estate flaechen-gesamtflaeche-100-200 laupi-hausart-gartenhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-20000-30000","freitexte-objekttitel":"Wochenendhaus in Berlin-Nikolassee, nahe Wannsee","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/e\/P-252_01_Wochenendhaus_Berlin_Laupi-86a6af4e.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"01_Wochenendhaus_Berlin_Laupi.jpg","geo-plz":"14109","geo-ort":"Berlin","flaechen-gesamtflaeche":"144.00","laupi-hausart":"Gartenhaus","laupi-hausflaeche":"21.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"22500.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.4200000","geo-lon":"13.1900000","geo-lat_forged":"52.4200000","geo-lon_forged":"13.1900000"},{"uriident":"kleingarten-in-fuerstenwalde-an-der-spree-30-km-bis-berlin-erkner-p-211","css-filter-class-string":"estate flaechen-gesamtflaeche-300-400 laupi-hausart-ddr-bungalow laupi-hausflaeche-30-40 laupi-eigentumsart-pacht preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Kleingarten in F\u00fcrstenwalde an der Spree, 30 km bis Berlin \/ Erkner","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"15517","geo-ort":"F\u00fcrstenwalde","flaechen-gesamtflaeche":"386.00","laupi-hausart":"DDR-Bungalow","laupi-hausflaeche":"30.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"17333.00","laupi-objektart":"Kleingarten","geo-lat":"52.3400000","geo-lon":"14.0600000","geo-lat_forged":"52.3400000","geo-lon_forged":"14.0600000"},{"uriident":"finnhuette-wochenendgrundstueck-niederlausitz-32-km-von-cottbus-p-206","css-filter-class-string":"estate flaechen-gesamtflaeche-400-500 laupi-hausart-finnhuette laupi-hausflaeche-40-50 laupi-eigentumsart-eigentum preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Finnh\u00fctte, Wochenendgrundst\u00fcck Niederlausitz, 32 km von Cottbus","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"02959","geo-ort":"Gro\u00df D\u00fcben","flaechen-gesamtflaeche":"487.00","laupi-hausart":"Finnh\u00fctte","laupi-hausflaeche":"42.00","laupi-eigentumsart":"Eigentum","preise-kaufpreisbrutto":"10833.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"51.5800000","geo-lon":"14.5700000","geo-lat_forged":"51.5700000","geo-lon_forged":"14.5700000"},{"uriident":"gartenhaus-keingarten-in-prenzlau-ganz-nah-am-unteruckersee-p-157","css-filter-class-string":"estate flaechen-gesamtflaeche-300-400 laupi-hausart-steinhaus laupi-hausflaeche-30-40 laupi-eigentumsart-pacht preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Gartenhaus \/ Keingarten in Prenzlau,  ganz nah am Unteruckersee","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"17291","geo-ort":"Prenzlau","flaechen-gesamtflaeche":"300.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"38.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"10292.00","laupi-objektart":"Kleingarten","geo-lat":"53.3100000","geo-lon":"13.8600000","geo-lat_forged":"53.3100000","geo-lon_forged":"13.8500000"},{"uriident":"kleingarten-in-eberswalde-seenaehe-schorfheide-p-249","css-filter-class-string":"estate flaechen-gesamtflaeche-300-400 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht preise-kaufpreisbrutto-1-10000","freitexte-objekttitel":"Kleingarten in Eberswalde, Seen\u00e4he, Schorfheide","anhaenge-anhang-#1-@gruppe":"BILD","anhaenge-anhang-#1-daten-pfad":"assets\/images\/6\/P-249_10_Kleingarten_Eberswalde_Laupi_Berlin-02791296.jpg","anhaenge-anhang-#1-format":".jpg","anhaenge-anhang-#1-anhangtitel":"10_Kleingarten_Eberswalde_Laupi_Berlin.jpg","geo-plz":"16227","geo-ort":"Eberswalde","flaechen-gesamtflaeche":"300.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"25.00","laupi-eigentumsart":"Pacht","preise-kaufpreisbrutto":"8000.00","laupi-objektart":"Kleingarten","geo-lat":"52.8500000","geo-lon":"13.7300000","geo-lat_forged":"52.8500000","geo-lon_forged":"13.7300000"},{"uriident":"wochenendhaus-rangsdorf-bauland-30-km-von-berlin-p-151","css-filter-class-string":"estate flaechen-gesamtflaeche-1200-1300 laupi-hausart-steinhaus laupi-hausflaeche-20-30 laupi-eigentumsart-pacht-ueber-bufim preise-kaufpreisbrutto-10000-20000","freitexte-objekttitel":"Wochenendhaus Rangsdorf, Bauland, 30 km von Berlin","anhaenge-anhang-#1-@gruppe":null,"anhaenge-anhang-#1-daten-pfad":null,"anhaenge-anhang-#1-format":null,"anhaenge-anhang-#1-anhangtitel":null,"geo-plz":"15834","geo-ort":"Rangsdorf","flaechen-gesamtflaeche":"1200.00","laupi-hausart":"Steinhaus","laupi-hausflaeche":"25.00","laupi-eigentumsart":"Pacht \u00fcber BufIM","preise-kaufpreisbrutto":"12500.00","laupi-objektart":"Wochenendgrundst\u00fcck","geo-lat":"52.2900000","geo-lon":"13.4500000","geo-lat_forged":"52.2900000","geo-lon_forged":"13.4600000"}];
+        $scope.laupisDatabase = laupisDatabase.data;
+
         _.each($scope.laupisDatabase, function(laupi){
-            laupi.lat = laupi['geo-lat'];
-            laupi.lng = laupi['geo-lon'];
+            laupi.lat = laupi['geo-lat_forged'];
+            laupi.lng = laupi['geo-lon_forged'];
             laupi.id = laupi.uriident;
         });
         // das sind die laupis die den suckriterien entsprechen
@@ -33,40 +35,63 @@ angular.module('route360DemoApp')
         $scope.laupis = _.reject($scope.laupis, function(laupi){ return laupi.lat == 0 });
 
         // die verschiedenen suchkriterien, alles wo 'ticked: true' steht sind die standardvorgaben
-        $scope.kaufpreis = [
-            {  value: 10000, name : 'bis 10.000 €', ticked : false }, {  value: 20000, name : 'bis 20.000 €', ticked : false },
-            {  value: 30000, name : 'bis 30.000 €', ticked : true  }, {  value: 40000, name : 'bis 40.000 €', ticked : false },
-            {  value: 50000, name : 'bis 50.000 €', ticked : false }, {  value: 60000, name : 'bis 60.000 €', ticked : false }
-        ];
+        $scope.kaufpreis = [];
+        var kaufpreis = laupisDatabase.filterConfig.values['preise-kaufpreisbrutto'];
+        var size = kaufpreis.length;
+        angular.forEach(kaufpreis, function(value, key) {
+            var vals = value.css.split('-');
+            var obj = {
+                value: vals[1],
+                name: 'bis ' + String(vals[1]).split("").reverse().join("").replace(/(\d{3}\B)/g, "$1.").split("").reverse().join("") + ' €',
+                ticked: false
+            };
+            if(size-1 == key) obj.ticked = true;
+            this.push(obj);
+        }, $scope.kaufpreis);
 
-        $scope.eigentumsArt = [ 
-            {  value: 'Eigentum',         ticked : true  , name : 'Eigentum'},          {  value: 'Pacht',            ticked : true  , name : 'Pacht'},
-            {  value: 'Pacht über BufIM', ticked : true  , name : 'Pacht über BufIM'},  {  value: 'Teileigentum',     ticked : true  , name : 'Teileigentum'}
-        ];
+        $scope.eigentumsArt = [];
+        angular.forEach(laupisDatabase.filterConfig.values['laupi-eigentumsart'], function(value, key) {
+            var obj = {
+                value: value.name,
+                name: value.name,
+                ticked: true
+            };
+            this.push(obj);
+        }, $scope.eigentumsArt);
 
-        $scope.grundstuecksFlaeche = [
-            {  value: 200, ticked : false , name : 'bis 200 m²'},    {  value: 300, ticked : false , name : 'bis 300 m²'},
-            {  value: 400, ticked : false , name : 'bis 400 m²'},    {  value: 500, ticked : true , name : 'bis 500 m²'},
-            {  value: 800, ticked : false , name : 'bis 800 m²'},    {  value: 1100, ticked : false , name : 'bis 1.100 m²'},
-            {  value: 1300, ticked : false , name : 'bis 1.300 m²'}, {  value: 1500, ticked : false , name : 'bis 1.500 m²'}
-        ];
+        $scope.grundstuecksFlaeche = [];
+        var gesamtflaeche = laupisDatabase.filterConfig.values['flaechen-gesamtflaeche'];
+        var size = gesamtflaeche.length;
+        angular.forEach(gesamtflaeche, function(value, key) {
+            var vals = value.css.split('-');
+            var obj = {
+                value: vals[1],
+                name: 'bis ' + String(vals[1]).split("").reverse().join("").replace(/(\d{3}\B)/g, "$1.").split("").reverse().join("") + ' ' + 'm²',
+                ticked: false
+            };
+            // if(vals[1] == '500') obj.ticked = true;
+            if(size-1 == key) obj.ticked = true;
+            this.push(obj);
+        }, $scope.grundstuecksFlaeche);
 
-        $scope.hausArt = [
-            {  ticked : true , value: 'Blockbohlenhaus', name : 'Blockbohlenhaus'}, {  ticked : true , value: 'DDR-Bungalow', name : 'DDR-Bungalow'},
-            {  ticked : true , value: 'Finnhütte', name : 'Finnhütte'},             {  ticked : true ,  value: 'Gartenhaus', name : 'Gartenhaus'},
-            {  ticked : true , value: 'Holzhaus', name : 'Holzhaus'},               {  ticked : true , value: 'Steinhaus', name : 'Steinhaus'}
-        ];
-
-        $scope.hausFlaeche = [
-            {  ticked : false , value: '20', name : 'bis 20 m²'}, {  ticked : false , value: '30', name : 'bis 30 m²'},
-            {  ticked : false , value: '40', name : 'bis 40 m²'}, {  ticked : true , value: '50', name : 'bis 50 m²'},
-            {  ticked : false , value: '60', name : 'bis 60 m²'}, {  ticked : false , value: '70', name : 'bis 70 m²'}
-        ];
+        $scope.hausFlaeche = [];
+        var hausflaeche = laupisDatabase.filterConfig.values['laupi-hausflaeche'];
+        var size = hausflaeche.length;
+        angular.forEach(hausflaeche, function(value, key) {
+            var vals = value.css.split('-');
+            var obj = {
+                value: vals[1],
+                name: 'bis ' + String(vals[1]).split("").reverse().join("").replace(/(\d{3}\B)/g, "$1.").split("").reverse().join("") + ' ' + 'm²',
+                ticked: false
+            };
+            if(size-1 == key) obj.ticked = true;
+            this.push(obj);
+        }, $scope.hausFlaeche);
 
         // das öffnet das modal fenster für die bearbeitung der suche
         $("#laupi-search-edit").show();
         $("#laupi-search-edit").on('click', function(){ $("#laupi-search-edit-modal").modal('show'); });
-        
+
         // öffnet die ergebnissliste
         $("#laupi-results").show();
         $("#laupi-results").on('click', function(){ 
@@ -77,6 +102,10 @@ angular.module('route360DemoApp')
             $scope.$apply();
             $("#laupi-results-modal").modal('show'); 
         });
+
+        // öffnet das modal fenster für die legende
+        $("#laupi-legend").show();
+        $("#laupi-legend").on('click', function(){ $("#laupi-legend-modal").modal('show'); });
         
         // leaflet complains if project is build/minimized if this is not present
         L.Icon.Default.imagePath = 'images/marker/';
@@ -86,7 +115,7 @@ angular.module('route360DemoApp')
         // attribution to give credit to OSM map data and VBB for public transportation 
         var attribution ="<a href='https://www.mapbox.com/about/maps/' target='_blank'>© Mapbox © OpenStreetMap</a> | ÖPNV Daten © <a href='http://www.vbb.de/de/index.html' target='_blank'>VBB</a> | developed by <a href='http://www.route360.net/de/' target='_blank'>Route360°</a>";
         // initialising the base map. To change the base map just change following lines as described by cloudmade, mapbox etc..
-        L.tileLayer('http://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', { maxZoom: 18, attribution: attribution }).addTo($scope.map);
+        L.tileLayer('https://a.tiles.mapbox.com/v3/' + $config.mapboxId + '/{z}/{x}/{y}.png', { maxZoom: 18, attribution: attribution }).addTo($scope.map);
         L.control.scale({ metric : true, imperial : false }).addTo($scope.map);
 
         // der reisezeit slider mit werten von 20 bis 120 minuten in 20 minuten abständen
@@ -156,7 +185,9 @@ angular.module('route360DemoApp')
             var icon = L.icon({ 
                 iconSize     : [25, 41], iconAnchor   : [12, 41],
                 iconUrl      : L.Icon.Default.imagePath + 'marker-icon-' + $scope.markerColors[2] + '.png', 
-                shadowUrl    : L.Icon.Default.imagePath + 'marker-shadow.png'
+                shadowUrl    : L.Icon.Default.imagePath + 'marker-shadow.png',
+                label        : 'Startpunkt',
+                placeholder  : 'Startpunkt'
             });
             $scope.source = L.marker($scope.autoComplete.getValue().latlng, {icon : icon, draggable : true }).addTo($scope.sourceLayer);
             $scope.source.travelType = $scope.autoComplete.getTravelType();
@@ -188,19 +219,17 @@ angular.module('route360DemoApp')
 
         // symbolisiert die abfrage an den webservice oder wie auch immer 
         // nach den suchkriterien gefiltert wird
-        $scope.filterLaupis = function () { 
-
+        $scope.filterLaupis = function () {
             $scope.laupis = [];
             _.each($scope.laupisDatabase, function(laupi){
 
-                if ( laupi['flaechen-gesamtflaeche'] <= $scope.getSelection($scope.selectedGrundstuecksFlaeche)[0] && 
-                     laupi['laupi-hausflaeche']      <= $scope.getSelection($scope.selectedHausFlaeche)[0] &&
-                     laupi['preise-kaufpreisbrutto'] <= $scope.getSelection($scope.selectedKaufpreis)[0] && 
-                     _.contains($scope.getSelection($scope.selectedEigentumsArt), laupi['laupi-eigentumsart'])  && 
-                     _.contains($scope.getSelection($scope.selectedHausArt), laupi['laupi-hausart']) )  {
-
+                if ( parseFloat(laupi['flaechen-gesamtflaeche']) <= parseFloat($scope.getSelection($scope.selectedGrundstuecksFlaeche)[0]) &&
+                     parseFloat(laupi['laupi-hausflaeche'])      <= parseFloat($scope.getSelection($scope.selectedHausFlaeche)[0]) &&
+                     parseFloat(laupi['preise-kaufpreisbrutto']) <= parseFloat($scope.getSelection($scope.selectedKaufpreis)[0]) &&
+                     _.contains($scope.getSelection($scope.selectedEigentumsArt), laupi['laupi-eigentumsart']) )  {
                     $scope.laupis.push(laupi);
                 }
+
             });
         };
 
@@ -286,7 +315,7 @@ angular.module('route360DemoApp')
 
                     // falls keine laupis gefunden worden hinweis anzeigen
                     if ( $scope.noApartmentsInTravelTimeFound ) 
-                        var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Laupis die den Suchkriterien entsprechen.', timeout: 3000, layout : $config.notyLayout, type : 'error' });
+                        var error = noty({text: 'Es gibt in den erreichbaren Gebieten keine Objekte, die den Suchkriterien entsprechen.', timeout: 3000, layout : $config.notyLayout, type : 'error' });
                 });
             });
         };
@@ -480,7 +509,7 @@ angular.module('route360DemoApp')
 
         // defaultmäßiges aufrufen zu begin des website ladens
         $scope.showLaupis();
-        noty({text: 'Man kann den Marker verscchieben', layout : $config.notyLayout, type : 'success', timeout : 3000 });
+        noty({text: 'Man kann den Marker verschieben', layout : $config.notyLayout, type : 'success', timeout : 3000 });
         // $timeout(function(){ noty({text: 'Größere Marker symbolisieren kürzere Reisezeiten.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 4000);
         // $timeout(function(){ noty({text: 'Die farbigen Markierungen auf der Karte entsprechen den Gebieten die in der angegebenen Reisezeit erreichbar sind.', layout : $config.notyLayout, type : 'success', timeout : 3000 }); }, 8000);
         $scope.resize();
