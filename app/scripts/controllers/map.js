@@ -10,7 +10,18 @@
 angular.module('route360DemoApp')
     .controller('MapCtrl', function ($window, $http, $scope, $config, ngTableParams, $timeout, TableParamFactory, PolygonService) {
 
-        $scope.travelDate = '20150717';
+
+        $scope.getNextFriday = function(){            
+            var date = new Date();
+            var friday = new Date(+date+(7-(date.getDay()+2)%7)*86400000);
+            var dd   = friday.getDate();
+            var mm   = friday.getMonth()+1; //January is 0!
+            var yyyy = friday.getFullYear();
+            return "" + yyyy + "" + mm + "" + dd; 
+        };
+
+        $scope.travelDate = $scope.getNextFriday();
+
         // $scope.travelDate = '20150713';
         $scope.travelTime = (3600 * 17) + '';
         // $scope.travelTime = (3600 * 11) + '';
@@ -142,6 +153,10 @@ angular.module('route360DemoApp')
             extendWidthY: 500
         });
         $scope.map.addLayer($scope.polygonLayer);
+
+
+
+     
 
         /**
          * holt sich die lat/lng coordinate von dem autovervollständigungsmodul
@@ -369,6 +384,8 @@ angular.module('route360DemoApp')
 
                 // define source and target
                 var travelOptions = r360.travelOptions();
+                travelOptions.setDate($scope.travelDate); // beliebigen festen freitag wählen
+                travelOptions.setTime($scope.travelTime); //  feste urhzeit 17:00 wählen
                 travelOptions.addSource($scope.source);
                 travelOptions.setTargets([laupiMarker]);
 
