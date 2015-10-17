@@ -1,7 +1,7 @@
-var mountFolder = function (connect, dir) {
+var mountFolder = function(connect, dir) {
     return connect.static(require('path').resolve(dir));
 };
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', [
         'dev',
-        'uglify',
+    'uglify',
         'cssmin'
     ]);
 
@@ -33,23 +33,19 @@ module.exports = function (grunt) {
         },
         copy: {
             styles: {
-                files: [
-                    {
-                        src: './src/styles/ng-table.less',
-                        dest: './ng-table.less'
-                    }
-                ]
+                files: [{
+                    src: './src/styles/ng-table.less',
+                    dest: './dist/ng-table.less'
+                }]
             }
         },
         uglify: {
             js: {
-                src: ['ng-table.js'],
-                dest: 'ng-table.min.js',
+                src: ['./dist/ng-table.js'],
+                dest: './dist/ng-table.min.js',
                 options: {
                     banner: '<%= banner %>',
-                    sourceMap: function (fileName) {
-                        return fileName.replace(/\.min\.js$/, '.map');
-                    }
+                    sourceMap: true
                 }
             }
         },
@@ -58,27 +54,33 @@ module.exports = function (grunt) {
                 src: [
                     'src/scripts/01-*.js',
                     'src/scripts/02-*.js',
+                    'src/scripts/ngTableEventsChannel.js',
+                    'src/scripts/ngTableFilterConfig.js',
+                    'src/scripts/ngTableDefaultGetData.js',
+                    'src/scripts/ngTableGetDataBcShim.js',
                     'src/scripts/03-*.js',
+                    'src/scripts/ngTableFilterRowController.js',
+                    'src/scripts/ngTableSorterRowController.js',
                     'src/scripts/04-*.js',
                     'src/scripts/05-*.js',
                     'src/scripts/06-*.js',
                     './.temp/scripts/views.js',
                     'src/scripts/07-*.js'
                 ],
-                dest: 'ng-table.js'
+                dest: './dist/ng-table.js'
             }
         },
         less: {
             css: {
                 files: {
-                    'ng-table.css': 'src/styles/ng-table.less'
+                    './dist/ng-table.css': 'src/styles/ng-table.less'
                 }
             }
         },
         cssmin: {
             css: {
                 files: {
-                    'ng-table.min.css': 'ng-table.css'
+                    './dist/ng-table.min.css': './dist/ng-table.css'
                 },
                 options: {
                     banner: '<%= banner %>'
@@ -115,7 +117,7 @@ module.exports = function (grunt) {
             },
             serve: {
                 options: {
-                    middleware: function (connect) {
+                    middleware: function(connect) {
                         return [
                             mountFolder(connect, '.')
                         ];
