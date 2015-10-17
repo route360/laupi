@@ -1,6 +1,6 @@
 Table + AngularJS
 =================
-[![Build Status](https://travis-ci.org/esvit/ng-table.png)](https://travis-ci.org/esvit/ng-table) [![Coverage Status](https://coveralls.io/repos/esvit/ng-table/badge.png)](https://coveralls.io/r/esvit/ng-table)
+[![Build Status](https://travis-ci.org/esvit/ng-table.svg)](https://travis-ci.org/esvit/ng-table) [![Coverage Status](https://coveralls.io/repos/esvit/ng-table/badge.png)](https://coveralls.io/r/esvit/ng-table)
 
 Code licensed under New BSD License.
 
@@ -40,7 +40,7 @@ Please be responsible, the open source community is not there to guess your prob
 
 2. give a precise description mentionning angular version, ng-table version.
 
-3. give a way to reproduce your issue, the best would be with a <strong>running example</strong>, you can use [plunkr](http://plnkr.co/). Note if you want to mimic ajax loading behaviour you can use [$timeout](https://docs.angularjs.org/api/ng/service/$timeout) angular service or [$httpBackend](https://docs.angularjs.org/api/ng/service/$httpBackend).
+3. give a way to reproduce your issue, the best would be with a <strong>running example</strong>, you can use [plunkr](http://plnkr.co/), or [codepen](http://codepen.io/). **Tip:** See below for a list of base codepen's you can fork
 
 4. isolate your code sample on the probable issue to avoid pollution and noise.
 
@@ -52,7 +52,11 @@ Note that 80% of the open issues are actually not issues but "problem" due to de
 ## Examples
 
 * [Demo site](http://ng-table.com/)
-* [Codepen (ngTableDynamic)](http://codepen.io/christianacca/pen/jPxgzY?editors=101) (**Tip**: fork this to create your own example)
+* Codepen examples (**Tip**: fork these to create your own examples);
+    * [`ngTable`: inmemory list](http://codepen.io/christianacca/pen/VLqVeo?editors=101)
+    * [`ngTable`: server-side list](http://codepen.io/christianacca/pen/VLqqjP?editors=101)
+    * [`ngTableDynamic`: inmemory list](http://codepen.io/christianacca/pen/jPxgzY?editors=101)
+    * [`ngTableDynamic`: server-side list](http://codepen.io/christianacca/pen/JdwwrR/?editors=101)
 
 ## Compatibility
 

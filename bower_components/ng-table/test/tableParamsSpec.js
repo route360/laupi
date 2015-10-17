@@ -21,7 +21,25 @@ describe('NgTableParams', function () {
     var NgTableParams,
         $rootScope;
 
-    beforeEach(module('ngTable'));
+
+    beforeEach(function () {
+        // Initialize the service provider
+        // by injecting it to a fake module's config block
+        var fakeModule = angular.module('test.config', function () {});
+        fakeModule.config( function ($provide) {
+            $provide.decorator('ngTableDefaultGetData', createSpy);
+
+
+            createSpy.$inject = ['$delegate'];
+            function createSpy(ngTableDefaultGetData){
+                return jasmine.createSpy('ngTableDefaultGetDataSpy',ngTableDefaultGetData).and.callThrough();
+            }
+        });
+        // Initialize test.app injector
+        module('ngTable', 'test.config');
+
+    });
+
 
     beforeEach(inject(function ($controller, _$rootScope_, _NgTableParams_) {
         $rootScope = _$rootScope_;
@@ -48,35 +66,50 @@ describe('NgTableParams', function () {
         expect(NgTableParams).toBeDefined();
     });
 
-    it('NgTableParams test generatePagesArray', function () {
-        var params = new NgTableParams();
-        expect(params.generatePagesArray(1, 30, 10)).toEqual([
-            { type: 'prev', number: 1, active: false },
-            { type: 'first', number: 1, active: false, current: true },
-            { type: 'page', number: 2, active: true, current: false },
-            { type: 'last', number: 3, active: true, current: false },
-            { type: 'next', number: 2, active: true }
-        ]);
-        expect(params.generatePagesArray(2, 30, 10)).toEqual([
-            { type: 'prev', number: 1, active: true },
-            { type: 'first', number: 1, active: true, current: false },
-            { type: 'page', number: 2, active: false, current: true },
-            { type: 'last', number: 3, active: true, current: false },
-            { type: 'next', number: 3, active: true }
-        ]);
-        expect(params.generatePagesArray(2, 100, 10)).toEqual([
-            { type: 'prev', number: 1, active: true },
-            { type: 'first', number: 1, active: true, current: false },
-            { type: 'page', number: 2, active: false, current: true },
-            { type: 'page', number: 3, active: true, current: false },
-            { type: 'page', number: 4, active: true, current: false },
-            { type: 'page', number: 5, active: true, current: false },
-            { type: 'page', number: 6, active: true, current: false },
-            { type: 'page', number: 7, active: true, current: false },
-            { type: 'more', active: false },
-            { type: 'last', number: 10, active: true, current: false },
-            { type: 'next', number: 3, active: true }
-        ]);
+    describe('generatePagesArray', function(){
+        it('should generate pages array using arguments supplied', function(){
+            var params = new NgTableParams();
+            expect(params.generatePagesArray(1, 30, 10)).toEqual([
+                { type: 'prev', number: 1, active: false },
+                { type: 'first', number: 1, active: false, current: true },
+                { type: 'page', number: 2, active: true, current: false },
+                { type: 'last', number: 3, active: true, current: false },
+                { type: 'next', number: 2, active: true }
+            ]);
+            expect(params.generatePagesArray(2, 30, 10)).toEqual([
+                { type: 'prev', number: 1, active: true },
+                { type: 'first', number: 1, active: true, current: false },
+                { type: 'page', number: 2, active: false, current: true },
+                { type: 'last', number: 3, active: true, current: false },
+                { type: 'next', number: 3, active: true }
+            ]);
+            expect(params.generatePagesArray(2, 100, 10)).toEqual([
+                { type: 'prev', number: 1, active: true },
+                { type: 'first', number: 1, active: true, current: false },
+                { type: 'page', number: 2, active: false, current: true },
+                { type: 'page', number: 3, active: true, current: false },
+                { type: 'page', number: 4, active: true, current: false },
+                { type: 'page', number: 5, active: true, current: false },
+                { type: 'page', number: 6, active: true, current: false },
+                { type: 'page', number: 7, active: true, current: false },
+                { type: 'more', active: false },
+                { type: 'last', number: 10, active: true, current: false },
+                { type: 'next', number: 3, active: true }
+            ]);
+        });
+
+        it('should use own parameter values to generate pages when no arguments supplied', function(){
+            var params = new NgTableParams({ page: 2, count: 10 }, { total: 30 });
+
+            expect(params.generatePagesArray()).toEqual([
+                { type: 'prev', number: 1, active: true },
+                { type: 'first', number: 1, active: true, current: false },
+                { type: 'page', number: 2, active: false, current: true },
+                { type: 'last', number: 3, active: true, current: false },
+                { type: 'next', number: 3, active: true }
+            ]);
+
+        });
     });
 
     it('NgTableParams `page` parameter', function () {
@@ -197,6 +230,7 @@ describe('NgTableParams', function () {
         it('should call getData to retrieve data', function(){
             var tp = createNgTableParams();
             tp.reload();
+            scope.$digest();
             expect(tp.settings().getData.calls.count()).toBe(1);
         });
 
@@ -209,22 +243,17 @@ describe('NgTableParams', function () {
             expect(tp.data).toEqual([1,2,3]);
         });
 
-        it('should use ngTableDefaultGetData function when NgTableParams not supplied a getData function', function(){
+        it('should use ngTableDefaultGetData function when NgTableParams not supplied a getData function', inject(function(ngTableDefaultGetData){
             // given
-            var settings = {
-                data: [{age: 1}, {age: 11}, {age: 110}, {age: 5}]
-            };
-            var initialValues = {count: 2, filter: {age: 1}, sorting: { age: 'desc'}};
-            var tp = createNgTableParams(initialValues, settings);
+            var tp = createNgTableParams();
 
             // when
             tp.reload();
             scope.$digest();
 
             // then
-            expect(tp.data).toEqual([{age: 110}, {age: 11}]);
-            expect(tp.total()).toEqual(3);
-        });
+            expect(ngTableDefaultGetData).toHaveBeenCalled();
+        }));
 
         it('should propagate rejection reason from getData', inject(function($q){
             // given
@@ -242,8 +271,6 @@ describe('NgTableParams', function () {
             // then
             expect(actualRejection).toBe('bad response');
         }));
-
-
     });
 
     it('NgTableParams test grouping', inject(function ($rootScope) {
@@ -812,6 +839,148 @@ describe('NgTableParams', function () {
             });
         });
 
+        describe('one responseError interceptor', function(){
+
+            it('should receive rejections from getData', inject(function($q){
+                // given
+                var interceptor = {
+                    responseError: function(reason/*, params*/){
+                        this.actualReason = reason;
+                    }
+                };
+                var tp = createNgTableParams({
+                    interceptors: [interceptor],
+                    getData: function(/*params*/){
+                        return $q.reject('BANG!');
+                    }
+                });
+
+                // when
+                tp.reload();
+                scope.$digest();
+
+                // then
+                expect(interceptor.actualReason).toBe('BANG!');
+            }));
+
+            it('should NOT receive errors from getData', function(){
+                // given
+                var interceptor = {
+                    responseError: function(/*reason, params*/){
+                        this.hasRun = true;
+                    }
+                };
+                var tp = createNgTableParams({
+                    interceptors: [interceptor],
+                    getData: function(/*params*/){
+                        throw new Error('BANG!');
+                    }
+                });
+
+                // when, then
+                expect(tp.reload).toThrow();
+                expect(interceptor.hasRun).toBeFalsy();
+            });
+
+            it('should be able to modify reason returned by getData', inject(function($q){
+                // given
+                var interceptor = {
+                    responseError: function(reason/*, params*/){
+                        reason.code = 400;
+                        return $q.reject(reason);
+                    }
+                };
+                var tp = createNgTableParams({
+                    interceptors: [interceptor],
+                    getData: function(/*params*/){
+                        return $q.reject({ description: 'crappy data'});
+                    }
+                });
+
+                // when
+                var actualReason;
+                tp.reload().catch(function(reason){
+                    actualReason = reason;
+                });
+                scope.$digest();
+
+                // then
+                expect(actualReason.code).toBe(400);
+                expect(actualReason.description).toBe('crappy data');
+            }));
+
+            it('should be able to replace reason returned by getData', inject(function($q){
+                // given
+                var interceptor = {
+                    responseError: function(/*reason, params*/){
+                        return $q.reject('Cancelled by user');
+                    }
+                };
+                var tp = createNgTableParams({
+                    interceptors: [interceptor],
+                    getData: function(/*params*/){
+                        return $q.reject('BANG!');
+                    }
+                });
+
+                // when
+                var actualReason;
+                tp.reload().catch(function(reason){
+                    actualReason = reason;
+                });
+                scope.$digest();
+
+                // then
+                expect(actualReason).toBe('Cancelled by user');
+            }));
+
+            it('should be able to access tableParams supplied to getData', function(){
+                // given
+                var interceptor = {
+                    response: function(reason, params){
+                        this.actualParams = params;
+                    }
+                };
+                var tp = createNgTableParams({ interceptors: [interceptor]});
+
+                // when
+                var actualData;
+                tp.reload();
+                scope.$digest();
+
+                // then
+                expect(interceptor.actualParams).toBe(tp);
+            });
+        });
+
+        describe('one response plus responseError interceptor', function(){
+
+            it('should NOT call responseError on same interceptor whose response method fails', inject(function($q){
+                // given
+                var interceptor = {
+                    response: function(/*data, params*/){
+                        return $q.reject('BANG!');
+                    },
+                    responseError: function(reason/*, params*/){
+                        this.hasRun = true;
+                    }
+                };
+                var tp = createNgTableParams({
+                    interceptors: [interceptor],
+                    getData: function(/*params*/){
+                        return [1,2,3];
+                    }
+                });
+
+                // when
+                tp.reload();
+                scope.$digest();
+
+                // then
+                expect(interceptor.hasRun).toBeFalsy();
+            }));
+        });
+
         describe('multiple response interceptors', function(){
 
             it('should run interceptors in the order they were registered', function(){
@@ -837,7 +1006,6 @@ describe('NgTableParams', function () {
 
             it('results of one interceptor should be piped to the next validator', function(){
                 // given
-                var callCount = 0;
                 var interceptor = {
                     response: function(data/*, params*/){
                         return data.map(function(item){
@@ -852,7 +1020,6 @@ describe('NgTableParams', function () {
                         });
                     }
                 };
-                var interceptors = [interceptor, interceptor2];
                 var tp = createNgTableParams({ interceptors: [interceptor, interceptor2], getData: function(){
                     return [2, 3];
                 }});
@@ -867,6 +1034,61 @@ describe('NgTableParams', function () {
                 // then
                 expect(actualData).toEqual(['40', '60']);
             });
+        });
+
+        describe('multiple response and responseError interceptors', function(){
+
+            it('responseError of next interceptor should receive failures from previous interceptor', inject(function($q){
+                // given
+                var badInterceptor = {
+                    response: function(/*data, params*/){
+                        return $q.reject('BANG!');
+                    }
+                };
+                var nextInterceptor = {
+                    responseError: function(/*reason, params*/){
+                        this.hasRun = true;
+                    }
+                };
+                var tp = createNgTableParams({ interceptors: [badInterceptor, nextInterceptor]});
+
+                // when
+                tp.reload();
+                scope.$digest();
+
+                // then
+                expect(nextInterceptor.hasRun).toBe(true);
+            }));
+
+            it('should call next response interceptor when previous interceptor recovers from failure', inject(function($q){
+                // given
+                var badInterceptor = {
+                    response: function(/*data, params*/){
+                        return $q.reject('BANG!');
+                    }
+                };
+                var recoveringInterceptor = {
+                    responseError: function(/*reason, params*/){
+                        return [8894,58];
+                    }
+                };
+                var recoveredData;
+                var nextInterceptor = {
+                    response: function(data/*, params*/){
+                        this.hasRun = true;
+                        recoveredData = data;
+                    }
+                };
+                var tp = createNgTableParams({ interceptors: [badInterceptor, recoveringInterceptor, nextInterceptor]});
+
+                // when
+                tp.reload();
+                scope.$digest();
+
+                // then
+                expect(nextInterceptor.hasRun).toBe(true);
+                expect(recoveredData).toEqual([8894,58]);
+            }));
         });
     });
 
@@ -1213,6 +1435,22 @@ describe('NgTableParams', function () {
                 expect(actualEventArgs).toEqual([expectedPages, undefined]);
             });
 
+            it('should fire when a reload completes - no data', function(){
+                // given
+                ngTableEventsChannel.onPagesChanged(function(params, newVal, oldVal){
+                    actualPublisher = params;
+                    actualEventArgs = [newVal, oldVal];
+                });
+                var params = createNgTableParams({ count: 5 }, { counts: [5,10], data: []});
+
+                // when
+                params.reload();
+                scope.$digest();
+
+                // then
+                expect(actualEventArgs).toEqual([[], undefined]);
+            });
+
             it('should fire when a reload completes (multiple)', function(){
                 // given
                 var callCount = 0;
@@ -1287,6 +1525,24 @@ describe('NgTableParams', function () {
                 expect(actualEventArgs).toEqual([newDs, initialDs]);
             });
 
+            it('should fire when a dataset is removed from settings value', function(){
+                // given
+                var initialDs = [1, 2];
+                ngTableEventsChannel.onDatasetChanged(function(params, newVal, oldVal){
+                    actualPublisher = params;
+                    actualEventArgs = [newVal, oldVal];
+                });
+                var params = createNgTableParams({ data: initialDs});
+
+                // when
+                var newDs = null;
+                params.settings({ data: newDs});
+
+                // then
+                expect(actualPublisher).toBe(params);
+                expect(actualEventArgs).toEqual([newDs, initialDs]);
+            });
+
             it('should NOT fire when the same data array is supplied as a new settings value', function(){
                 // given
                 var callCount = 0;
@@ -1301,6 +1557,16 @@ describe('NgTableParams', function () {
 
                 // then
                 expect(callCount).toBe(1);
+            });
+
+            it('settings().data on publisher should reference the new dataset', function(){
+                var initialDs = [1, 2];
+                var newDs = [1, 2, 3];
+                var params = createNgTableParams({ data: initialDs});
+                ngTableEventsChannel.onDatasetChanged(function(params, newVal/*, oldVal*/){
+                    expect(params.settings().data).toBe(newVal);
+                });
+                params.settings({ data: newDs});
             });
         });
     })
