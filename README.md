@@ -12,10 +12,9 @@ Demonstration for the Route360° JavaScript API
 #Installation
 1. clone the git repo `git clone https://github.com/route360/laupi.git`
 2. `npm install`
+3. `bower install`
 3. go to `app/scripts`, copy `cfg.default.js` and name it `cfg.js`
 4. open `cfg.js` and insert your API key.
-
-*Don't do a `bower install` please! there is a custom version of the r360 libary included. The bower install would overwrite it with the standard one.*
 
 #Development
 You can now run the app via `grunt serve` and start developing.
