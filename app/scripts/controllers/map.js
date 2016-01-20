@@ -181,10 +181,10 @@ angular.module('route360DemoApp')
             $scope.source.on("dragend", function(event){
 
                 // ask the service for a proper name 
-                r360.Util.getAddressByCoordinates($scope.source.getLatLng(), 'de', function(json){
+                r360.Util.getAddressByCoordinatesService($scope.source.getLatLng(), 'de', function(json){
                     
                     // udpate the values in the auto complete
-                    $scope.autoComplete.update($scope.source.getLatLng(), r360.Util.formatReverseGeocoding(json));
+                    $scope.autoComplete.update($scope.source.getLatLng(), r360.Util.formatPhotonReverseGeocoding(json));
                     // rerender view
                     $scope.showLaupis();
                 });
@@ -417,7 +417,7 @@ angular.module('route360DemoApp')
         $scope.addAutoComplete = function(){
 
             // create a autocomplete
-            $scope.autoComplete = r360.placeAutoCompleteControl({ 
+            $scope.autoComplete = r360.photonPlaceAutoCompleteControl({ 
                 country     : 'Deutschland', 
                 placeholder : 'Startpunkt', 
                 reset       : false,
