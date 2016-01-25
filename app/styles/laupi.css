@@ -144,7 +144,16 @@
     }
 
     #laupi-details {
-        bottom: 55px;
+        top: 60px!important;
+        bottom: 10px;
+        max-height: inherit!important;
+        width: auto;
+        margin-right: 10px;
+        z-index: 9999;
+    }
+
+    #laupi-details .row {
+        width: auto!important;
     }
 
     #laupi-search-edit-modal .multiSelect > button {

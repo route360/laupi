@@ -67,7 +67,7 @@ r360.PhotonPlaceAutoCompleteControl = L.Control.extend({
 
             that.options.input += 
                 '<span id="'+that.options.id+'-options-button" class="input-group-btn travel-type-buttons" ' + (!that.options.options ? 'style="display: none;"' : '') + '> \
-                    <button class="btn btn-autocomplete" type="button" title="' + i18n.get('settings') + '"><i class="fa fa-cog fa-fw"></i></button> \
+                    <button class="btn btn-autocomplete" type="button" title="' + i18n.get('settings') + '"><i class="fa fa-bus fa-fw"></i></button> \
                 </span>';
 
             optionsHtml.push('<div id="'+that.options.id+'-options" class="text-center" style="color: black;width:'+width+'; display: none;">');
@@ -147,6 +147,9 @@ r360.PhotonPlaceAutoCompleteControl = L.Control.extend({
 
             that.options.travelType = $(this).attr('travel-type');
             that.options.onTravelTypeChange();
+
+            $('#' + that.options.id + '-options-btn').html($(this).html());
+            if(that.options.travelType == 'biketransit') $('#' + that.options.id + '-options-btn').children('span').css('display', 'block');
         });
 
         // no click on the map, if click on container        
@@ -430,7 +433,7 @@ r360.PlaceAutoCompleteControl = L.Control.extend({
 
             that.options.input += 
                 '<span id="'+that.options.id+'-options-button" class="input-group-btn travel-type-buttons" ' + (!that.options.options ? 'style="display: none;"' : '') + '> \
-                    <button id="'+that.options.id+'-options-btn" class="btn btn-autocomplete" type="button" title="' + i18n.get('settings') + '"><i class="fa fa-cog fa-fw"></i></button> \
+                    <button id="'+that.options.id+'-options-btn" class="btn btn-autocomplete" type="button" title="' + i18n.get('settings') + '"><i class="fa fa-bus fa-fw"></i></button> \
                 </span>';
 
             optionsHtml.push('<div id="'+that.options.id+'-options" class="text-center r360-box-shadoww" style="color: black;widtth:'+width+'; display: '+ (this.options.showOnStartup ? 'block' : 'none') +';">');
@@ -549,6 +552,9 @@ r360.PlaceAutoCompleteControl = L.Control.extend({
 
             that.options.travelType = $(this).attr('travel-type');
             that.options.onTravelTypeChange();
+
+            $('#' + that.options.id + '-options-btn').html($(this).html());
+            if(that.options.travelType == 'biketransit') $('#' + that.options.id + '-options-btn').children('span:first-child').css('display', 'block');
         });
 
         // no click on the map, if click on container        

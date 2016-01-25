@@ -15,6 +15,8 @@ angular.module('route360DemoApp')
             var date = new Date();
             var friday = new Date(+date+(7-(date.getDay()+2)%7)*86400000);
             var dd   = friday.getDate();
+            if(dd < 10)
+                dd = 0 + "" + dd;
             var mm   = friday.getMonth()+1; //January is 0!
             var yyyy = friday.getFullYear();
             return "" + yyyy + "" + mm + "" + dd; 
@@ -493,7 +495,7 @@ angular.module('route360DemoApp')
             $scope.resize();
         }();
 
-        $('#laupi-details').css('top',  (117) + 'px');
+        $('#laupi-details').css('top',  (62) + 'px');
         $('#laupi-details').on('mouseover', function(){ $scope.map.scrollWheelZoom.disable(); });
         $('#laupi-details').on('mouseout' , function(){ $scope.map.scrollWheelZoom.enable(); });      
 
